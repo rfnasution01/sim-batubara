@@ -1,18 +1,17 @@
+import { Outlet } from 'react-router-dom'
 import { LayoutNavigation } from './layout-navigation'
 
 export default function RootLayoutMain() {
   return (
-    <div className="bg-sim-bg flex h-screen text-[2rem] phones:text-[2.4rem]">
+    <div className="flex h-screen bg-sim-bg text-[2rem] phones:text-[2.4rem]">
       {/* --- Navigation --- */}
       <LayoutNavigation />
       {/* --- Contentn --- */}
       <div
-        className="m-32 flex-1 bg-white p-32"
+        className="m-32 flex-1 bg-white px-32 pb-32 pt-48"
         style={{ borderRadius: '4rem' }}
       >
-        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Optio quasi
-        reiciendis sequi sunt architecto incidunt nam fuga, possimus quo ea
-        debitis neque qui, vel autem! Adipisci animi nostrum quasi magnam.
+        <Outlet />
       </div>
     </div>
   )

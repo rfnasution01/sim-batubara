@@ -188,6 +188,8 @@ export default {
         sim: {
           bg: '#EFF6FF',
           primary: '#195EE5',
+          grey: '#7D95A1',
+          dark: '#1F475C',
           'pale-primary': '#EFF6FF',
           'pale-grey': '#D1D1D1',
         },

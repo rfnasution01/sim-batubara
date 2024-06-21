@@ -1,5 +1,9 @@
 import { createBrowserRouter } from 'react-router-dom'
-import { ComingSoonPage, RootLayoutMain } from './loadables'
+import {
+  ComingSoonPage,
+  KepegawaianLayoutMain,
+  RootLayoutMain,
+} from './loadables'
 
 // const categories = ['berita', 'pengumuman', 'agenda', 'prestasi']
 
@@ -7,6 +11,34 @@ export const router = createBrowserRouter([
   {
     path: '/',
     element: <RootLayoutMain />,
+    children: [
+      {
+        path: '',
+        element: <ComingSoonPage />,
+      },
+      {
+        path: 'tabel-referensi',
+        element: <ComingSoonPage />,
+      },
+      {
+        path: 'kepegawaian',
+        element: <KepegawaianLayoutMain />,
+        children: [
+          {
+            path: 'pns',
+            element: <ComingSoonPage />,
+          },
+          {
+            path: 'pns',
+            element: <ComingSoonPage />,
+          },
+          {
+            path: 'pppk',
+            element: <ComingSoonPage />,
+          },
+        ],
+      },
+    ],
     // children: [
     //   {
     //     path: '',
