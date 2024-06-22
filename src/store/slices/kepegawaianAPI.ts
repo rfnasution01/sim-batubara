@@ -34,7 +34,7 @@ export const KepegawaianEndpoints = api.injectEndpoints({
       providesTags: ['pegawai-pns'],
     }),
     getKepegawaianPNSUtama: builder.query<
-      Res<DataKepegawaianUtamaType[]>,
+      Res<DataKepegawaianUtamaType>,
       DataKepegawaianUtamaParams
     >({
       query: ({ id_pegawai }) => ({

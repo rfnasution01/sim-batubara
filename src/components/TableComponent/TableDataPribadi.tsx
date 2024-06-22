@@ -1,6 +1,7 @@
+import { DataKepegawaianUtamaType } from '@/libs/type'
 import { RefreshCcw } from 'lucide-react'
 
-export function TableDataPribadi() {
+export function TableDataPribadi({ data }: { data: DataKepegawaianUtamaType }) {
   return (
     <div
       className={`scrollbar flex flex-col overflow-auto rounded-3x`}
@@ -36,10 +37,10 @@ export function TableDataPribadi() {
               ID
             </th>
             <td className="border px-24 py-12 align-middle leading-medium">
-              -
+              {data?.siasn?.ID ?? '-'}
             </td>
             <td className="border px-24 py-12 align-middle leading-medium">
-              A8ACA774D0673912E040640A040269BB
+              {data?.lokal?.ID ?? '-'}
             </td>
           </tr>
           <tr className="transition-all ease-in hover:cursor-pointer">
@@ -47,10 +48,10 @@ export function TableDataPribadi() {
               NIP
             </th>
             <td className="border px-24 py-12 align-middle leading-medium">
-              -
+              {data?.siasn?.nip ?? '-'}
             </td>
             <td className="border px-24 py-12 align-middle leading-medium">
-              A8ACA774D0673912E040640A040269BB
+              {data?.lokal?.nip ?? '-'}
             </td>
           </tr>
           <tr className="transition-all ease-in hover:cursor-pointer">
@@ -58,10 +59,10 @@ export function TableDataPribadi() {
               Nama
             </th>
             <td className="border px-24 py-12 align-middle leading-medium">
-              -
+              {data?.siasn?.nama ?? '-'}
             </td>
             <td className="border px-24 py-12 align-middle leading-medium">
-              A8ACA774D0673912E040640A040269BB
+              {data?.lokal?.nama ?? '-'}
             </td>
           </tr>
           <tr className="transition-all ease-in hover:cursor-pointer">
@@ -69,10 +70,10 @@ export function TableDataPribadi() {
               Jenis Kelamin
             </th>
             <td className="border px-24 py-12 align-middle leading-medium">
-              -
+              {data?.siasn?.jenis_kelamin ?? '-'}
             </td>
             <td className="border px-24 py-12 align-middle leading-medium">
-              A8ACA774D0673912E040640A040269BB
+              {data?.lokal?.jenis_kelamin ?? '-'}
             </td>
           </tr>
           <tr className="transition-all ease-in hover:cursor-pointer">
@@ -80,10 +81,10 @@ export function TableDataPribadi() {
               Tempat Lahir
             </th>
             <td className="border px-24 py-12 align-middle leading-medium">
-              -
+              {data?.siasn?.tempat_lahir ?? '-'}
             </td>
             <td className="border px-24 py-12 align-middle leading-medium">
-              A8ACA774D0673912E040640A040269BB
+              {data?.lokal?.tempat_lahir ?? '-'}
             </td>
           </tr>
           <tr className="transition-all ease-in hover:cursor-pointer">
@@ -91,10 +92,10 @@ export function TableDataPribadi() {
               Tanggal Lahir
             </th>
             <td className="border px-24 py-12 align-middle leading-medium">
-              -
+              {data?.siasn?.tanggal_lahir ?? '-'}
             </td>
             <td className="border px-24 py-12 align-middle leading-medium">
-              A8ACA774D0673912E040640A040269BB
+              {data?.lokal?.tanggal_lahir ?? '-'}
             </td>
           </tr>
           <tr className="transition-all ease-in hover:cursor-pointer">
@@ -102,10 +103,10 @@ export function TableDataPribadi() {
               Agama
             </th>
             <td className="border px-24 py-12 align-middle leading-medium">
-              -
+              {data?.siasn?.agama ?? '-'}
             </td>
             <td className="border px-24 py-12 align-middle leading-medium">
-              A8ACA774D0673912E040640A040269BB
+              {data?.lokal?.agama ?? '-'}
             </td>
           </tr>
           <tr className="border transition-all ease-in hover:cursor-pointer">
@@ -121,10 +122,10 @@ export function TableDataPribadi() {
               Alamat
             </th>
             <td className="border px-24 py-12 align-middle leading-medium">
-              -
+              {data?.siasn?.alamat ?? '-'}
             </td>
             <td className="border px-24 py-12 align-middle leading-medium">
-              A8ACA774D0673912E040640A040269BB
+              {data?.lokal?.alamat ?? '-'}
             </td>
           </tr>
           <tr className="transition-all ease-in hover:cursor-pointer">
@@ -132,10 +133,10 @@ export function TableDataPribadi() {
               Kelurahan
             </th>
             <td className="border px-24 py-12 align-middle leading-medium">
-              -
+              {data?.siasn?.kelurahan ?? '-'}
             </td>
             <td className="border px-24 py-12 align-middle leading-medium">
-              A8ACA774D0673912E040640A040269BB
+              {data?.lokal?.kelurahan ?? '-'}
             </td>
           </tr>
           <tr className="transition-all ease-in hover:cursor-pointer">
@@ -143,10 +144,10 @@ export function TableDataPribadi() {
               Kecatamatan
             </th>
             <td className="border px-24 py-12 align-middle leading-medium">
-              -
+              {data?.siasn?.kecamatan ?? '-'}
             </td>
             <td className="border px-24 py-12 align-middle leading-medium">
-              A8ACA774D0673912E040640A040269BB
+              {data?.lokal?.kecamatan ?? '-'}
             </td>
           </tr>
           <tr className="transition-all ease-in hover:cursor-pointer">
@@ -154,10 +155,10 @@ export function TableDataPribadi() {
               Kota
             </th>
             <td className="border px-24 py-12 align-middle leading-medium">
-              -
+              {data?.siasn?.kabupaten ?? '-'}
             </td>
             <td className="border px-24 py-12 align-middle leading-medium">
-              A8ACA774D0673912E040640A040269BB
+              {data?.lokal?.kabupaten ?? '-'}
             </td>
           </tr>
           <tr className="transition-all ease-in hover:cursor-pointer">
@@ -165,10 +166,10 @@ export function TableDataPribadi() {
               Provinsi
             </th>
             <td className="border px-24 py-12 align-middle leading-medium">
-              -
+              {data?.siasn?.provinsi ?? '-'}
             </td>
             <td className="border px-24 py-12 align-middle leading-medium">
-              A8ACA774D0673912E040640A040269BB
+              {data?.lokal?.provinsi ?? '-'}
             </td>
           </tr>
           <tr className="transition-all ease-in hover:cursor-pointer">
@@ -176,10 +177,10 @@ export function TableDataPribadi() {
               POS
             </th>
             <td className="border px-24 py-12 align-middle leading-medium">
-              -
+              {data?.siasn?.kodepos ?? '-'}
             </td>
             <td className="border px-24 py-12 align-middle leading-medium">
-              A8ACA774D0673912E040640A040269BB
+              {data?.lokal?.kodepos ?? '-'}
             </td>
           </tr>
           <tr className="border transition-all ease-in hover:cursor-pointer">
@@ -195,10 +196,10 @@ export function TableDataPribadi() {
               Nomor Telepon
             </th>
             <td className="border px-24 py-12 align-middle leading-medium">
-              -
+              {data?.siasn?.hp ?? '-'}
             </td>
             <td className="border px-24 py-12 align-middle leading-medium">
-              A8ACA774D0673912E040640A040269BB
+              {data?.lokal?.hp ?? '-'}
             </td>
           </tr>
           <tr className="transition-all ease-in hover:cursor-pointer">
@@ -206,10 +207,10 @@ export function TableDataPribadi() {
               Email
             </th>
             <td className="border px-24 py-12 align-middle leading-medium">
-              -
+              {data?.siasn?.email ?? '-'}
             </td>
             <td className="border px-24 py-12 align-middle leading-medium">
-              A8ACA774D0673912E040640A040269BB
+              {data?.lokal?.email ?? '-'}
             </td>
           </tr>
         </tbody>

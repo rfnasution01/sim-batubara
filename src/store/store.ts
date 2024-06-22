@@ -3,12 +3,14 @@ import { configureStore } from '@reduxjs/toolkit'
 import { api } from './api'
 import stateFilter from './reducer/stateFilter'
 import stateDetailPegawai from './reducer/stateDetailPegawai'
+import stateIdPegawai from './reducer/stateIdPegawai'
 
 export const store = configureStore({
   reducer: {
     [api.reducerPath]: api.reducer,
     stateFilter: stateFilter,
     stateDetailPegawai: stateDetailPegawai,
+    stateIdPegawai: stateIdPegawai,
   },
   devTools: true,
   middleware: (getDefaultMiddleware) =>

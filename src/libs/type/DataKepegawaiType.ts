@@ -1,4 +1,5 @@
 export type DataKepegawaianType = {
+  id_pegawai: string
   nip: string
   nama: string
   jk: string
@@ -70,7 +71,7 @@ export type DataKepegawaianUtamaHeaderType = {
 }
 
 export type DataKepegawaianUtamaParams = {
-  id_pegawai: number
+  id_pegawai: string
 }
 
 export type PageInfoType = {

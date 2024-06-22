@@ -28,6 +28,9 @@ export const columnsListDataPNS: Column<DataKepegawaianType>[] = [
           <p>{rowData?.satker}</p>
           <Link
             to={`/kepegawaian/pns/${convertToSlug(rowData?.nama)}`}
+            onClick={() => {
+              localStorage.setItem('pegawaiID', rowData?.id_pegawai)
+            }}
             className="rounded-2xl bg-sim-primary p-8 text-white"
           >
             <ChevronRight size={16} />

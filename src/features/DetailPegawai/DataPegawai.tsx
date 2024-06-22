@@ -4,8 +4,13 @@ import { useSelector } from 'react-redux'
 import { DataDetailPegawaiTab } from './DataPegawaiTab'
 import { DataRiwayatMain } from './DataRiwayat'
 import { DataUtamaMain } from './DataUtama'
+import { DataKepegawaianUtamaType } from '@/libs/type'
 
-export function DataDetailPegawai() {
+export function DataDetailPegawai({
+  data,
+}: {
+  data: DataKepegawaianUtamaType
+}) {
   const stateTab = useSelector(getDetailPegawaiSlice)?.tab
 
   useEffect(() => {
@@ -21,10 +26,7 @@ export function DataDetailPegawai() {
   return (
     <div className="flex flex-col gap-32 rounded-2x bg-white py-32">
       <DataDetailPegawaiTab setTab={setTab} tab={tab} />
-      {tab === 'utama' ? <DataUtamaMain /> : <DataRiwayatMain />}
-      {/* Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque quasi
-      doloribus sunt nobis aspernatur perspiciatis sed accusantium in ex, fuga
-      velit excepturi nemo veritatis ut tempora amet modi odit illum. */}
+      {tab === 'utama' ? <DataUtamaMain data={data} /> : <DataRiwayatMain />}
     </div>
   )
 }

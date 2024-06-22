@@ -1,15 +1,19 @@
 import { IconDocument } from '@/assets'
-import { DataKepegawaianType } from '@/libs/type'
+import { DataKepegawaianUtamaHeaderType } from '@/libs/type'
+import Profil from '@/assets/ImgProfil.png'
 
-export function ProfilPegawai({ data }: { data: DataKepegawaianType }) {
-  const { photo, nama, nip, instansi, satker } = data
+export function ProfilPegawai({
+  data,
+}: {
+  data: DataKepegawaianUtamaHeaderType
+}) {
   return (
     <div className="flex items-start gap-48 rounded-2x bg-white p-32">
       {/* --- Profil --- */}
       <div className="h-[24rem] w-[24rem] rounded-2x border border-sim-pale-grey">
         <img
-          src={photo}
-          alt={nama}
+          src={data?.photo ?? Profil}
+          alt={data?.nama}
           loading="lazy"
           className="h-full w-full rounded-2x object-cover filter"
         />
@@ -17,11 +21,13 @@ export function ProfilPegawai({ data }: { data: DataKepegawaianType }) {
       {/* --- Biodata --- */}
       <div className="flex h-full flex-1 items-center">
         <div className="flex flex-col gap-32">
-          <p className="text-[4rem] font-bold text-sim-dark">{nama ?? '-'}</p>
+          <p className="text-[4rem] font-bold text-sim-dark">
+            {data?.nama ?? '-'}
+          </p>
           <div className="flex flex-col gap-16 font-semibold text-sim-dark">
-            <p>NIP: {nip ?? '-'}</p>
-            <p>Instansi: {instansi ?? '-'}</p>
-            <p>Satuan Kerja: {satker ?? '-'}</p>
+            <p>NIP: {data?.nip ?? '-'}</p>
+            <p>Instansi: {data?.instansi ?? '-'}</p>
+            <p>Satuan Kerja: {data?.satker ?? '-'}</p>
           </div>
         </div>
       </div>
