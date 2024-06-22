@@ -1,6 +1,7 @@
 import { Breadcrumb } from '@/components/Breadcrumb'
 import { Searching } from '@/components/Search'
 import { SelectListDataPerPage } from '@/components/SelectComponent'
+import { MenubarFilter } from '@/components/menubar-component'
 import { usePathname } from '@/libs/hooks/usePathname'
 import clsx from 'clsx'
 import { Outlet } from 'react-router-dom'
@@ -19,9 +20,10 @@ export default function KepegawaianLayoutMain() {
         {/* --- Title --- */}
         <Breadcrumb length={splittedPath?.length} />
         {splittedPath?.length <= 3 && (
-          <div className="flex w-1/3 items-center gap-32 phones:w-full">
+          <div className="flex w-2/4 items-center gap-32 phones:w-full">
             <SelectListDataPerPage className="w-1/3" />
             <Searching className="w-2/3" />
+            <MenubarFilter />
           </div>
         )}
       </div>

@@ -1,5 +1,7 @@
 import zod from 'zod'
 
 export const FilterSchema = zod.object({
-  pageSize: zod.string().optional().nullable().nullish(),
+  satuanKerja: zod.string().optional().nullable().nullish(),
+  jabatan: zod.string().optional().nullable().nullish(),
+  golongan: zod.string().optional().nullable().nullish(),
 })
