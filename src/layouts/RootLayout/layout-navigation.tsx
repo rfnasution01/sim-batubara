@@ -14,6 +14,7 @@ import { Link } from 'react-router-dom'
 import { convertToSlug } from '@/libs/helpers/format-text'
 import { listNavigasi } from '@/libs/dummy/ListNavigasi'
 import { usePathname } from '@/libs/hooks/usePathname'
+import Cookies from 'js-cookie'
 
 export function LayoutNavigation() {
   const { firstPathname, secondPathname } = usePathname()
@@ -71,12 +72,17 @@ export function LayoutNavigation() {
               to={
                 icon?.name === 'Dashboard'
                   ? '/'
-                  : `/${convertToSlug(icon?.name)}`
+                  : icon?.name === 'Logout'
+                    ? '/login'
+                    : `/${convertToSlug(icon?.name)}`
               }
               onClick={(e) => {
                 if (icon?.child?.length > 0) {
                   e.preventDefault()
                   e.stopPropagation()
+                }
+                if (icon?.name === 'Logout') {
+                  Cookies.remove('token')
                 }
                 handleIconClick(idx)
               }}

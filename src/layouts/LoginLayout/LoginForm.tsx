@@ -29,6 +29,7 @@ export function LoginForm({
           placeholder="Masukkan username atau nip"
           className="text-sim-dark"
           type="text"
+          isDisabled={isLoading}
         />
         <FormLabelInput
           name="password"
@@ -36,6 +37,7 @@ export function LoginForm({
           label="Password"
           placeholder="Masukkan password"
           className="text-sim-dark"
+          isDisabled={isLoading}
           suffix={
             <span
               onClick={() => {
@@ -55,6 +57,7 @@ export function LoginForm({
           className="text-sim-dark"
           type="text"
           isNumber
+          isDisabled={isLoading}
         />
         <button
           type="submit"
@@ -62,7 +65,7 @@ export function LoginForm({
         >
           Login
           {isLoading ? (
-            <span className="transform-gpu animate-spin duration-300">
+            <span className="animate-spin duration-300">
               <Loader2 size={16} />
             </span>
           ) : (

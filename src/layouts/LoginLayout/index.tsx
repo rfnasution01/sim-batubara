@@ -78,7 +78,7 @@ export default function LoginLayoutMain() {
         transition: Bounce,
       })
       setTimeout(() => {
-        navigate(`/`)
+        navigate(`/kepegawaian/pns`)
       }, 3000)
     }
   }, [isSuccessLogin])
