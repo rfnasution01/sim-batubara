@@ -1,4 +1,4 @@
-import { createBrowserRouter } from 'react-router-dom'
+import { createBrowserRouter, redirect } from 'react-router-dom'
 import {
   ComingSoonPage,
   CustomLayoutMain,
@@ -8,13 +8,21 @@ import {
   PNSPage,
   RootLayoutMain,
 } from './loadables'
-
-// const categories = ['berita', 'pengumuman', 'agenda', 'prestasi']
+import Cookies from 'js-cookie'
 
 export const router = createBrowserRouter([
   {
     path: '/',
     element: <RootLayoutMain />,
+    loader: async () => {
+      const jwtPayload = Cookies.get('token')
+
+      if (!jwtPayload) {
+        return redirect('/login')
+      }
+
+      return null
+    },
     children: [
       {
         path: '',
@@ -57,6 +65,15 @@ export const router = createBrowserRouter([
   {
     path: 'login',
     element: <LoginLayoutMain />,
+    loader: async () => {
+      const jwtPayload = Cookies.get('token')
+
+      if (jwtPayload) {
+        return redirect('/')
+      }
+
+      return null
+    },
   },
 
   {
