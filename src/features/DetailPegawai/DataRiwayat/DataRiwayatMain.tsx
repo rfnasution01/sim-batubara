@@ -3,7 +3,10 @@ import { AlignJustify, X } from 'lucide-react'
 import { useState } from 'react'
 import { DataRiwayatTab } from './DataRiwayatTab'
 import { ComingSoonPage } from '@/routes/loadables'
-import { TableDataGolongan } from '@/components/TableComponent'
+import {
+  TableDataGolongan,
+  TableDataPendidikan,
+} from '@/components/TableComponent'
 
 export function DataRiwayatMain() {
   const [isShow, setIsShow] = useState<boolean>(false)
@@ -34,6 +37,8 @@ export function DataRiwayatMain() {
         </div>
         {tab === 'Golongan & Pangkat' ? (
           <TableDataGolongan />
+        ) : tab === 'Pendidikan' ? (
+          <TableDataPendidikan />
         ) : (
           <ComingSoonPage />
         )}
