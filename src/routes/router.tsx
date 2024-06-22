@@ -1,6 +1,8 @@
 import { createBrowserRouter } from 'react-router-dom'
 import {
   ComingSoonPage,
+  CustomLayoutMain,
+  DetailPegawaiLayoutMain,
   KepegawaianLayoutMain,
   PNSPage,
   RootLayoutMain,
@@ -26,12 +28,22 @@ export const router = createBrowserRouter([
         element: <KepegawaianLayoutMain />,
         children: [
           {
-            path: 'pns',
+            path: '',
             element: <PNSPage />,
           },
           {
             path: 'pns',
-            element: <ComingSoonPage />,
+            element: <CustomLayoutMain />,
+            children: [
+              {
+                path: '',
+                element: <PNSPage />,
+              },
+              {
+                path: ':nama',
+                element: <DetailPegawaiLayoutMain />,
+              },
+            ],
           },
           {
             path: 'pppk',

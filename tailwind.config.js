@@ -3,6 +3,20 @@ export default {
   darkMode: ['class'],
   content: ['./src/**/*.{ts,tsx}'],
   theme: {
+    borderRadius: {
+      none: '0px',
+      sm: '0.125rem',
+      rounded: '0.25rem',
+      md: '0.375rem',
+      lg: '0.5rem',
+      xl: '0.75rem',
+      '2xl': '1rem',
+      '3xl': '1.5rem',
+      full: '9999px',
+      '2x': '2rem',
+      '3x': '3rem',
+      '4x': '4rem',
+    },
     //? ----- WHITESPACE SYSTEM -----
     spacing: {
       0: '0',

@@ -6,4 +6,6 @@ export type LisdDataPegawai = {
   gol: string
   noTelp: string
   satuanKerja: string
+  photo?: string
+  instansi?: string
 }

@@ -9,7 +9,7 @@ export function IconDashboard({ size = '24', fill1, fill2, fill3 }: IconType) {
       fill={fill1 ?? 'none'}
       xmlns="http://www.w3.org/2000/svg"
     >
-      <g clip-path="url(#clip0_1_3830)">
+      <g clipPath="url(#clip0_1_3830)">
         <path
           d="M9.24435 7.82987C10.0616 7.28859 11.0201 6.99995 12.0003 6.99995C12.9806 6.99995 13.9391 7.28859 14.7563 7.82987L19.7443 2.84187C17.5812 1.00711 14.8368 0 12.0003 0C9.16386 0 6.41952 1.00711 4.25635 2.84187L9.24435 7.82987Z"
           fill={fill2 ?? '#7D95A1'}

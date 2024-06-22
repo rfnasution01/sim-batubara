@@ -22,7 +22,8 @@ export function LayoutNavigation() {
     if (
       firstPathname === item ||
       (firstPathname === '' && item === 'dashboard') ||
-      secondPathname === item
+      secondPathname === item ||
+      (secondPathname === '' && item === 'pns')
     ) {
       return true
     }
@@ -87,7 +88,7 @@ export function LayoutNavigation() {
                 },
                 {
                   'text-sim-grey': !isActivePage(convertToSlug(icon?.name)),
-                  'text-sim-dark bg-sim-pale-primary': isActivePage(
+                  'bg-sim-pale-primary text-sim-dark': isActivePage(
                     convertToSlug(icon?.name),
                   ),
                 },

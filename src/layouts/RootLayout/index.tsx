@@ -7,10 +7,7 @@ export default function RootLayoutMain() {
       {/* --- Navigation --- */}
       <LayoutNavigation />
       {/* --- Contentn --- */}
-      <div
-        className="m-32 flex-1 bg-white px-32 pb-32 pt-48"
-        style={{ borderRadius: '4rem' }}
-      >
+      <div className="m-32 flex-1">
         <Outlet />
       </div>
     </div>

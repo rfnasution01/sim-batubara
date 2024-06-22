@@ -20,7 +20,7 @@ export const columnsListDataPNS: Column<LisdDataPegawai>[] = [
         <div className="flex items-center justify-between gap-32">
           <p>{rowData?.satuanKerja}</p>
           <Link
-            to={convertToSlug(rowData?.nama)}
+            to={`/kepegawaian/pns/${convertToSlug(rowData?.nama)}`}
             className="rounded-2xl bg-sim-primary p-8 text-white"
           >
             <ChevronRight size={16} />

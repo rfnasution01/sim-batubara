@@ -9,7 +9,7 @@ export function IconLayout({ size = '24', fill1, fill2, fill3 }: IconType) {
       fill={fill1 ?? 'none'}
       xmlns="http://www.w3.org/2000/svg"
     >
-      <g clip-path="url(#clip0_1_3841)">
+      <g clipPath="url(#clip0_1_3841)">
         <path
           d="M6.5 17.5004H0V21.0004C0 21.796 0.31607 22.5591 0.87868 23.1217C1.44129 23.6843 2.20435 24.0004 3 24.0004H6.5V17.5004Z"
           fill={fill2 ?? '#7D95A1'}

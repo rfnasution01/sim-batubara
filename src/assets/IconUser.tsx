@@ -9,7 +9,7 @@ export function IconUser({ size = '24', fill1, fill2, fill3 }: IconType) {
       fill={fill1 ?? 'none'}
       xmlns="http://www.w3.org/2000/svg"
     >
-      <g clip-path="url(#clip0_1_3820)">
+      <g clipPath="url(#clip0_1_3820)">
         <path
           d="M16.043 14.0006H7.957C6.64281 14.0022 5.3829 14.525 4.45363 15.4542C3.52435 16.3835 3.00159 17.6434 3 18.9576V24.0006H21V18.9576C20.9984 17.6434 20.4756 16.3835 19.5464 15.4542C18.6171 14.525 17.3572 14.0022 16.043 14.0006Z"
           fill={fill2 ?? '#195EE5'}
