@@ -5,6 +5,7 @@ import { DataRiwayatTab } from './DataRiwayatTab'
 import { ComingSoonPage } from '@/routes/loadables'
 import {
   TableDataGolongan,
+  TableDataJabatan,
   TableDataPendidikan,
 } from '@/components/TableComponent'
 
@@ -39,6 +40,8 @@ export function DataRiwayatMain() {
           <TableDataGolongan />
         ) : tab === 'Pendidikan' ? (
           <TableDataPendidikan />
+        ) : tab === 'Jabatan' ? (
+          <TableDataJabatan />
         ) : (
           <ComingSoonPage />
         )}
