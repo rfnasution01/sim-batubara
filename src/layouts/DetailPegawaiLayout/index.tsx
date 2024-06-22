@@ -6,9 +6,9 @@ export default function DetailPegawaiLayoutMain() {
     nama: 'Ahmad Fauzi',
     jk: 'L',
     jabatan: 'Analis Keuangan',
-    gol: 'IIIA',
-    noTelp: '081234567890',
-    satuanKerja: 'Dinas Keuangan',
+    golongan: 'IIIA',
+    hp: '081234567890',
+    satker: 'Dinas Keuangan',
     photo: '/img/cosmos.png',
     instansi: 'Pemerintah Kab. Batubara',
   }

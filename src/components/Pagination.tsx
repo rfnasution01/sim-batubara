@@ -11,7 +11,8 @@ export const Pagination = ({
   lastPage: number
 }) => {
   const dispatch = useDispatch()
-  const { pageSize, search } = useSelector(getFilterSlice)
+  const { pageSize, search, id_golongan, id_organisasi, jabatan } =
+    useSelector(getFilterSlice)
 
   return (
     <div className="flex items-center gap-24">
@@ -27,6 +28,9 @@ export const Pagination = ({
                 pageNumber: pageNow - 1,
                 pageSize: pageSize,
                 search: search,
+                id_golongan: id_golongan,
+                id_organisasi: id_organisasi,
+                jabatan: jabatan,
               }),
             )
           }
@@ -49,6 +53,9 @@ export const Pagination = ({
                 pageNumber: pageNow + 1,
                 pageSize: pageSize,
                 search: search,
+                id_golongan: id_golongan,
+                id_organisasi: id_organisasi,
+                jabatan: jabatan,
               }),
             )
           }

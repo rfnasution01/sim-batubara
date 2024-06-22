@@ -1,17 +1,17 @@
 import { IconDocument } from '@/assets'
-import { LisdDataPegawai } from '@/libs/type'
+import { DataKepegawaianType } from '@/libs/type'
 
-export function ProfilPegawai({ data }: { data: LisdDataPegawai }) {
-  const { photo, nama, nip, instansi, satuanKerja } = data
+export function ProfilPegawai({ data }: { data: DataKepegawaianType }) {
+  const { photo, nama, nip, instansi, satker } = data
   return (
-    <div className="rounded-2x flex items-start gap-48 bg-white p-32">
+    <div className="flex items-start gap-48 rounded-2x bg-white p-32">
       {/* --- Profil --- */}
-      <div className="rounded-2x h-[24rem] w-[24rem] border border-sim-pale-grey">
+      <div className="h-[24rem] w-[24rem] rounded-2x border border-sim-pale-grey">
         <img
           src={photo}
           alt={nama}
           loading="lazy"
-          className="rounded-2x h-full w-full object-cover filter"
+          className="h-full w-full rounded-2x object-cover filter"
         />
       </div>
       {/* --- Biodata --- */}
@@ -21,7 +21,7 @@ export function ProfilPegawai({ data }: { data: LisdDataPegawai }) {
           <div className="flex flex-col gap-16 font-semibold text-sim-dark">
             <p>NIP: {nip ?? '-'}</p>
             <p>Instansi: {instansi ?? '-'}</p>
-            <p>Satuan Kerja: {satuanKerja ?? '-'}</p>
+            <p>Satuan Kerja: {satker ?? '-'}</p>
           </div>
         </div>
       </div>

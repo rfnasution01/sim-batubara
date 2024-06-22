@@ -1,3 +1,3 @@
 export * from './IconType'
-export * from './ListDataPegawaiType'
+export * from './DataKepegawaiType'
 export * from './ReferensiType'

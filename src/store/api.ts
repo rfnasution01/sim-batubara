@@ -1,3 +1,4 @@
+import { DataKepegawaianUtamaHeaderType, PageInfoType } from '@/libs/type'
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import Cookies from 'js-cookie'
 
@@ -16,6 +17,8 @@ export type Res<T, M = undefined> = {
   related: T
   meta: Meta
   mapped?: M
+  page_info?: PageInfoType
+  header?: DataKepegawaianUtamaHeaderType
 }
 
 const baseURL = import.meta.env.VITE_BASE_URL
@@ -25,6 +28,7 @@ export const api = createApi({
     baseUrl: baseURL,
     prepareHeaders: (headers) => {
       const token = Cookies.get('token')
+
       if (token) {
         headers.set('authorization', `Bearer ${token}`)
       }
@@ -32,7 +36,7 @@ export const api = createApi({
       return headers
     },
   }),
-  tagTypes: [],
+  tagTypes: ['pegawai-pns', 'pegawai-pns-utama'],
   // * it's okay to disable eslint here, because the warning is unnecessary. Each endpoint will be injected from an api slice.
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   endpoints: (_builder) => ({}),

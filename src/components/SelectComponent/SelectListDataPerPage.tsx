@@ -6,7 +6,8 @@ import { getFilterSlice, setStateFilter } from '@/store/reducer/stateFilter'
 
 export function SelectListDataPerPage({ className }: { className?: string }) {
   const dispatch = useDispatch()
-  const { pageNumber, search } = useSelector(getFilterSlice)
+  const { search, id_golongan, id_organisasi, jabatan } =
+    useSelector(getFilterSlice)
 
   return (
     <Select
@@ -60,9 +61,12 @@ export function SelectListDataPerPage({ className }: { className?: string }) {
       onChange={(optionSelected: { value: number; label: number }) => {
         dispatch(
           setStateFilter({
-            pageNumber: pageNumber,
+            pageNumber: 1,
             pageSize: optionSelected?.value,
             search: search,
+            id_golongan: id_golongan,
+            id_organisasi: id_organisasi,
+            jabatan: jabatan,
           }),
         )
       }}

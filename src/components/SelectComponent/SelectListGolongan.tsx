@@ -65,12 +65,10 @@ export function SelectListGolongan({
   }
 
   const Option = (props) => {
-    console.log(props)
-
     return (
       <components.Option {...props}>
         <div ref={props.innerRef}>
-          <div className="flex flex-col">
+          <div className="flex flex-col gap-4">
             <p className="text-[2rem] font-bold">
               {props?.data?.pangkat ?? '-'}
             </p>
@@ -107,6 +105,7 @@ export function SelectListGolongan({
                     singleValue: (provided) => ({
                       ...provided,
                       color: 'grey',
+                      textTransform: 'uppercase',
                     }),
                     input: (provided) => ({
                       ...provided,

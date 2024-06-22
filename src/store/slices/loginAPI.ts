@@ -9,7 +9,7 @@ export const LoginEndpoints = api.injectEndpoints({
         method: 'POST',
         body: data,
       }),
-      invalidatesTags: [],
+      invalidatesTags: ['pegawai-pns'],
     }),
   }),
 })

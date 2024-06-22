@@ -20,6 +20,9 @@ type Props<T, P> = {
   onItemClick?: (rowData: T) => void
   collapseComponent?: React.ReactNode
   checkbox?: boolean
+  isNumber?: boolean
+  currentPage?: number
+  pageSize?: number
 }
 
 export function Table<T, P>({
@@ -32,6 +35,9 @@ export function Table<T, P>({
   onItemClick,
   collapseComponent,
   checkbox,
+  isNumber,
+  currentPage,
+  pageSize,
 }: Props<T, P>) {
   const [rowIsOpen, setRowIsOpen] = useState<number | null>(null)
 
@@ -55,6 +61,13 @@ export function Table<T, P>({
             <table className="flex-1 border-collapse text-24">
               <thead className="relative z-10 align-top leading-medium">
                 <tr className="border-b-[1.6rem] border-transparent">
+                  {/* --- NO --- */}
+                  {isNumber && pageSize && currentPage && (
+                    <th className="sticky top-0 border-b-2 bg-sim-pale-primary px-24 py-24 text-left uppercase text-sim-primary">
+                      #
+                    </th>
+                  )}
+
                   {/* ----- Table Headers ----- */}
                   {columnArray
                     .filter((column) => !column.header.includes('Aksi'))
@@ -86,6 +99,13 @@ export function Table<T, P>({
                       )}
                       onClick={onItemClick ? () => onItemClick(row) : undefined}
                     >
+                      {/* ----- Nomor ----- */}
+                      {isNumber && currentPage && pageSize && (
+                        <td className="px-24 py-12 leading-medium">
+                          {currentPage * pageSize + (rowIndex + 1 - pageSize)}
+                        </td>
+                      )}
+
                       {/* ----- Table Data ----- */}
                       {columnArray
                         .filter((column) => !column.header.includes('Aksi'))

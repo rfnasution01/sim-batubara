@@ -1,27 +1,68 @@
 import { Pagination } from '@/components/Pagination'
 import { Table } from '@/components/Table'
-import { ListDataPNS } from '@/libs/dummy/ListDataPegawaiPNS'
 import { columnsListDataPNS } from '@/libs/helpers/table'
+import { DataKepegawaianType, PageInfoType } from '@/libs/type'
 import { getFilterSlice } from '@/store/reducer/stateFilter'
+import { useGetKepegawaianPNSQuery } from '@/store/slices/kepegawaianAPI'
+import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 
 export default function PNS() {
-  const { pageNumber, pageSize } = useSelector(getFilterSlice)
+  const { pageNumber, pageSize, search, id_golongan, id_organisasi, jabatan } =
+    useSelector(getFilterSlice)
+  const [kepegawaianPNS, setKepegawaianPNS] = useState<DataKepegawaianType[]>(
+    [],
+  )
+  const [pageInfo, setPageInfo] = useState<PageInfoType>()
 
-  const lastPage = Math.ceil(ListDataPNS?.length / pageSize)
-  const isLoading = false
+  const {
+    data: kepegawaianPNSData,
+    isLoading: kepegawaianPNSIsLoading,
+    isFetching: kepegawaianPNSIsFetching,
+  } = useGetKepegawaianPNSQuery({
+    page_number: pageNumber ?? 1,
+    page_size: pageSize ?? 10,
+    search: search ?? '',
+    id_golongan: id_golongan ?? '',
+    id_organisasi: id_organisasi ?? '',
+    jabatan: jabatan ?? '',
+  })
+
+  const isLoadingKepegawaianPNS =
+    kepegawaianPNSIsFetching || kepegawaianPNSIsLoading
+
+  useEffect(() => {
+    if (kepegawaianPNSData) {
+      setKepegawaianPNS(kepegawaianPNSData?.data)
+      setPageInfo(kepegawaianPNSData?.page_info)
+    }
+  }, [
+    kepegawaianPNSData,
+    pageNumber,
+    pageSize,
+    search,
+    id_golongan,
+    id_organisasi,
+    jabatan,
+  ])
+
   return (
     <div className="flex h-full flex-col gap-32">
       <Table
-        data={ListDataPNS}
+        data={kepegawaianPNS}
         columns={columnsListDataPNS}
         containerClasses="w-full h-full"
-        loading={isLoading}
-        // maxHeight="h-full"
+        loading={isLoadingKepegawaianPNS}
+        isNumber
+        pageSize={pageSize}
+        currentPage={pageNumber}
       />
       <div className="flex items-center justify-end">
-        {ListDataPNS?.length > 0 && (
-          <Pagination pageNow={pageNumber ?? 0} lastPage={lastPage ?? 0} />
+        {kepegawaianPNS?.length > 0 && (
+          <Pagination
+            pageNow={pageNumber ?? 0}
+            lastPage={pageInfo?.last_page ?? 0}
+          />
         )}
       </div>
     </div>

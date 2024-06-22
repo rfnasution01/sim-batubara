@@ -5,7 +5,8 @@ import { Search } from 'lucide-react'
 
 export function Searching({ className }: { className?: string }) {
   const dispatch = useDispatch()
-  const { pageSize } = useSelector(getFilterSlice)
+  const { pageSize, id_golongan, id_organisasi, jabatan } =
+    useSelector(getFilterSlice)
 
   const handleSearch = debounce((searchValue: string) => {
     dispatch(
@@ -13,6 +14,9 @@ export function Searching({ className }: { className?: string }) {
         pageNumber: 1,
         pageSize: pageSize,
         search: searchValue,
+        id_golongan: id_golongan,
+        id_organisasi: id_organisasi,
+        jabatan: jabatan,
       }),
     )
   }, 300)
