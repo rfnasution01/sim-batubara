@@ -12,7 +12,7 @@ export function Breadcrumb({ length }: { length: number }) {
   return (
     <div
       className={clsx('', {
-        'rounded-2x w-full bg-white p-32': length > 3,
+        'w-full rounded-2x bg-white p-32': length > 3,
       })}
     >
       {length <= 3 ? (

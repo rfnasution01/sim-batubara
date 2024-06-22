@@ -1,4 +1,4 @@
-import { ProfilPegawai } from '@/features/DetailPegawai'
+import { DataDetailPegawai, ProfilPegawai } from '@/features/DetailPegawai'
 
 export default function DetailPegawaiLayoutMain() {
   const data = {
@@ -17,7 +17,7 @@ export default function DetailPegawaiLayoutMain() {
       {/* --- Profil --- */}
       <ProfilPegawai data={data} />
       {/* --- Data --- */}
-      <div className="bg-blue-300">tes</div>
+      <DataDetailPegawai />
     </div>
   )
 }

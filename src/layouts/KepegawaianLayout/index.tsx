@@ -10,7 +10,7 @@ export default function KepegawaianLayoutMain() {
 
   return (
     <div
-      className={clsx('flex h-full flex-col gap-32', {
+      className={clsx('scrollbar flex h-full flex-col gap-32 overflow-y-auto', {
         'rounded-4x bg-white px-32 pb-32 pt-48': splittedPath?.length <= 3,
       })}
     >
