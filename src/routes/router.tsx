@@ -2,6 +2,7 @@ import { createBrowserRouter } from 'react-router-dom'
 import {
   ComingSoonPage,
   KepegawaianLayoutMain,
+  PNSPage,
   RootLayoutMain,
 } from './loadables'
 
@@ -26,7 +27,7 @@ export const router = createBrowserRouter([
         children: [
           {
             path: 'pns',
-            element: <ComingSoonPage />,
+            element: <PNSPage />,
           },
           {
             path: 'pns',

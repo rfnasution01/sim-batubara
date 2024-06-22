@@ -13,3 +13,4 @@ export const KepegawaianLayoutMain = loadable(
 // ------------------
 
 export const ComingSoonPage = loadable(() => import('@/pages/ComingSoon'))
+export const PNSPage = loadable(() => import('@/pages/PNS'))

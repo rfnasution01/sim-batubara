@@ -1,12 +1,12 @@
 import { configureStore } from '@reduxjs/toolkit'
 
 import { api } from './api'
-import stateTheme from './reducer/stateTheme'
+import stateFilter from './reducer/stateFilter'
 
 export const store = configureStore({
   reducer: {
     [api.reducerPath]: api.reducer,
-    stateTheme: stateTheme,
+    stateFilter: stateFilter,
   },
   devTools: true,
   middleware: (getDefaultMiddleware) =>
