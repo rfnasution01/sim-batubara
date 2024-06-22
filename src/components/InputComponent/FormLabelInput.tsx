@@ -15,6 +15,7 @@ export function FormLabelInput({
   handlerClick,
   className,
   isDisabled,
+  isNumber,
 }: {
   form: UseFormReturn | undefined | any
   label?: string | ReactNode
@@ -26,6 +27,7 @@ export function FormLabelInput({
   handlerClick?: () => void
   className?: string
   isDisabled?: boolean
+  isNumber?: boolean
 }) {
   return (
     <FormField
@@ -46,6 +48,16 @@ export function FormLabelInput({
             suffix={suffix}
             handlerClick={handlerClick}
             disabled={isDisabled}
+            onInput={(e) => {
+              if (isNumber && type === 'text') {
+                const inputValue = (e.target as HTMLInputElement).value
+                ;(e.target as HTMLInputElement).value = inputValue.replace(
+                  /[^\d]/g,
+                  '',
+                )
+                field.onChange((e.target as HTMLInputElement).value)
+              }
+            }}
           />
           <FormMessage />
         </FormItem>

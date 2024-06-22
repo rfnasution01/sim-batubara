@@ -11,6 +11,7 @@ export const DetailPegawaiLayoutMain = loadable(
   () => import('@/layouts/DetailPegawaiLayout'),
 )
 export const CustomLayoutMain = loadable(() => import('@/layouts/CustomLayout'))
+export const LoginLayoutMain = loadable(() => import('@/layouts/LoginLayout'))
 
 // ------------------
 // ----- Pages -----
