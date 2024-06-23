@@ -4,6 +4,7 @@ import {
   DataKepegawaianUtamaParams,
   DataKepegawaianUtamaType,
   RiwayatGolonganType,
+  RiwayatPendidikanType,
 } from '@/libs/type'
 import { Res, api } from '../api'
 
@@ -86,6 +87,32 @@ export const KepegawaianEndpoints = api.injectEndpoints({
       }),
       invalidatesTags: ['riwayat-golongan'],
     }),
+    getPNSRiwayatPendidikan: builder.query<
+      Res<RiwayatPendidikanType>,
+      DataKepegawaianUtamaParams
+    >({
+      query: ({ id_pegawai }) => ({
+        url: `kepegawaian/pns_detail/riwayat/pendidikan`,
+        method: 'GET',
+        params: {
+          id_pegawai: id_pegawai,
+        },
+      }),
+      providesTags: (_res, _err, { id_pegawai }) => [
+        { type: 'riwayat-pendidikan', id: id_pegawai },
+      ],
+    }),
+    createSinkronRiwayatPendidikan: builder.mutation<
+      void,
+      { data: DataKepegawaianUtamaParams }
+    >({
+      query: ({ data }) => ({
+        url: `kepegawaian/sinkron/riwayat/pendidikan`,
+        method: 'POST',
+        body: data,
+      }),
+      invalidatesTags: ['riwayat-pendidikan'],
+    }),
   }),
 })
 
@@ -95,4 +122,6 @@ export const {
   useCreateSinkronPNSUtamaMutation,
   useGetPNSRiwayatGolonganQuery,
   useCreateSinkronRiwayatGolonganMutation,
+  useGetPNSRiwayatPendidikanQuery,
+  useCreateSinkronRiwayatPendidikanMutation,
 } = KepegawaianEndpoints

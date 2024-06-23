@@ -88,3 +88,16 @@ type GolonganType = {
   golongan: string
   pangkat: string
 }
+export type RiwayatPendidikanType = {
+  lokal: PendidikanType[]
+  siasn: PendidikanType[]
+}
+
+export type PendidikanType = {
+  pendidikanNama: string
+  tglLulus: string
+  nomorIjasah: string
+  namaSekolah: string
+  gelarDepan: string
+  gelarBelakang: string
+}

@@ -14,6 +14,8 @@ export const LoginEndpoints = api.injectEndpoints({
         'pegawai-pns-utama',
         'sinkron-pns-utama',
         'riwayat-golongan',
+        'riwayat-pendidikan',
+        'riwayat-jabatan',
       ],
     }),
   }),

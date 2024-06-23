@@ -7,6 +7,7 @@ import {
 import {
   useCreateSinkronPNSUtamaMutation,
   useCreateSinkronRiwayatGolonganMutation,
+  useCreateSinkronRiwayatPendidikanMutation,
   useGetKepegawaianPNSUtamaQuery,
 } from '@/store/slices/kepegawaianAPI'
 import { useEffect, useState } from 'react'
@@ -182,6 +183,65 @@ export default function DetailPegawaiLayoutMain() {
     }
   }, [isErrorSinkronRiwayatGolongan, errorSinkronRiwayatGolongan])
 
+  // --- Sinkron Riwayat Pendidikan ---
+  const [
+    createSinkronRiwayatPendidikan,
+    {
+      isError: isErrorSinkronRiwayatPendidikan,
+      error: errorSinkronRiwayatPendidikan,
+      isLoading: isLoadingSinkronRiwayatPendidikan,
+      isSuccess: isSuccessSinkronRiwayatPendidikan,
+    },
+  ] = useCreateSinkronRiwayatPendidikanMutation()
+
+  const handleSubmitRiwayatPendidikan = async () => {
+    try {
+      await createSinkronRiwayatPendidikan({
+        data: {
+          id_pegawai: idParams,
+        },
+      })
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
+  useEffect(() => {
+    if (isSuccessSinkronRiwayatPendidikan) {
+      toast.success('Data riwayat pendidikan berhasil disinkronkan', {
+        position: 'bottom-right',
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'light',
+        transition: Bounce,
+      })
+    }
+  }, [isSuccessSinkronRiwayatPendidikan])
+
+  useEffect(() => {
+    if (isErrorSinkronRiwayatPendidikan) {
+      const errorMsg = errorSinkronRiwayatPendidikan as {
+        data?: { message?: string }
+      }
+
+      toast.error(`${errorMsg?.data?.message ?? 'Terjadi Kesalahan'}`, {
+        position: 'bottom-right',
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'light',
+        transition: Bounce,
+      })
+    }
+  }, [isErrorSinkronRiwayatPendidikan, errorSinkronRiwayatPendidikan])
+
   return (
     <div className="flex flex-col gap-32">
       {isLoadingKepegawaianUtama ? (
@@ -196,9 +256,11 @@ export default function DetailPegawaiLayoutMain() {
             idPegawai={idParams}
             handleSubmitDataUtama={handleSubmitDataUtama}
             isSinkronDataUtama={isLoadingSinkron}
+            form={form}
             handleSubmitRiwayatGolongan={handleSubmitRiwayatGolongan}
             isSinkronRiwayatGolongan={isLoadingSinkronRiwayatGolongan}
-            form={form}
+            handleSubmitRiwayatPendidikan={handleSubmitRiwayatPendidikan}
+            isSinkronRiwayatPendidikan={isLoadingSinkronRiwayatPendidikan}
           />
         </>
       )}
