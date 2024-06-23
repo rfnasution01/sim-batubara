@@ -101,3 +101,18 @@ export type PendidikanType = {
   gelarDepan: string
   gelarBelakang: string
 }
+
+export type RiwayatJabatanType = {
+  lokal: JabatanType[]
+  siasn: JabatanType[]
+}
+
+export type JabatanType = {
+  jenisJabatan: string
+  namaUnor: string
+  namaJabatan: string
+  tmtJabatan: string
+  nomorSk: string
+  tanggalSk: string
+  path: string
+}

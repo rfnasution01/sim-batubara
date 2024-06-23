@@ -17,6 +17,8 @@ export function DataRiwayatMain({
   isSinkronRiwayatGolongan,
   handleSubmitRiwayatPendidikan,
   isSinkronRiwayatPendidikan,
+  handleSubmitRiwayatJabatan,
+  isSinkronRiwayatJabatan,
 }: {
   idPegawai: string
   form: UseFormReturn
@@ -24,6 +26,8 @@ export function DataRiwayatMain({
   isSinkronRiwayatGolongan: boolean
   handleSubmitRiwayatPendidikan: () => Promise<void>
   isSinkronRiwayatPendidikan: boolean
+  handleSubmitRiwayatJabatan: () => Promise<void>
+  isSinkronRiwayatJabatan: boolean
 }) {
   const [isShow, setIsShow] = useState<boolean>(false)
   const [tab, setTab] = useState<string>('Golongan & Pangkat')
@@ -66,7 +70,12 @@ export function DataRiwayatMain({
             isSinkronriwayatPendidikan={isSinkronRiwayatPendidikan}
           />
         ) : tab === 'Jabatan' ? (
-          <TableDataJabatan />
+          <TableDataJabatan
+            handleSubmitriwayatJabatan={handleSubmitRiwayatJabatan}
+            isSinkronriwayatJabatan={isSinkronRiwayatJabatan}
+            form={form}
+            idPegawai={idPegawai}
+          />
         ) : (
           <ComingSoonPage />
         )}
