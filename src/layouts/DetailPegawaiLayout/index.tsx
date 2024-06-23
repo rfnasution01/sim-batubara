@@ -6,8 +6,11 @@ import {
 } from '@/libs/type'
 import { useGetKepegawaianPNSUtamaQuery } from '@/store/slices/kepegawaianAPI'
 import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import Cookies from 'js-cookie'
 
 export default function DetailPegawaiLayoutMain() {
+  const navigate = useNavigate()
   const idParams = localStorage.getItem('pegawaiID')
 
   const [kepegawaianUtama, setKepegawaianUtama] =
@@ -19,6 +22,7 @@ export default function DetailPegawaiLayoutMain() {
     data: kepegawaianUtamaData,
     isLoading: kepegawaianUtamaIsLoading,
     isFetching: kepegawaianUtamaIsFetching,
+    error,
   } = useGetKepegawaianPNSUtamaQuery(
     {
       id_pegawai: idParams,
@@ -34,7 +38,17 @@ export default function DetailPegawaiLayoutMain() {
       setKepegawaianUtama(kepegawaianUtamaData?.data)
       setKepegawaianUtamaHeader(kepegawaianUtamaData?.header)
     }
-  }, [kepegawaianUtamaData, idParams])
+    const errorMsg = error as {
+      data?: {
+        message?: string
+      }
+    }
+
+    if (errorMsg?.data?.message === 'Token Tidak Sesuai') {
+      Cookies.remove('token')
+      navigate('/login')
+    }
+  }, [kepegawaianUtamaData, idParams, error])
 
   return (
     <div className="flex flex-col gap-32">

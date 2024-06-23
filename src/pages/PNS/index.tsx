@@ -6,8 +6,11 @@ import { getFilterSlice } from '@/store/reducer/stateFilter'
 import { useGetKepegawaianPNSQuery } from '@/store/slices/kepegawaianAPI'
 import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
+import Cookies from 'js-cookie'
+import { useNavigate } from 'react-router-dom'
 
 export default function PNS() {
+  const navigate = useNavigate()
   const { pageNumber, pageSize, search, id_golongan, id_organisasi, jabatan } =
     useSelector(getFilterSlice)
   const [kepegawaianPNS, setKepegawaianPNS] = useState<DataKepegawaianType[]>(
@@ -19,6 +22,7 @@ export default function PNS() {
     data: kepegawaianPNSData,
     isLoading: kepegawaianPNSIsLoading,
     isFetching: kepegawaianPNSIsFetching,
+    error,
   } = useGetKepegawaianPNSQuery({
     page_number: pageNumber ?? 1,
     page_size: pageSize ?? 10,
@@ -36,6 +40,16 @@ export default function PNS() {
       setKepegawaianPNS(kepegawaianPNSData?.data)
       setPageInfo(kepegawaianPNSData?.page_info)
     }
+    const errorMsg = error as {
+      data?: {
+        message?: string
+      }
+    }
+
+    if (errorMsg?.data?.message === 'Token Tidak Sesuai') {
+      Cookies.remove('token')
+      navigate('/login')
+    }
   }, [
     kepegawaianPNSData,
     pageNumber,
@@ -44,6 +58,7 @@ export default function PNS() {
     id_golongan,
     id_organisasi,
     jabatan,
+    error,
   ])
 
   return (
