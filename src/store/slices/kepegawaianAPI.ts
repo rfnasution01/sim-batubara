@@ -3,6 +3,7 @@ import {
   DataKepegawaianType,
   DataKepegawaianUtamaParams,
   DataKepegawaianUtamaType,
+  RiwayatGolonganType,
 } from '@/libs/type'
 import { Res, api } from '../api'
 
@@ -44,10 +45,43 @@ export const KepegawaianEndpoints = api.injectEndpoints({
           id_pegawai: id_pegawai,
         },
       }),
-      providesTags: ['pegawai-pns-utama'],
+      providesTags: (_res, _err, { id_pegawai }) => [
+        { type: 'pegawai-pns-utama', id: id_pegawai },
+      ],
+    }),
+    getSinkronPNSUtama: builder.query<void, DataKepegawaianUtamaParams>({
+      query: ({ id_pegawai }) => ({
+        url: `kepegawaian/sinkron/utama`,
+        method: 'GET',
+        params: {
+          id_pegawai: id_pegawai,
+        },
+      }),
+      providesTags: (_res, _err, { id_pegawai }) => [
+        { type: 'sinkron-pns-utama', id: id_pegawai },
+      ],
+    }),
+    getPNSRiwayatGolongan: builder.query<
+      Res<RiwayatGolonganType[]>,
+      DataKepegawaianUtamaParams
+    >({
+      query: ({ id_pegawai }) => ({
+        url: `kepegawaian/pns_detail/riwayat/golongan`,
+        method: 'GET',
+        params: {
+          id_pegawai: id_pegawai,
+        },
+      }),
+      providesTags: (_res, _err, { id_pegawai }) => [
+        { type: 'riwayat-golongan', id: id_pegawai },
+      ],
     }),
   }),
 })
 
-export const { useGetKepegawaianPNSQuery, useGetKepegawaianPNSUtamaQuery } =
-  KepegawaianEndpoints
+export const {
+  useGetKepegawaianPNSQuery,
+  useGetKepegawaianPNSUtamaQuery,
+  useLazyGetSinkronPNSUtamaQuery,
+  useGetPNSRiwayatGolonganQuery,
+} = KepegawaianEndpoints

@@ -4,7 +4,13 @@ import { ComingSoonPage } from '@/routes/loadables'
 import { DataUtamaPribadi } from './DataUtamaPribadi'
 import { DataKepegawaianUtamaType } from '@/libs/type'
 
-export function DataUtamaMain({ data }: { data: DataKepegawaianUtamaType }) {
+export function DataUtamaMain({
+  data,
+  idPegawai,
+}: {
+  data: DataKepegawaianUtamaType
+  idPegawai: string
+}) {
   const [tab, setTab] = useState<string>('Data Pribadi')
 
   return (
@@ -12,7 +18,7 @@ export function DataUtamaMain({ data }: { data: DataKepegawaianUtamaType }) {
       <DataUtamaTab tab={tab} setTab={setTab} />
 
       {tab === 'Data Pribadi' ? (
-        <DataUtamaPribadi data={data} />
+        <DataUtamaPribadi data={data} idPegawai={idPegawai} />
       ) : (
         <ComingSoonPage />
       )}

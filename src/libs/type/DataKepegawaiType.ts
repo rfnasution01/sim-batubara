@@ -78,3 +78,33 @@ export type PageInfoType = {
   last_page: number
   total: number
 }
+
+export type RiwayatGolonganType = {
+  id: string
+  idPns: string
+  nipBaru: string
+  nipLama: string
+  golonganId: string
+  golongan: string
+  skNomor: string
+  skTanggal: string
+  tmtGolongan: string
+  noPertekBkn: string
+  tglPertekBkn: string
+  jumlahKreditUtama: string
+  jumlahKreditTambahan: string
+  jenisKPId: string
+  jenisKPNama: string
+  masaKerjaGolonganTahun: string
+  masaKerjaGolonganBulan: string
+  path: {
+    '858': {
+      dok_id: '858'
+      dok_nama: 'Dok SK KP'
+      dok_uri: 'peremajaan/usulan/858_b377450f-7e8b-4adf-883e-f95cfc7be6f1.pdf'
+      object: 'peremajaan/usulan/858_b377450f-7e8b-4adf-883e-f95cfc7be6f1.pdf'
+      slug: '858'
+    }
+  }
+  pangkat: string
+}

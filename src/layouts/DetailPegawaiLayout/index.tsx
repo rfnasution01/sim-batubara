@@ -8,6 +8,8 @@ import { useGetKepegawaianPNSUtamaQuery } from '@/store/slices/kepegawaianAPI'
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Cookies from 'js-cookie'
+import 'react-toastify/dist/ReactToastify.css'
+import { ToastContainer } from 'react-toastify'
 
 export default function DetailPegawaiLayoutMain() {
   const navigate = useNavigate()
@@ -59,9 +61,10 @@ export default function DetailPegawaiLayoutMain() {
           {/* --- Profil --- */}
           <ProfilPegawai data={kepegawaianUtamaHeader} />
           {/* --- Data --- */}
-          <DataDetailPegawai data={kepegawaianUtama} />
+          <DataDetailPegawai data={kepegawaianUtama} idPegawai={idParams} />
         </>
       )}
+      <ToastContainer />
     </div>
   )
 }

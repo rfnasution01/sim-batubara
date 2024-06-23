@@ -36,7 +36,12 @@ export const api = createApi({
       return headers
     },
   }),
-  tagTypes: ['pegawai-pns', 'pegawai-pns-utama'],
+  tagTypes: [
+    'pegawai-pns',
+    'pegawai-pns-utama',
+    'sinkron-pns-utama',
+    'riwayat-golongan',
+  ],
   // * it's okay to disable eslint here, because the warning is unnecessary. Each endpoint will be injected from an api slice.
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   endpoints: (_builder) => ({}),

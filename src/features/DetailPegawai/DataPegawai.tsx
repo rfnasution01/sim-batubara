@@ -8,8 +8,10 @@ import { DataKepegawaianUtamaType } from '@/libs/type'
 
 export function DataDetailPegawai({
   data,
+  idPegawai,
 }: {
   data: DataKepegawaianUtamaType
+  idPegawai: string
 }) {
   const stateTab = useSelector(getDetailPegawaiSlice)?.tab
 
@@ -32,7 +34,11 @@ export function DataDetailPegawai({
         tab={tab}
         isIdPegawaiValid={isIDPegawaiValid}
       />
-      {tab === 'utama' ? <DataUtamaMain data={data} /> : <DataRiwayatMain />}
+      {tab === 'utama' ? (
+        <DataUtamaMain data={data} idPegawai={idPegawai} />
+      ) : (
+        <DataRiwayatMain />
+      )}
     </div>
   )
 }

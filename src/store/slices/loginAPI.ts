@@ -9,7 +9,12 @@ export const LoginEndpoints = api.injectEndpoints({
         method: 'POST',
         body: data,
       }),
-      invalidatesTags: ['pegawai-pns'],
+      invalidatesTags: [
+        'pegawai-pns',
+        'pegawai-pns-utama',
+        'sinkron-pns-utama',
+        'riwayat-golongan',
+      ],
     }),
   }),
 })
