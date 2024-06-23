@@ -6,9 +6,12 @@ import {
 } from '@/libs/type'
 import {
   useCreateSinkronPNSUtamaMutation,
+  useCreateSinkronRiwayatDiklatLainnyaMutation,
+  useCreateSinkronRiwayatDiklatMutation,
   useCreateSinkronRiwayatGolonganMutation,
   useCreateSinkronRiwayatJabatanMutation,
   useCreateSinkronRiwayatPendidikanMutation,
+  useCreateSinkronRiwayatPenghargaanMutation,
   useGetKepegawaianPNSUtamaQuery,
 } from '@/store/slices/kepegawaianAPI'
 import { useEffect, useState } from 'react'
@@ -62,7 +65,7 @@ export default function DetailPegawaiLayoutMain() {
       }
     }
 
-    if (errorMsg?.data?.message === 'Token Tidak Sesuai') {
+    if (errorMsg?.data?.message === 'Token Expired') {
       Cookies.remove('token')
       navigate('/login')
     }
@@ -302,6 +305,183 @@ export default function DetailPegawaiLayoutMain() {
     }
   }, [isErrorSinkronRiwayatJabatan, errorSinkronRiwayatJabatan])
 
+  // --- Sinkron Riwayat Diklat ---
+  const [
+    createSinkronRiwayatDiklat,
+    {
+      isError: isErrorSinkronRiwayatDiklat,
+      error: errorSinkronRiwayatDiklat,
+      isLoading: isLoadingSinkronRiwayatDiklat,
+      isSuccess: isSuccessSinkronRiwayatDiklat,
+    },
+  ] = useCreateSinkronRiwayatDiklatMutation()
+
+  const handleSubmitRiwayatDiklat = async () => {
+    try {
+      await createSinkronRiwayatDiklat({
+        data: {
+          id_pegawai: idParams,
+        },
+      })
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
+  useEffect(() => {
+    if (isSuccessSinkronRiwayatDiklat) {
+      toast.success('Data riwayat diklat berhasil disinkronkan', {
+        position: 'bottom-right',
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'light',
+        transition: Bounce,
+      })
+    }
+  }, [isSuccessSinkronRiwayatDiklat])
+
+  useEffect(() => {
+    if (isErrorSinkronRiwayatDiklat) {
+      const errorMsg = errorSinkronRiwayatDiklat as {
+        data?: { message?: string }
+      }
+
+      toast.error(`${errorMsg?.data?.message ?? 'Terjadi Kesalahan'}`, {
+        position: 'bottom-right',
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'light',
+        transition: Bounce,
+      })
+    }
+  }, [isErrorSinkronRiwayatDiklat, errorSinkronRiwayatDiklat])
+
+  // --- Sinkron Riwayat Diklat Lainnya ---
+  const [
+    createSinkronRiwayatDiklatLainnya,
+    {
+      isError: isErrorSinkronRiwayatDiklatLainnya,
+      error: errorSinkronRiwayatDiklatLainnya,
+      isLoading: isLoadingSinkronRiwayatDiklatLainnya,
+      isSuccess: isSuccessSinkronRiwayatDiklatLainnya,
+    },
+  ] = useCreateSinkronRiwayatDiklatLainnyaMutation()
+
+  const handleSubmitRiwayatDiklatLainnya = async () => {
+    try {
+      await createSinkronRiwayatDiklatLainnya({
+        data: {
+          id_pegawai: idParams,
+        },
+      })
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
+  useEffect(() => {
+    if (isSuccessSinkronRiwayatDiklatLainnya) {
+      toast.success('Data riwayat diklat lainnya berhasil disinkronkan', {
+        position: 'bottom-right',
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'light',
+        transition: Bounce,
+      })
+    }
+  }, [isSuccessSinkronRiwayatDiklatLainnya])
+
+  useEffect(() => {
+    if (isErrorSinkronRiwayatDiklatLainnya) {
+      const errorMsg = errorSinkronRiwayatDiklatLainnya as {
+        data?: { message?: string }
+      }
+
+      toast.error(`${errorMsg?.data?.message ?? 'Terjadi Kesalahan'}`, {
+        position: 'bottom-right',
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'light',
+        transition: Bounce,
+      })
+    }
+  }, [isErrorSinkronRiwayatDiklatLainnya, errorSinkronRiwayatDiklatLainnya])
+
+  // --- Sinkron Penghargaan ---
+  const [
+    createSinkronPenghargaan,
+    {
+      isError: isErrorSinkronPenghargaan,
+      error: errorSinkronPenghargaan,
+      isLoading: isLoadingSinkronPenghargaan,
+      isSuccess: isSuccessSinkronPenghargaan,
+    },
+  ] = useCreateSinkronRiwayatPenghargaanMutation()
+
+  const handleSubmitPenghargaan = async () => {
+    try {
+      await createSinkronPenghargaan({
+        data: {
+          id_pegawai: idParams,
+        },
+      })
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
+  useEffect(() => {
+    if (isSuccessSinkronPenghargaan) {
+      toast.success('Data penghargaan berhasil disinkronkan', {
+        position: 'bottom-right',
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'light',
+        transition: Bounce,
+      })
+    }
+  }, [isSuccessSinkronPenghargaan])
+
+  useEffect(() => {
+    if (isErrorSinkronPenghargaan) {
+      const errorMsg = errorSinkronPenghargaan as {
+        data?: { message?: string }
+      }
+
+      toast.error(`${errorMsg?.data?.message ?? 'Terjadi Kesalahan'}`, {
+        position: 'bottom-right',
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'light',
+        transition: Bounce,
+      })
+    }
+  }, [isErrorSinkronPenghargaan, errorSinkronPenghargaan])
+
   return (
     <div className="flex flex-col gap-32">
       {isLoadingKepegawaianUtama ? (
@@ -323,6 +503,12 @@ export default function DetailPegawaiLayoutMain() {
             isSinkronRiwayatPendidikan={isLoadingSinkronRiwayatPendidikan}
             handleSubmitRiwayatJabatan={handleSubmitRiwayatJabatan}
             isSinkronRiwayatJabatan={isLoadingSinkronRiwayatJabatan}
+            handleSubmitRiwayatDiklat={handleSubmitRiwayatDiklat}
+            isSinkronRiwayatDiklat={isLoadingSinkronRiwayatDiklat}
+            handleSubmitRiwayatDiklatLainnya={handleSubmitRiwayatDiklatLainnya}
+            isSinkronRiwayatDiklatLainnya={isLoadingSinkronRiwayatDiklatLainnya}
+            handleSubmitRiwayatPenghargaan={handleSubmitPenghargaan}
+            isSinkronRiwayatPenghargaan={isLoadingSinkronPenghargaan}
           />
         </>
       )}

@@ -1,5 +1,4 @@
-import { RiwayatPendidikanType } from '@/libs/type'
-import { useGetPNSRiwayatPendidikanQuery } from '@/store/slices/kepegawaianAPI'
+import { RiwayatPenghargaanType } from '@/libs/type'
 import { RefreshCcw } from 'lucide-react'
 import React, { useEffect, useState } from 'react'
 import { UseFormReturn } from 'react-hook-form'
@@ -7,40 +6,41 @@ import { useNavigate } from 'react-router-dom'
 import Cookies from 'js-cookie'
 import { Loading } from '../Loading'
 import { Form } from '../Form'
+import { useGetPNSRiwayatPengharaagnQuery } from '@/store/slices/kepegawaianAPI'
 
-export function TableDataPendidikan({
+export function TableDataPenghargaan({
   idPegawai,
   form,
-  handleSubmitriwayatPendidikan,
-  isSinkronriwayatPendidikan,
+  handleSubmitriwayatPenghargaan,
+  isSinkronriwayatPenghargaan,
 }: {
   idPegawai: string
   form: UseFormReturn
-  handleSubmitriwayatPendidikan: () => Promise<void>
-  isSinkronriwayatPendidikan: boolean
+  handleSubmitriwayatPenghargaan: () => Promise<void>
+  isSinkronriwayatPenghargaan: boolean
 }) {
   const navigate = useNavigate()
-  const [riwayatPendidikan, setRiwayatPendidikan] =
-    useState<RiwayatPendidikanType>()
+  const [riwayatPenghargaan, setRiwayatPenghargaan] =
+    useState<RiwayatPenghargaanType>()
 
   const {
-    data: riwayatPendidikanData,
-    isLoading: riwayatPendidikanIsLoading,
-    isFetching: riwayatPendidikanIsFetching,
+    data: riwayatPenghargaanData,
+    isLoading: riwayatPenghargaanIsLoading,
+    isFetching: riwayatPenghargaanIsFetching,
     error,
-  } = useGetPNSRiwayatPendidikanQuery(
+  } = useGetPNSRiwayatPengharaagnQuery(
     {
       id_pegawai: idPegawai,
     },
     { skip: !idPegawai },
   )
 
-  const isLoadingRiwayatPendidikan =
-    riwayatPendidikanIsLoading || riwayatPendidikanIsFetching
+  const isLoadingRiwayatPenghargaan =
+    riwayatPenghargaanIsLoading || riwayatPenghargaanIsFetching
 
   useEffect(() => {
-    if (riwayatPendidikanData) {
-      setRiwayatPendidikan(riwayatPendidikanData?.data)
+    if (riwayatPenghargaanData) {
+      setRiwayatPenghargaan(riwayatPenghargaanData?.data)
     }
     const errorMsg = error as {
       data?: {
@@ -52,14 +52,14 @@ export function TableDataPendidikan({
       Cookies.remove('token')
       navigate('/login')
     }
-  }, [riwayatPendidikanData, idPegawai, error])
+  }, [riwayatPenghargaanData, idPegawai, error])
 
   return (
     <div
       className={`scrollbar flex flex-col overflow-auto rounded-3x`}
       style={{ scrollbarGutter: 'stable' }}
     >
-      {isLoadingRiwayatPendidikan || isSinkronriwayatPendidikan ? (
+      {isLoadingRiwayatPenghargaan || isSinkronriwayatPenghargaan ? (
         <Loading width={'6rem'} height={'6rem'} />
       ) : (
         <table className="flex-1 border-collapse rounded-3x bg-[#fcfcfc] text-24">
@@ -70,7 +70,7 @@ export function TableDataPendidikan({
               >
                 <Form {...form}>
                   <form
-                    onSubmit={form.handleSubmit(handleSubmitriwayatPendidikan)}
+                    onSubmit={form.handleSubmit(handleSubmitriwayatPenghargaan)}
                   >
                     <button
                       type="submit"
@@ -94,76 +94,66 @@ export function TableDataPendidikan({
             </tr>
           </thead>
           <tbody>
-            {riwayatPendidikan && riwayatPendidikan?.siasn?.length > 0 ? (
-              riwayatPendidikan?.siasn?.map((item, idx) => (
+            {riwayatPenghargaan && riwayatPenghargaan?.siasn?.length > 0 ? (
+              riwayatPenghargaan?.siasn?.map((item, idx) => (
                 <React.Fragment key={idx}>
                   <tr className="transition-all ease-in hover:cursor-pointer">
                     <th className="border bg-sim-pale-primary px-24 py-12 text-left align-middle leading-medium text-sim-dark">
-                      Jenjang Pendidikan
+                      Jenis Penghargaan
                     </th>
                     <td className="border px-24 py-12 align-middle leading-medium">
-                      {item?.pendidikanNama ?? '-'}
+                      {item?.hargaNama ?? '-'}
                     </td>
                     <td className="border px-24 py-12 align-middle leading-medium">
-                      {riwayatPendidikan?.lokal?.[idx]?.pendidikanNama ?? '-'}
+                      {riwayatPenghargaan?.lokal?.[idx]?.hargaNama ?? '-'}
                     </td>
                   </tr>
                   <tr className="transition-all ease-in hover:cursor-pointer">
                     <th className="border bg-sim-pale-primary px-24 py-12 text-left align-middle leading-medium text-sim-dark">
-                      Tanggal Ijazah
+                      Tahun Perolehan
                     </th>
                     <td className="border px-24 py-12 align-middle leading-medium">
-                      {item?.tglLulus ?? '-'}
+                      {item?.tahun ?? '-'}
                     </td>
                     <td className="border px-24 py-12 align-middle leading-medium">
-                      {riwayatPendidikan?.lokal?.[idx]?.tglLulus ?? '-'}
+                      {riwayatPenghargaan?.lokal?.[idx]?.tahun ?? '-'}
                     </td>
                   </tr>
                   <tr className="transition-all ease-in hover:cursor-pointer">
                     <th className="border bg-sim-pale-primary px-24 py-12 text-left align-middle leading-medium text-sim-dark">
-                      Nomor Ijazah
+                      Nomor SK
                     </th>
                     <td className="border px-24 py-12 align-middle leading-medium">
-                      {item?.nomorIjasah ?? '-'}
+                      {item?.skNomor ?? '-'}
                     </td>
                     <td className="border px-24 py-12 align-middle leading-medium">
-                      {riwayatPendidikan?.lokal?.[idx]?.nomorIjasah ?? '-'}
+                      {riwayatPenghargaan?.lokal?.[idx]?.skNomor ?? '-'}
                     </td>
                   </tr>
                   <tr className="transition-all ease-in hover:cursor-pointer">
                     <th className="border bg-sim-pale-primary px-24 py-12 text-left align-middle leading-medium text-sim-dark">
-                      Nama Instansi
+                      Tanggal SK
                     </th>
                     <td className="border px-24 py-12 align-middle leading-medium">
-                      {item?.namaSekolah ?? '-'}
+                      {item?.skDate ?? '-'}
                     </td>
                     <td className="border px-24 py-12 align-middle leading-medium">
-                      {riwayatPendidikan?.lokal?.[idx]?.namaSekolah ?? '-'}
+                      {riwayatPenghargaan?.lokal?.[idx]?.skDate ?? '-'}
                     </td>
                   </tr>
                   <tr className="transition-all ease-in hover:cursor-pointer">
                     <th className="border bg-sim-pale-primary px-24 py-12 text-left align-middle leading-medium text-sim-dark">
-                      Gelar Depan
+                      File
                     </th>
                     <td className="border px-24 py-12 align-middle leading-medium">
-                      {item?.gelarDepan ?? '-'}
+                      -
                     </td>
                     <td className="border px-24 py-12 align-middle leading-medium">
-                      {riwayatPendidikan?.lokal?.[idx]?.gelarDepan ?? '-'}
+                      -
                     </td>
                   </tr>
-                  <tr className="transition-all ease-in hover:cursor-pointer">
-                    <th className="border bg-sim-pale-primary px-24 py-12 text-left align-middle leading-medium text-sim-dark">
-                      Gelar Belakang
-                    </th>
-                    <td className="border px-24 py-12 align-middle leading-medium">
-                      {item?.gelarBelakang ?? '-'}
-                    </td>
-                    <td className="border px-24 py-12 align-middle leading-medium">
-                      {riwayatPendidikan?.lokal?.[idx]?.gelarBelakang ?? '-'}
-                    </td>
-                  </tr>
-                  {idx < riwayatPendidikan.siasn.length - 1 && (
+
+                  {idx < riwayatPenghargaan.siasn.length - 1 && (
                     <tr className="border transition-all ease-in hover:cursor-pointer">
                       <td
                         className="border px-24 py-12 align-middle leading-medium text-white"

@@ -47,7 +47,7 @@ export function TableDataGolongan({
       }
     }
 
-    if (errorMsg?.data?.message === 'Token Tidak Sesuai') {
+    if (errorMsg?.data?.message === 'Token Expired') {
       Cookies.remove('token')
       navigate('/login')
     }
@@ -93,39 +93,50 @@ export function TableDataGolongan({
             </tr>
           </thead>
           <tbody>
-            {riwayatGolongan?.siasn?.map((item, idx) => (
-              <tr
-                className="transition-all ease-in hover:cursor-pointer"
-                key={idx}
-              >
-                {/* Kolom pertama (Golongan) hanya pada baris pertama */}
-                {idx === 0 && (
-                  <th
-                    className="border bg-sim-pale-primary px-24 py-12 text-left align-middle leading-medium text-sim-dark"
-                    rowSpan={riwayatGolongan?.siasn?.length}
-                  >
-                    Golongan
-                  </th>
-                )}
-                {/* Kolom kedua (siasn) */}
-                <td className="border px-24 py-12 align-middle leading-medium">
-                  {item?.golongan}
-                </td>
-                {/* Kolom ketiga (lokal) */}
-                {idx < riwayatGolongan?.lokal?.length ? (
+            {riwayatGolongan && riwayatGolongan?.siasn?.length > 0 ? (
+              riwayatGolongan?.siasn?.map((item, idx) => (
+                <tr
+                  className="transition-all ease-in hover:cursor-pointer"
+                  key={idx}
+                >
+                  {/* Kolom pertama (Golongan) hanya pada baris pertama */}
+                  {idx === 0 && (
+                    <th
+                      className="border bg-sim-pale-primary px-24 py-12 text-left align-middle leading-medium text-sim-dark"
+                      rowSpan={riwayatGolongan?.siasn?.length}
+                    >
+                      Golongan
+                    </th>
+                  )}
+                  {/* Kolom kedua (siasn) */}
                   <td className="border px-24 py-12 align-middle leading-medium">
-                    {riwayatGolongan?.lokal?.[idx]?.golongan}
+                    {item?.golongan}
                   </td>
-                ) : idx === 0 ? (
-                  <td
-                    className="border px-24 py-12 text-center align-middle leading-medium"
-                    rowSpan={riwayatGolongan?.siasn?.length}
-                  >
-                    Belum ada data, lakukan sinkronisasi
-                  </td>
-                ) : null}
+                  {/* Kolom ketiga (lokal) */}
+                  {idx < riwayatGolongan?.lokal?.length ? (
+                    <td className="border px-24 py-12 align-middle leading-medium">
+                      {riwayatGolongan?.lokal?.[idx]?.golongan}
+                    </td>
+                  ) : idx === 0 ? (
+                    <td
+                      className="border px-24 py-12 text-center align-middle leading-medium"
+                      rowSpan={riwayatGolongan?.siasn?.length}
+                    >
+                      Belum ada data, lakukan sinkronisasi
+                    </td>
+                  ) : null}
+                </tr>
+              ))
+            ) : (
+              <tr className="border transition-all ease-in hover:cursor-pointer">
+                <td
+                  className="border px-24 py-12 text-center align-middle leading-medium"
+                  colSpan={3}
+                >
+                  Tidak ada data
+                </td>
               </tr>
-            ))}
+            )}
           </tbody>
         </table>
       )}

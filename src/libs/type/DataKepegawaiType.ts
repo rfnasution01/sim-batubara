@@ -116,3 +116,43 @@ export type JabatanType = {
   tanggalSk: string
   path: string
 }
+
+export type RiwayatDiklatType = {
+  lokal: DiklatType[]
+  siasn: DiklatType[]
+}
+
+export type DiklatType = {
+  latihanStrukturalNama: string
+  tanggal: string
+  tanggalSelesai: string
+  institusiPenyelenggara: string
+  path: string
+}
+
+export type RiwayatDiklatLainnyaType = {
+  lokal: DiklatLainnyaType[]
+  siasn: DiklatLainnyaType[]
+}
+
+export type DiklatLainnyaType = {
+  jenisKursusSertifikat: string
+  namaKursus: string
+  tanggalKursus: string
+  tanggalSelesaiKursus: string
+  institusiPenyelenggara: string
+  path: string
+}
+
+export type RiwayatPenghargaanType = {
+  lokal: PenghargaanType[]
+  siasn: PenghargaanType[]
+}
+
+export type PenghargaanType = {
+  hargaNama: string
+  tahun: string
+  skNomor: string
+  skDate: string
+  path: string
+}

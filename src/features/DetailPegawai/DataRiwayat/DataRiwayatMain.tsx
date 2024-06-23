@@ -4,9 +4,12 @@ import { useState } from 'react'
 import { DataRiwayatTab } from './DataRiwayatTab'
 import { ComingSoonPage } from '@/routes/loadables'
 import {
+  TableDataDiklat,
+  TableDataDiklatLainnya,
   TableDataGolongan,
   TableDataJabatan,
   TableDataPendidikan,
+  TableDataPenghargaan,
 } from '@/components/TableComponent'
 import { UseFormReturn } from 'react-hook-form'
 
@@ -19,6 +22,12 @@ export function DataRiwayatMain({
   isSinkronRiwayatPendidikan,
   handleSubmitRiwayatJabatan,
   isSinkronRiwayatJabatan,
+  handleSubmitRiwayatDiklat,
+  handleSubmitRiwayatDiklatLainnya,
+  handleSubmitRiwayatPenghargaan,
+  isSinkronRiwayatDiklat,
+  isSinkronRiwayatDiklatLainnya,
+  isSinkronRiwayatPenghargaan,
 }: {
   idPegawai: string
   form: UseFormReturn
@@ -28,6 +37,12 @@ export function DataRiwayatMain({
   isSinkronRiwayatPendidikan: boolean
   handleSubmitRiwayatJabatan: () => Promise<void>
   isSinkronRiwayatJabatan: boolean
+  handleSubmitRiwayatDiklat: () => Promise<void>
+  isSinkronRiwayatDiklat: boolean
+  handleSubmitRiwayatDiklatLainnya: () => Promise<void>
+  isSinkronRiwayatDiklatLainnya: boolean
+  handleSubmitRiwayatPenghargaan: () => Promise<void>
+  isSinkronRiwayatPenghargaan: boolean
 }) {
   const [isShow, setIsShow] = useState<boolean>(false)
   const [tab, setTab] = useState<string>('Golongan & Pangkat')
@@ -73,6 +88,27 @@ export function DataRiwayatMain({
           <TableDataJabatan
             handleSubmitriwayatJabatan={handleSubmitRiwayatJabatan}
             isSinkronriwayatJabatan={isSinkronRiwayatJabatan}
+            form={form}
+            idPegawai={idPegawai}
+          />
+        ) : tab === 'Diklat Struktural' ? (
+          <TableDataDiklat
+            handleSubmitriwayatDiklat={handleSubmitRiwayatDiklat}
+            isSinkronriwayatDiklat={isSinkronRiwayatDiklat}
+            form={form}
+            idPegawai={idPegawai}
+          />
+        ) : tab === 'Diklat Lainnya' ? (
+          <TableDataDiklatLainnya
+            handleSubmitriwayatDiklatLainnya={handleSubmitRiwayatDiklatLainnya}
+            isSinkronriwayatDiklatLainnya={isSinkronRiwayatDiklatLainnya}
+            form={form}
+            idPegawai={idPegawai}
+          />
+        ) : tab === 'Penghargaan' ? (
+          <TableDataPenghargaan
+            isSinkronriwayatPenghargaan={isSinkronRiwayatPenghargaan}
+            handleSubmitriwayatPenghargaan={handleSubmitRiwayatPenghargaan}
             form={form}
             idPegawai={idPegawai}
           />

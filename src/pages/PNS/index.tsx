@@ -46,7 +46,7 @@ export default function PNS() {
       }
     }
 
-    if (errorMsg?.data?.message === 'Token Tidak Sesuai') {
+    if (errorMsg?.data?.message === 'Token Expired') {
       Cookies.remove('token')
       navigate('/login')
     }

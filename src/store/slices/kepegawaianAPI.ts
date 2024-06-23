@@ -3,9 +3,12 @@ import {
   DataKepegawaianType,
   DataKepegawaianUtamaParams,
   DataKepegawaianUtamaType,
+  RiwayatDiklatLainnyaType,
+  RiwayatDiklatType,
   RiwayatGolonganType,
   RiwayatJabatanType,
   RiwayatPendidikanType,
+  RiwayatPenghargaanType,
 } from '@/libs/type'
 import { Res, api } from '../api'
 
@@ -140,6 +143,84 @@ export const KepegawaianEndpoints = api.injectEndpoints({
       }),
       invalidatesTags: ['riwayat-jabatan'],
     }),
+    getPNSRiwayatDiklat: builder.query<
+      Res<RiwayatDiklatType>,
+      DataKepegawaianUtamaParams
+    >({
+      query: ({ id_pegawai }) => ({
+        url: `kepegawaian/pns_detail/riwayat/diklat`,
+        method: 'GET',
+        params: {
+          id_pegawai: id_pegawai,
+        },
+      }),
+      providesTags: (_res, _err, { id_pegawai }) => [
+        { type: 'riwayat-diklat', id: id_pegawai },
+      ],
+    }),
+    createSinkronRiwayatDiklat: builder.mutation<
+      void,
+      { data: DataKepegawaianUtamaParams }
+    >({
+      query: ({ data }) => ({
+        url: `kepegawaian/sinkron/riwayat/diklat`,
+        method: 'POST',
+        body: data,
+      }),
+      invalidatesTags: ['riwayat-diklat'],
+    }),
+    getPNSRiwayatDiklatLainnya: builder.query<
+      Res<RiwayatDiklatLainnyaType>,
+      DataKepegawaianUtamaParams
+    >({
+      query: ({ id_pegawai }) => ({
+        url: `kepegawaian/pns_detail/riwayat/kursus`,
+        method: 'GET',
+        params: {
+          id_pegawai: id_pegawai,
+        },
+      }),
+      providesTags: (_res, _err, { id_pegawai }) => [
+        { type: 'riwayat-diklat-lainnya', id: id_pegawai },
+      ],
+    }),
+    createSinkronRiwayatDiklatLainnya: builder.mutation<
+      void,
+      { data: DataKepegawaianUtamaParams }
+    >({
+      query: ({ data }) => ({
+        url: `kepegawaian/sinkron/riwayat/kursus`,
+        method: 'POST',
+        body: data,
+      }),
+      invalidatesTags: ['riwayat-diklat'],
+    }),
+    getPNSRiwayatPengharaagn: builder.query<
+      Res<RiwayatPenghargaanType>,
+      DataKepegawaianUtamaParams
+    >({
+      query: ({ id_pegawai }) => ({
+        url: `kepegawaian/pns_detail/riwayat/penghargaan`,
+        method: 'GET',
+        params: {
+          id_pegawai: id_pegawai,
+        },
+      }),
+      providesTags: (_res, _err, { id_pegawai }) => [
+        { type: 'riwayat-penghargan', id: id_pegawai },
+      ],
+    }),
+    createSinkronRiwayatPenghargaan: builder.mutation<
+      void,
+      { data: DataKepegawaianUtamaParams }
+    >({
+      query: ({ data }) => ({
+        url: `kepegawaian/sinkron/riwayat/penghargaan`,
+        method: 'POST',
+        body: data,
+      }),
+      invalidatesTags: ['riwayat-penghargan'],
+    }),
   }),
 })
 
@@ -153,4 +234,10 @@ export const {
   useCreateSinkronRiwayatPendidikanMutation,
   useGetPNSRiwayatJabatanQuery,
   useCreateSinkronRiwayatJabatanMutation,
+  useGetPNSRiwayatDiklatQuery,
+  useGetPNSRiwayatDiklatLainnyaQuery,
+  useGetPNSRiwayatPengharaagnQuery,
+  useCreateSinkronRiwayatDiklatLainnyaMutation,
+  useCreateSinkronRiwayatDiklatMutation,
+  useCreateSinkronRiwayatPenghargaanMutation,
 } = KepegawaianEndpoints

@@ -47,7 +47,7 @@ export function TableDataJabatan({
       }
     }
 
-    if (errorMsg?.data?.message === 'Token Tidak Sesuai') {
+    if (errorMsg?.data?.message === 'Token Expired') {
       Cookies.remove('token')
       navigate('/login')
     }
@@ -93,97 +93,108 @@ export function TableDataJabatan({
             </tr>
           </thead>
           <tbody>
-            {riwayatJabatan?.siasn?.map((item, idx) => (
-              <React.Fragment key={idx}>
-                <tr className="transition-all ease-in hover:cursor-pointer">
-                  <th className="border bg-sim-pale-primary px-24 py-12 text-left align-middle leading-medium text-sim-dark">
-                    Jenis Jabatan
-                  </th>
-                  <td className="border px-24 py-12 align-middle leading-medium">
-                    {item?.jenisJabatan ?? '-'}
-                  </td>
-                  <td className="border px-24 py-12 align-middle leading-medium">
-                    {riwayatJabatan?.lokal?.[idx]?.jenisJabatan ?? '-'}
-                  </td>
-                </tr>
-                <tr className="transition-all ease-in hover:cursor-pointer">
-                  <th className="border bg-sim-pale-primary px-24 py-12 text-left align-middle leading-medium text-sim-dark">
-                    Satuan Kerja
-                  </th>
-                  <td className="border px-24 py-12 align-middle leading-medium">
-                    {item?.namaUnor ?? '-'}
-                  </td>
-                  <td className="border px-24 py-12 align-middle leading-medium">
-                    {riwayatJabatan?.lokal?.[idx]?.namaUnor ?? '-'}
-                  </td>
-                </tr>
-                <tr className="transition-all ease-in hover:cursor-pointer">
-                  <th className="border bg-sim-pale-primary px-24 py-12 text-left align-middle leading-medium text-sim-dark">
-                    Nama Jabatan
-                  </th>
-                  <td className="border px-24 py-12 align-middle leading-medium">
-                    {item?.namaJabatan ?? '-'}
-                  </td>
-                  <td className="border px-24 py-12 align-middle leading-medium">
-                    {riwayatJabatan?.lokal?.[idx]?.namaJabatan ?? '-'}
-                  </td>
-                </tr>
-                <tr className="transition-all ease-in hover:cursor-pointer">
-                  <th className="border bg-sim-pale-primary px-24 py-12 text-left align-middle leading-medium text-sim-dark">
-                    TMT Jabatan
-                  </th>
-                  <td className="border px-24 py-12 align-middle leading-medium">
-                    {item?.tmtJabatan ?? '-'}
-                  </td>
-                  <td className="border px-24 py-12 align-middle leading-medium">
-                    {riwayatJabatan?.lokal?.[idx]?.tmtJabatan ?? '-'}
-                  </td>
-                </tr>
-                <tr className="transition-all ease-in hover:cursor-pointer">
-                  <th className="border bg-sim-pale-primary px-24 py-12 text-left align-middle leading-medium text-sim-dark">
-                    Nomor SK
-                  </th>
-                  <td className="border px-24 py-12 align-middle leading-medium">
-                    {item?.nomorSk ?? '-'}
-                  </td>
-                  <td className="border px-24 py-12 align-middle leading-medium">
-                    {riwayatJabatan?.lokal?.[idx]?.nomorSk ?? '-'}
-                  </td>
-                </tr>
-                <tr className="transition-all ease-in hover:cursor-pointer">
-                  <th className="border bg-sim-pale-primary px-24 py-12 text-left align-middle leading-medium text-sim-dark">
-                    Tanggal SK
-                  </th>
-                  <td className="border px-24 py-12 align-middle leading-medium">
-                    {item?.tanggalSk ?? '-'}
-                  </td>
-                  <td className="border px-24 py-12 align-middle leading-medium">
-                    {riwayatJabatan?.lokal?.[idx]?.tanggalSk ?? '-'}
-                  </td>
-                </tr>
-                <tr className="transition-all ease-in hover:cursor-pointer">
-                  <th className="border bg-sim-pale-primary px-24 py-12 text-left align-middle leading-medium text-sim-dark">
-                    File
-                  </th>
-                  <td className="border px-24 py-12 align-middle leading-medium">
-                    -
-                  </td>
-                  <td className="border px-24 py-12 align-middle leading-medium">
-                    -
-                  </td>
-                </tr>
-                {idx < riwayatJabatan.siasn.length - 1 && (
-                  <tr className="border transition-all ease-in hover:cursor-pointer">
-                    <td
-                      className="border px-24 py-12 align-middle leading-medium text-white"
-                      colSpan={3}
-                    >
-                      #
+            {riwayatJabatan && riwayatJabatan?.siasn?.length > 0 ? (
+              riwayatJabatan?.siasn?.map((item, idx) => (
+                <React.Fragment key={idx}>
+                  <tr className="transition-all ease-in hover:cursor-pointer">
+                    <th className="border bg-sim-pale-primary px-24 py-12 text-left align-middle leading-medium text-sim-dark">
+                      Jenis Jabatan
+                    </th>
+                    <td className="border px-24 py-12 align-middle leading-medium">
+                      {item?.jenisJabatan ?? '-'}
+                    </td>
+                    <td className="border px-24 py-12 align-middle leading-medium">
+                      {riwayatJabatan?.lokal?.[idx]?.jenisJabatan ?? '-'}
                     </td>
                   </tr>
-                )}
-              </React.Fragment>
-            ))}
+                  <tr className="transition-all ease-in hover:cursor-pointer">
+                    <th className="border bg-sim-pale-primary px-24 py-12 text-left align-middle leading-medium text-sim-dark">
+                      Satuan Kerja
+                    </th>
+                    <td className="border px-24 py-12 align-middle leading-medium">
+                      {item?.namaUnor ?? '-'}
+                    </td>
+                    <td className="border px-24 py-12 align-middle leading-medium">
+                      {riwayatJabatan?.lokal?.[idx]?.namaUnor ?? '-'}
+                    </td>
+                  </tr>
+                  <tr className="transition-all ease-in hover:cursor-pointer">
+                    <th className="border bg-sim-pale-primary px-24 py-12 text-left align-middle leading-medium text-sim-dark">
+                      Nama Jabatan
+                    </th>
+                    <td className="border px-24 py-12 align-middle leading-medium">
+                      {item?.namaJabatan ?? '-'}
+                    </td>
+                    <td className="border px-24 py-12 align-middle leading-medium">
+                      {riwayatJabatan?.lokal?.[idx]?.namaJabatan ?? '-'}
+                    </td>
+                  </tr>
+                  <tr className="transition-all ease-in hover:cursor-pointer">
+                    <th className="border bg-sim-pale-primary px-24 py-12 text-left align-middle leading-medium text-sim-dark">
+                      TMT Jabatan
+                    </th>
+                    <td className="border px-24 py-12 align-middle leading-medium">
+                      {item?.tmtJabatan ?? '-'}
+                    </td>
+                    <td className="border px-24 py-12 align-middle leading-medium">
+                      {riwayatJabatan?.lokal?.[idx]?.tmtJabatan ?? '-'}
+                    </td>
+                  </tr>
+                  <tr className="transition-all ease-in hover:cursor-pointer">
+                    <th className="border bg-sim-pale-primary px-24 py-12 text-left align-middle leading-medium text-sim-dark">
+                      Nomor SK
+                    </th>
+                    <td className="border px-24 py-12 align-middle leading-medium">
+                      {item?.nomorSk ?? '-'}
+                    </td>
+                    <td className="border px-24 py-12 align-middle leading-medium">
+                      {riwayatJabatan?.lokal?.[idx]?.nomorSk ?? '-'}
+                    </td>
+                  </tr>
+                  <tr className="transition-all ease-in hover:cursor-pointer">
+                    <th className="border bg-sim-pale-primary px-24 py-12 text-left align-middle leading-medium text-sim-dark">
+                      Tanggal SK
+                    </th>
+                    <td className="border px-24 py-12 align-middle leading-medium">
+                      {item?.tanggalSk ?? '-'}
+                    </td>
+                    <td className="border px-24 py-12 align-middle leading-medium">
+                      {riwayatJabatan?.lokal?.[idx]?.tanggalSk ?? '-'}
+                    </td>
+                  </tr>
+                  <tr className="transition-all ease-in hover:cursor-pointer">
+                    <th className="border bg-sim-pale-primary px-24 py-12 text-left align-middle leading-medium text-sim-dark">
+                      File
+                    </th>
+                    <td className="border px-24 py-12 align-middle leading-medium">
+                      -
+                    </td>
+                    <td className="border px-24 py-12 align-middle leading-medium">
+                      -
+                    </td>
+                  </tr>
+                  {idx < riwayatJabatan.siasn.length - 1 && (
+                    <tr className="border transition-all ease-in hover:cursor-pointer">
+                      <td
+                        className="border px-24 py-12 align-middle leading-medium text-white"
+                        colSpan={3}
+                      >
+                        #
+                      </td>
+                    </tr>
+                  )}
+                </React.Fragment>
+              ))
+            ) : (
+              <tr className="border transition-all ease-in hover:cursor-pointer">
+                <td
+                  className="border px-24 py-12 text-center align-middle leading-medium"
+                  colSpan={3}
+                >
+                  Tidak ada data
+                </td>
+              </tr>
+            )}
           </tbody>
         </table>
       )}

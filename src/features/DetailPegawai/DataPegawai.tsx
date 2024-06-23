@@ -17,6 +17,12 @@ export function DataDetailPegawai({
   isSinkronRiwayatPendidikan,
   handleSubmitRiwayatJabatan,
   isSinkronRiwayatJabatan,
+  handleSubmitRiwayatDiklat,
+  handleSubmitRiwayatDiklatLainnya,
+  handleSubmitRiwayatPenghargaan,
+  isSinkronRiwayatDiklat,
+  isSinkronRiwayatDiklatLainnya,
+  isSinkronRiwayatPenghargaan,
 }: {
   data: DataKepegawaianUtamaType
   idPegawai: string
@@ -29,6 +35,12 @@ export function DataDetailPegawai({
   isSinkronRiwayatPendidikan: boolean
   handleSubmitRiwayatJabatan: () => Promise<void>
   isSinkronRiwayatJabatan: boolean
+  handleSubmitRiwayatDiklat: () => Promise<void>
+  isSinkronRiwayatDiklat: boolean
+  handleSubmitRiwayatDiklatLainnya: () => Promise<void>
+  isSinkronRiwayatDiklatLainnya: boolean
+  handleSubmitRiwayatPenghargaan: () => Promise<void>
+  isSinkronRiwayatPenghargaan: boolean
 }) {
   // const stateTab = useSelector(getDetailPegawaiSlice)?.tab
 
@@ -68,6 +80,12 @@ export function DataDetailPegawai({
           isSinkronRiwayatPendidikan={isSinkronRiwayatPendidikan}
           handleSubmitRiwayatJabatan={handleSubmitRiwayatJabatan}
           isSinkronRiwayatJabatan={isSinkronRiwayatJabatan}
+          handleSubmitRiwayatDiklat={handleSubmitRiwayatDiklat}
+          isSinkronRiwayatDiklat={isSinkronRiwayatDiklat}
+          handleSubmitRiwayatDiklatLainnya={handleSubmitRiwayatDiklatLainnya}
+          isSinkronRiwayatDiklatLainnya={isSinkronRiwayatDiklatLainnya}
+          handleSubmitRiwayatPenghargaan={handleSubmitRiwayatPenghargaan}
+          isSinkronRiwayatPenghargaan={isSinkronRiwayatPenghargaan}
         />
       )}
     </div>

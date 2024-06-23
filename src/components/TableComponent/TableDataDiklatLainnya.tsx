@@ -1,5 +1,5 @@
-import { RiwayatPendidikanType } from '@/libs/type'
-import { useGetPNSRiwayatPendidikanQuery } from '@/store/slices/kepegawaianAPI'
+import { RiwayatDiklatLainnyaType } from '@/libs/type'
+import { useGetPNSRiwayatDiklatLainnyaQuery } from '@/store/slices/kepegawaianAPI'
 import { RefreshCcw } from 'lucide-react'
 import React, { useEffect, useState } from 'react'
 import { UseFormReturn } from 'react-hook-form'
@@ -8,39 +8,39 @@ import Cookies from 'js-cookie'
 import { Loading } from '../Loading'
 import { Form } from '../Form'
 
-export function TableDataPendidikan({
+export function TableDataDiklatLainnya({
   idPegawai,
   form,
-  handleSubmitriwayatPendidikan,
-  isSinkronriwayatPendidikan,
+  handleSubmitriwayatDiklatLainnya,
+  isSinkronriwayatDiklatLainnya,
 }: {
   idPegawai: string
   form: UseFormReturn
-  handleSubmitriwayatPendidikan: () => Promise<void>
-  isSinkronriwayatPendidikan: boolean
+  handleSubmitriwayatDiklatLainnya: () => Promise<void>
+  isSinkronriwayatDiklatLainnya: boolean
 }) {
   const navigate = useNavigate()
-  const [riwayatPendidikan, setRiwayatPendidikan] =
-    useState<RiwayatPendidikanType>()
+  const [riwayatDiklatLainnya, setRiwayatDiklatLainnya] =
+    useState<RiwayatDiklatLainnyaType>()
 
   const {
-    data: riwayatPendidikanData,
-    isLoading: riwayatPendidikanIsLoading,
-    isFetching: riwayatPendidikanIsFetching,
+    data: riwayatDiklatLainnyaData,
+    isLoading: riwayatDiklatLainnyaIsLoading,
+    isFetching: riwayatDiklatLainnyaIsFetching,
     error,
-  } = useGetPNSRiwayatPendidikanQuery(
+  } = useGetPNSRiwayatDiklatLainnyaQuery(
     {
       id_pegawai: idPegawai,
     },
     { skip: !idPegawai },
   )
 
-  const isLoadingRiwayatPendidikan =
-    riwayatPendidikanIsLoading || riwayatPendidikanIsFetching
+  const isLoadingRiwayatDiklatLainnya =
+    riwayatDiklatLainnyaIsLoading || riwayatDiklatLainnyaIsFetching
 
   useEffect(() => {
-    if (riwayatPendidikanData) {
-      setRiwayatPendidikan(riwayatPendidikanData?.data)
+    if (riwayatDiklatLainnyaData) {
+      setRiwayatDiklatLainnya(riwayatDiklatLainnyaData?.data)
     }
     const errorMsg = error as {
       data?: {
@@ -52,14 +52,14 @@ export function TableDataPendidikan({
       Cookies.remove('token')
       navigate('/login')
     }
-  }, [riwayatPendidikanData, idPegawai, error])
+  }, [riwayatDiklatLainnyaData, idPegawai, error])
 
   return (
     <div
       className={`scrollbar flex flex-col overflow-auto rounded-3x`}
       style={{ scrollbarGutter: 'stable' }}
     >
-      {isLoadingRiwayatPendidikan || isSinkronriwayatPendidikan ? (
+      {isLoadingRiwayatDiklatLainnya || isSinkronriwayatDiklatLainnya ? (
         <Loading width={'6rem'} height={'6rem'} />
       ) : (
         <table className="flex-1 border-collapse rounded-3x bg-[#fcfcfc] text-24">
@@ -70,7 +70,9 @@ export function TableDataPendidikan({
               >
                 <Form {...form}>
                   <form
-                    onSubmit={form.handleSubmit(handleSubmitriwayatPendidikan)}
+                    onSubmit={form.handleSubmit(
+                      handleSubmitriwayatDiklatLainnya,
+                    )}
                   >
                     <button
                       type="submit"
@@ -94,76 +96,79 @@ export function TableDataPendidikan({
             </tr>
           </thead>
           <tbody>
-            {riwayatPendidikan && riwayatPendidikan?.siasn?.length > 0 ? (
-              riwayatPendidikan?.siasn?.map((item, idx) => (
+            {riwayatDiklatLainnya && riwayatDiklatLainnya?.siasn?.length > 0 ? (
+              riwayatDiklatLainnya?.siasn?.map((item, idx) => (
                 <React.Fragment key={idx}>
                   <tr className="transition-all ease-in hover:cursor-pointer">
                     <th className="border bg-sim-pale-primary px-24 py-12 text-left align-middle leading-medium text-sim-dark">
-                      Jenjang Pendidikan
+                      Jenis Diklat
                     </th>
                     <td className="border px-24 py-12 align-middle leading-medium">
-                      {item?.pendidikanNama ?? '-'}
+                      {item?.jenisKursusSertifikat ?? '-'}
                     </td>
                     <td className="border px-24 py-12 align-middle leading-medium">
-                      {riwayatPendidikan?.lokal?.[idx]?.pendidikanNama ?? '-'}
+                      {riwayatDiklatLainnya?.lokal?.[idx]
+                        ?.jenisKursusSertifikat ?? '-'}
                     </td>
                   </tr>
                   <tr className="transition-all ease-in hover:cursor-pointer">
                     <th className="border bg-sim-pale-primary px-24 py-12 text-left align-middle leading-medium text-sim-dark">
-                      Tanggal Ijazah
+                      Nama Diklat
                     </th>
                     <td className="border px-24 py-12 align-middle leading-medium">
-                      {item?.tglLulus ?? '-'}
+                      {item?.namaKursus ?? '-'}
                     </td>
                     <td className="border px-24 py-12 align-middle leading-medium">
-                      {riwayatPendidikan?.lokal?.[idx]?.tglLulus ?? '-'}
+                      {riwayatDiklatLainnya?.lokal?.[idx]?.namaKursus ?? '-'}
                     </td>
                   </tr>
                   <tr className="transition-all ease-in hover:cursor-pointer">
                     <th className="border bg-sim-pale-primary px-24 py-12 text-left align-middle leading-medium text-sim-dark">
-                      Nomor Ijazah
+                      Tanggal Mulai
                     </th>
                     <td className="border px-24 py-12 align-middle leading-medium">
-                      {item?.nomorIjasah ?? '-'}
+                      {item?.tanggalKursus ?? '-'}
                     </td>
                     <td className="border px-24 py-12 align-middle leading-medium">
-                      {riwayatPendidikan?.lokal?.[idx]?.nomorIjasah ?? '-'}
+                      {riwayatDiklatLainnya?.lokal?.[idx]?.tanggalKursus ?? '-'}
                     </td>
                   </tr>
                   <tr className="transition-all ease-in hover:cursor-pointer">
                     <th className="border bg-sim-pale-primary px-24 py-12 text-left align-middle leading-medium text-sim-dark">
-                      Nama Instansi
+                      Tanggal Selesai
                     </th>
                     <td className="border px-24 py-12 align-middle leading-medium">
-                      {item?.namaSekolah ?? '-'}
+                      {item?.tanggalSelesaiKursus ?? '-'}
                     </td>
                     <td className="border px-24 py-12 align-middle leading-medium">
-                      {riwayatPendidikan?.lokal?.[idx]?.namaSekolah ?? '-'}
+                      {riwayatDiklatLainnya?.lokal?.[idx]
+                        ?.tanggalSelesaiKursus ?? '-'}
                     </td>
                   </tr>
                   <tr className="transition-all ease-in hover:cursor-pointer">
                     <th className="border bg-sim-pale-primary px-24 py-12 text-left align-middle leading-medium text-sim-dark">
-                      Gelar Depan
+                      Penyelenggara
                     </th>
                     <td className="border px-24 py-12 align-middle leading-medium">
-                      {item?.gelarDepan ?? '-'}
+                      {item?.institusiPenyelenggara ?? '-'}
                     </td>
                     <td className="border px-24 py-12 align-middle leading-medium">
-                      {riwayatPendidikan?.lokal?.[idx]?.gelarDepan ?? '-'}
+                      {riwayatDiklatLainnya?.lokal?.[idx]
+                        ?.institusiPenyelenggara ?? '-'}
                     </td>
                   </tr>
                   <tr className="transition-all ease-in hover:cursor-pointer">
                     <th className="border bg-sim-pale-primary px-24 py-12 text-left align-middle leading-medium text-sim-dark">
-                      Gelar Belakang
+                      File
                     </th>
                     <td className="border px-24 py-12 align-middle leading-medium">
-                      {item?.gelarBelakang ?? '-'}
+                      -
                     </td>
                     <td className="border px-24 py-12 align-middle leading-medium">
-                      {riwayatPendidikan?.lokal?.[idx]?.gelarBelakang ?? '-'}
+                      -
                     </td>
                   </tr>
-                  {idx < riwayatPendidikan.siasn.length - 1 && (
+                  {idx < riwayatDiklatLainnya.siasn.length - 1 && (
                     <tr className="border transition-all ease-in hover:cursor-pointer">
                       <td
                         className="border px-24 py-12 align-middle leading-medium text-white"
