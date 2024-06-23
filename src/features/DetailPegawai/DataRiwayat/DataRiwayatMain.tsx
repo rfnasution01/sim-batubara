@@ -9,7 +9,7 @@ import {
   TableDataPendidikan,
 } from '@/components/TableComponent'
 
-export function DataRiwayatMain() {
+export function DataRiwayatMain({ idPegawai }: { idPegawai: string }) {
   const [isShow, setIsShow] = useState<boolean>(false)
   const [tab, setTab] = useState<string>('Golongan & Pangkat')
 
@@ -37,7 +37,7 @@ export function DataRiwayatMain() {
           <Searching className="w-1/3" />
         </div>
         {tab === 'Golongan & Pangkat' ? (
-          <TableDataGolongan />
+          <TableDataGolongan idPegawai={idPegawai} />
         ) : tab === 'Pendidikan' ? (
           <TableDataPendidikan />
         ) : tab === 'Jabatan' ? (

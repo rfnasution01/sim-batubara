@@ -49,20 +49,19 @@ export const KepegawaianEndpoints = api.injectEndpoints({
         { type: 'pegawai-pns-utama', id: id_pegawai },
       ],
     }),
-    getSinkronPNSUtama: builder.query<void, DataKepegawaianUtamaParams>({
-      query: ({ id_pegawai }) => ({
+    createSinkronPNSUtama: builder.mutation<
+      void,
+      { data: DataKepegawaianUtamaParams }
+    >({
+      query: ({ data }) => ({
         url: `kepegawaian/sinkron/utama`,
-        method: 'GET',
-        params: {
-          id_pegawai: id_pegawai,
-        },
+        method: 'POST',
+        body: data,
       }),
-      providesTags: (_res, _err, { id_pegawai }) => [
-        { type: 'sinkron-pns-utama', id: id_pegawai },
-      ],
+      invalidatesTags: ['pegawai-pns-utama'],
     }),
     getPNSRiwayatGolongan: builder.query<
-      Res<RiwayatGolonganType[]>,
+      Res<RiwayatGolonganType>,
       DataKepegawaianUtamaParams
     >({
       query: ({ id_pegawai }) => ({
@@ -82,6 +81,6 @@ export const KepegawaianEndpoints = api.injectEndpoints({
 export const {
   useGetKepegawaianPNSQuery,
   useGetKepegawaianPNSUtamaQuery,
-  useLazyGetSinkronPNSUtamaQuery,
+  useCreateSinkronPNSUtamaMutation,
   useGetPNSRiwayatGolonganQuery,
 } = KepegawaianEndpoints

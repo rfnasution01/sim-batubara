@@ -5,13 +5,20 @@ import { DataDetailPegawaiTab } from './DataPegawaiTab'
 import { DataRiwayatMain } from './DataRiwayat'
 import { DataUtamaMain } from './DataUtama'
 import { DataKepegawaianUtamaType } from '@/libs/type'
+import { UseFormReturn } from 'react-hook-form'
 
 export function DataDetailPegawai({
   data,
   idPegawai,
+  handleSubmitDataUtama,
+  form,
+  isSinkronDataUtama,
 }: {
   data: DataKepegawaianUtamaType
   idPegawai: string
+  handleSubmitDataUtama: () => Promise<void>
+  form: UseFormReturn
+  isSinkronDataUtama: boolean
 }) {
   const stateTab = useSelector(getDetailPegawaiSlice)?.tab
 
@@ -35,9 +42,14 @@ export function DataDetailPegawai({
         isIdPegawaiValid={isIDPegawaiValid}
       />
       {tab === 'utama' ? (
-        <DataUtamaMain data={data} idPegawai={idPegawai} />
+        <DataUtamaMain
+          data={data}
+          handleSubmitDataUtama={handleSubmitDataUtama}
+          form={form}
+          isSinkronDataUtama={isSinkronDataUtama}
+        />
       ) : (
-        <DataRiwayatMain />
+        <DataRiwayatMain idPegawai={idPegawai} />
       )}
     </div>
   )

@@ -3,13 +3,18 @@ import { DataUtamaTab } from './DataUtamaTab'
 import { ComingSoonPage } from '@/routes/loadables'
 import { DataUtamaPribadi } from './DataUtamaPribadi'
 import { DataKepegawaianUtamaType } from '@/libs/type'
+import { UseFormReturn } from 'react-hook-form'
 
 export function DataUtamaMain({
   data,
-  idPegawai,
+  handleSubmitDataUtama,
+  form,
+  isSinkronDataUtama,
 }: {
   data: DataKepegawaianUtamaType
-  idPegawai: string
+  handleSubmitDataUtama: () => Promise<void>
+  isSinkronDataUtama: boolean
+  form: UseFormReturn
 }) {
   const [tab, setTab] = useState<string>('Data Pribadi')
 
@@ -18,7 +23,12 @@ export function DataUtamaMain({
       <DataUtamaTab tab={tab} setTab={setTab} />
 
       {tab === 'Data Pribadi' ? (
-        <DataUtamaPribadi data={data} idPegawai={idPegawai} />
+        <DataUtamaPribadi
+          data={data}
+          handleSubmitDataUtama={handleSubmitDataUtama}
+          form={form}
+          isSinkronDataUtama={isSinkronDataUtama}
+        />
       ) : (
         <ComingSoonPage />
       )}
