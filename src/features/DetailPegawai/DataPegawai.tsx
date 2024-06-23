@@ -1,6 +1,4 @@
-import { getDetailPegawaiSlice } from '@/store/reducer/stateDetailPegawai'
-import { useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useState } from 'react'
 import { DataDetailPegawaiTab } from './DataPegawaiTab'
 import { DataRiwayatMain } from './DataRiwayat'
 import { DataUtamaMain } from './DataUtama'
@@ -13,24 +11,28 @@ export function DataDetailPegawai({
   handleSubmitDataUtama,
   form,
   isSinkronDataUtama,
+  handleSubmitRiwayatGolongan,
+  isSinkronRiwayatGolongan,
 }: {
   data: DataKepegawaianUtamaType
   idPegawai: string
-  handleSubmitDataUtama: () => Promise<void>
   form: UseFormReturn
+  handleSubmitDataUtama: () => Promise<void>
   isSinkronDataUtama: boolean
+  handleSubmitRiwayatGolongan: () => Promise<void>
+  isSinkronRiwayatGolongan: boolean
 }) {
-  const stateTab = useSelector(getDetailPegawaiSlice)?.tab
+  // const stateTab = useSelector(getDetailPegawaiSlice)?.tab
 
-  useEffect(() => {
-    if (stateTab) {
-      setTab(stateTab)
-    }
-  }, [stateTab])
+  // useEffect(() => {
+  //   if (stateTab) {
+  //     setTab(stateTab)
+  //   }
+  // }, [stateTab])
 
-  const tabParams = localStorage.getItem('tab') ?? 'utama'
+  // const tabParams = localStorage.getItem('tab') ?? 'utama'
 
-  const [tab, setTab] = useState<string>(tabParams ?? stateTab ?? '')
+  const [tab, setTab] = useState<string>('utama')
 
   const isIDPegawaiValid = data?.siasn?.ID === data?.lokal?.ID
 
@@ -49,7 +51,12 @@ export function DataDetailPegawai({
           isSinkronDataUtama={isSinkronDataUtama}
         />
       ) : (
-        <DataRiwayatMain idPegawai={idPegawai} />
+        <DataRiwayatMain
+          idPegawai={idPegawai}
+          form={form}
+          handleSubmitRiwayatGolongan={handleSubmitRiwayatGolongan}
+          isSinkronRiwayatGolongan={isSinkronRiwayatGolongan}
+        />
       )}
     </div>
   )

@@ -75,6 +75,17 @@ export const KepegawaianEndpoints = api.injectEndpoints({
         { type: 'riwayat-golongan', id: id_pegawai },
       ],
     }),
+    createSinkronRiwayatGolongan: builder.mutation<
+      void,
+      { data: DataKepegawaianUtamaParams }
+    >({
+      query: ({ data }) => ({
+        url: `kepegawaian/sinkron/riwayat/golongan`,
+        method: 'POST',
+        body: data,
+      }),
+      invalidatesTags: ['riwayat-golongan'],
+    }),
   }),
 })
 
@@ -83,4 +94,5 @@ export const {
   useGetKepegawaianPNSUtamaQuery,
   useCreateSinkronPNSUtamaMutation,
   useGetPNSRiwayatGolonganQuery,
+  useCreateSinkronRiwayatGolonganMutation,
 } = KepegawaianEndpoints

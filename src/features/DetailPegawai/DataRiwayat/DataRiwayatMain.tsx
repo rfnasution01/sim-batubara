@@ -8,8 +8,19 @@ import {
   TableDataJabatan,
   TableDataPendidikan,
 } from '@/components/TableComponent'
+import { UseFormReturn } from 'react-hook-form'
 
-export function DataRiwayatMain({ idPegawai }: { idPegawai: string }) {
+export function DataRiwayatMain({
+  idPegawai,
+  form,
+  handleSubmitRiwayatGolongan,
+  isSinkronRiwayatGolongan,
+}: {
+  idPegawai: string
+  form: UseFormReturn
+  handleSubmitRiwayatGolongan: () => Promise<void>
+  isSinkronRiwayatGolongan: boolean
+}) {
   const [isShow, setIsShow] = useState<boolean>(false)
   const [tab, setTab] = useState<string>('Golongan & Pangkat')
 
@@ -37,7 +48,12 @@ export function DataRiwayatMain({ idPegawai }: { idPegawai: string }) {
           <Searching className="w-1/3" />
         </div>
         {tab === 'Golongan & Pangkat' ? (
-          <TableDataGolongan idPegawai={idPegawai} />
+          <TableDataGolongan
+            idPegawai={idPegawai}
+            form={form}
+            handleSubmitRiwayatGolongan={handleSubmitRiwayatGolongan}
+            isSinkronRiwayatGolongan={isSinkronRiwayatGolongan}
+          />
         ) : tab === 'Pendidikan' ? (
           <TableDataPendidikan />
         ) : tab === 'Jabatan' ? (

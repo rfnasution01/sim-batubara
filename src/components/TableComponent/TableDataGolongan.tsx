@@ -4,8 +4,21 @@ import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Cookies from 'js-cookie'
 import { Loading } from '../Loading'
+import { UseFormReturn } from 'react-hook-form'
+import { RefreshCcw } from 'lucide-react'
+import { Form } from '../Form'
 
-export function TableDataGolongan({ idPegawai }: { idPegawai: string }) {
+export function TableDataGolongan({
+  idPegawai,
+  form,
+  handleSubmitRiwayatGolongan,
+  isSinkronRiwayatGolongan,
+}: {
+  idPegawai: string
+  form: UseFormReturn
+  handleSubmitRiwayatGolongan: () => Promise<void>
+  isSinkronRiwayatGolongan: boolean
+}) {
   const navigate = useNavigate()
   const [riwayatGolongan, setRiwayatGolongan] = useState<RiwayatGolonganType>()
 
@@ -45,7 +58,7 @@ export function TableDataGolongan({ idPegawai }: { idPegawai: string }) {
       className={`scrollbar flex flex-col overflow-auto rounded-3x`}
       style={{ scrollbarGutter: 'stable' }}
     >
-      {isLoadingRiwayatGolongan ? (
+      {isLoadingRiwayatGolongan || isSinkronRiwayatGolongan ? (
         <Loading width={'6rem'} height={'6rem'} />
       ) : (
         <table className="flex-1 border-collapse rounded-3x bg-[#fcfcfc] text-24">
@@ -54,7 +67,18 @@ export function TableDataGolongan({ idPegawai }: { idPegawai: string }) {
               <th
                 className={`sticky top-0 w-[20%] border px-24 py-16 text-left align-middle text-sim-dark`}
               >
-                <div className="flex items-center justify-center">res</div>
+                <Form {...form}>
+                  <form
+                    onSubmit={form.handleSubmit(handleSubmitRiwayatGolongan)}
+                  >
+                    <button
+                      type="submit"
+                      className="text-dark flex items-center gap-12 rounded-2xl border border-sim-dark px-24 py-12 text-[1.8rem] hover:cursor-pointer hover:border-transparent hover:bg-sim-dark hover:text-white"
+                    >
+                      Sinkron Data <RefreshCcw size={16} />
+                    </button>
+                  </form>
+                </Form>
               </th>
               <th
                 className={`sticky top-0 w-[40%] border bg-sim-pale-primary px-24 py-24 text-left align-middle text-sim-dark`}

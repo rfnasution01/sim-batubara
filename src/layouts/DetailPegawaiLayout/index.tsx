@@ -6,6 +6,7 @@ import {
 } from '@/libs/type'
 import {
   useCreateSinkronPNSUtamaMutation,
+  useCreateSinkronRiwayatGolonganMutation,
   useGetKepegawaianPNSUtamaQuery,
 } from '@/store/slices/kepegawaianAPI'
 import { useEffect, useState } from 'react'
@@ -84,7 +85,7 @@ export default function DetailPegawaiLayoutMain() {
         },
       })
     } catch (error) {
-      console.error('Gagal mengunggah file:', error)
+      console.error(error)
     }
   }
 
@@ -122,6 +123,65 @@ export default function DetailPegawaiLayoutMain() {
     }
   }, [isErrorSinkron, errorSinkron])
 
+  // --- Sinkron Riwayat Golongan ---
+  const [
+    createSinkronRiwayatGolongan,
+    {
+      isError: isErrorSinkronRiwayatGolongan,
+      error: errorSinkronRiwayatGolongan,
+      isLoading: isLoadingSinkronRiwayatGolongan,
+      isSuccess: isSuccessSinkronRiwayatGolongan,
+    },
+  ] = useCreateSinkronRiwayatGolonganMutation()
+
+  const handleSubmitRiwayatGolongan = async () => {
+    try {
+      await createSinkronRiwayatGolongan({
+        data: {
+          id_pegawai: idParams,
+        },
+      })
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
+  useEffect(() => {
+    if (isSuccessSinkronRiwayatGolongan) {
+      toast.success('Data riwayat golongan berhasil disinkronkan', {
+        position: 'bottom-right',
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'light',
+        transition: Bounce,
+      })
+    }
+  }, [isSuccessSinkronRiwayatGolongan])
+
+  useEffect(() => {
+    if (isErrorSinkronRiwayatGolongan) {
+      const errorMsg = errorSinkronRiwayatGolongan as {
+        data?: { message?: string }
+      }
+
+      toast.error(`${errorMsg?.data?.message ?? 'Terjadi Kesalahan'}`, {
+        position: 'bottom-right',
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'light',
+        transition: Bounce,
+      })
+    }
+  }, [isErrorSinkronRiwayatGolongan, errorSinkronRiwayatGolongan])
+
   return (
     <div className="flex flex-col gap-32">
       {isLoadingKepegawaianUtama ? (
@@ -136,6 +196,8 @@ export default function DetailPegawaiLayoutMain() {
             idPegawai={idParams}
             handleSubmitDataUtama={handleSubmitDataUtama}
             isSinkronDataUtama={isLoadingSinkron}
+            handleSubmitRiwayatGolongan={handleSubmitRiwayatGolongan}
+            isSinkronRiwayatGolongan={isLoadingSinkronRiwayatGolongan}
             form={form}
           />
         </>

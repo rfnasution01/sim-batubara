@@ -47,7 +47,7 @@ export default function LoginLayoutMain() {
           Cookies.set('token', token)
         }
       } catch (error) {
-        console.error('Gagal mengunggah file:', error)
+        console.error(error)
       }
     } else {
       toast.error(`Jawaban salah!`, {
