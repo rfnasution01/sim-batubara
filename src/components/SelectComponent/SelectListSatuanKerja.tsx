@@ -12,6 +12,7 @@ import { UseFormReturn } from 'react-hook-form'
 import Select, { components } from 'react-select'
 import { SatuanKerjaType } from '@/libs/type'
 import { customStyles } from '@/libs/variants/SelectProps'
+import clsx from 'clsx'
 
 type inputProps = {
   placeholder: string
@@ -47,12 +48,56 @@ export function SelectListSatuanKerja({
     }
   }, [data])
 
+  function addLevelAndSort(data) {
+    const result = []
+    const map = new Map()
+
+    // Initialize map with parent IDs
+    data?.forEach((item) => map?.set(item?.id, { ...item, children: [] }))
+
+    // Build the hierarchy
+    data?.forEach((item) => {
+      const parentId = item?.id_parent ?? '0'
+      if (parentId === '0') {
+        map.get(item?.id).level = 1
+        result?.push(map?.get(item?.id))
+      } else {
+        map.get(item?.id).level = (map?.get(parentId)?.level ?? 0) + 1
+        map.get(parentId)?.children?.push(map?.get(item?.id))
+      }
+    })
+
+    // Function to flatten the nested structure
+    function flatten(items) {
+      const flat = []
+      items?.forEach((item) => {
+        flat?.push({
+          id: item?.id,
+          kode: item?.kode,
+          nama: item?.nama,
+          id_parent: item?.id_parent,
+          level: item?.level,
+          urutan: item?.urutan,
+        })
+        if (item?.children?.length) {
+          flat.push(...flatten(item?.children))
+        }
+      })
+      return flat
+    }
+
+    return flatten(result)
+  }
+
+  const sortedData = addLevelAndSort(listSatuanKerja)
+
   let SatuanKerjaOption = []
   if (isSuccess) {
-    SatuanKerjaOption = listSatuanKerja.map((item) => {
+    SatuanKerjaOption = sortedData.map((item) => {
       return {
         value: item?.id,
         label: item?.nama,
+        level: item?.level,
       }
     })
   }
@@ -67,7 +112,15 @@ export function SelectListSatuanKerja({
     return (
       <components.Option {...props}>
         <div ref={props.innerRef}>
-          <div className="text-[12px]">{props.label}</div>
+          <div
+            className={clsx('text-[2rem]', {
+              'font-bold': Number(props?.data?.level) === 1,
+              'font-medium': Number(props?.data?.level) === 2,
+              'font-light': Number(props?.data?.level) === 3,
+            })}
+          >
+            {props.label}
+          </div>
         </div>
       </components.Option>
     )
