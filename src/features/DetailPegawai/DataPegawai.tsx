@@ -23,9 +23,15 @@ export function DataDetailPegawai({
 
   const [tab, setTab] = useState<string>(tabParams ?? stateTab ?? '')
 
+  const isIDPegawaiValid = data?.siasn?.ID === data?.lokal?.ID
+
   return (
     <div className="flex flex-col gap-32 rounded-2x bg-white py-32">
-      <DataDetailPegawaiTab setTab={setTab} tab={tab} />
+      <DataDetailPegawaiTab
+        setTab={setTab}
+        tab={tab}
+        isIdPegawaiValid={isIDPegawaiValid}
+      />
       {tab === 'utama' ? <DataUtamaMain data={data} /> : <DataRiwayatMain />}
     </div>
   )

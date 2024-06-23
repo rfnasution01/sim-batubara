@@ -1,14 +1,17 @@
+import { ModalCheckID } from '@/components/ModalComponent'
 import { setStateDetailPegawai } from '@/store/reducer/stateDetailPegawai'
 import clsx from 'clsx'
-import { Dispatch, SetStateAction } from 'react'
+import { Dispatch, SetStateAction, useState } from 'react'
 import { useDispatch } from 'react-redux'
 
 export function DataDetailPegawaiTab({
   tab,
   setTab,
+  isIdPegawaiValid,
 }: {
   tab: string
   setTab: Dispatch<SetStateAction<string>>
+  isIdPegawaiValid?: boolean
 }) {
   const dispatch = useDispatch()
   const compareTab = tab === 'utama' ? 'Data Utama' : 'Data Riwayat'
@@ -19,6 +22,8 @@ export function DataDetailPegawaiTab({
       return 'riwayat'
     }
   }
+
+  const [isShow, setIsShow] = useState<boolean>(false)
 
   return (
     <div className="flex items-center border-b border-sim-grey px-32">
@@ -34,15 +39,20 @@ export function DataDetailPegawaiTab({
               },
             )}
             onClick={() => {
-              setTab(convertTab(item))
-              dispatch(setStateDetailPegawai({ tab: convertTab(item) }))
-              localStorage.setItem('tab', convertTab(item))
+              if (item === 'Data Riwayat' && !isIdPegawaiValid) {
+                setIsShow(true)
+              } else {
+                setTab(convertTab(item))
+                dispatch(setStateDetailPegawai({ tab: convertTab(item) }))
+                localStorage.setItem('tab', convertTab(item))
+              }
             }}
           >
             {item}
           </div>
         ))}
       </div>
+      <ModalCheckID isOpen={isShow} setIsOpen={setIsShow} />
     </div>
   )
 }

@@ -39,7 +39,7 @@ export default function DetailPegawaiLayoutMain() {
   return (
     <div className="flex flex-col gap-32">
       {isLoadingKepegawaianUtama ? (
-        <Loading />
+        <Loading height={'6rem'} width={'6rem'} />
       ) : (
         <>
           {/* --- Profil --- */}
