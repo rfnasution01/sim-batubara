@@ -203,10 +203,10 @@ export function TableDataJabatan({
           </table>
         )}
       </div>
-      {(!isLoadingRiwayatJabatan || !isSinkronriwayatJabatan) && (
+      {!(isLoadingRiwayatJabatan || isSinkronriwayatJabatan) && (
         <div className="flex justify-end">
           <Link
-            to={`/kepegawaian/pns/${idPegawai}/tambah`}
+            to={`/kepegawaian/pns/${idPegawai}/jabatan/tambah`}
             className="flex items-center gap-12 rounded-2xl bg-sim-primary px-24 py-16 text-white hover:bg-opacity-80"
           >
             Tambah <Plus size={16} />

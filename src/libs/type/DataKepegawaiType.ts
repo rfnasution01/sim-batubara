@@ -115,6 +115,9 @@ export type JabatanType = {
   nomorSk: string
   tanggalSk: string
   path: string
+  tmtPelantikan: string
+  dokumen: string
+  dokumenSK: string
 }
 
 export type RiwayatDiklatType = {
@@ -155,4 +158,14 @@ export type PenghargaanType = {
   skNomor: string
   skDate: string
   path: string
+}
+
+export type DataSaveJabatanParams = {
+  id_pegawai: string
+  jenisJabatan: string
+  namaUnor: string
+  namaJabatan: string
+  tmtJabatan: string
+  nomorSk: string
+  tanggalSk: string
 }

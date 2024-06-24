@@ -7,6 +7,7 @@ export const usePathname = () => {
   const firstPathname = splittedPath.at(1)
   const secondPathname = splittedPath.at(2)
   const thirdPathname = splittedPath.at(3)
+  const fourthPathname = splittedPath.at(4)
   const lastPathname = splittedPath.at(-1)
 
   return {
@@ -15,6 +16,7 @@ export const usePathname = () => {
     firstPathname,
     secondPathname,
     thirdPathname,
+    fourthPathname,
     lastPathname,
   }
 }

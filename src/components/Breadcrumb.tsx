@@ -5,7 +5,7 @@ import { ChevronRight } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 
 export function Breadcrumb({ length }: { length: number }) {
-  const { firstPathname, secondPathname } = usePathname()
+  const { firstPathname, secondPathname, lastPathname } = usePathname()
 
   const navigate = useNavigate()
 
@@ -41,7 +41,7 @@ export function Breadcrumb({ length }: { length: number }) {
               <p
                 className="hover:cursor-pointer"
                 onClick={() => {
-                  navigate(-1)
+                  navigate(-2)
                 }}
               >
                 Kepegawaian
@@ -49,14 +49,34 @@ export function Breadcrumb({ length }: { length: number }) {
               <span>
                 <ChevronRight size={16} />
               </span>
-              {length === 5 ? (
-                <p className="text-sim-primary hover:cursor-not-allowed">
-                  Tambah Data
-                </p>
-              ) : (
-                <p className="text-sim-primary hover:cursor-not-allowed">
-                  Detail Data Pegawai
-                </p>
+
+              <p
+                onClick={() => {
+                  navigate(-1)
+                }}
+                className={clsx(
+                  '',
+                  {
+                    'hover:cursor-pointer': length <= 5,
+                    'hover:cursor-not-allowed ': !(length <= 5),
+                  },
+                  {
+                    'text-sim-primary': length <= 4,
+                    'text-sim-primary ': !(length <= 5),
+                  },
+                )}
+              >
+                Detail Data Pegawai
+              </p>
+              {length === 5 && (
+                <>
+                  <span>
+                    <ChevronRight size={16} />
+                  </span>
+                  <p className="text-sim-primary hover:cursor-not-allowed">
+                    {convertSlugToText(lastPathname)} Data
+                  </p>
+                </>
               )}
             </div>
           )}

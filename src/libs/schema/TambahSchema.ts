@@ -9,9 +9,9 @@ export const TambahSchema = zod.object({
     required_error: 'Satuan Kkerja harus di isi',
     invalid_type_error: 'Format satuan kerja tidak valid',
   }),
-  namaJabatan: zod.string({
-    required_error: 'Nama jabatan harus di isi',
-    invalid_type_error: 'Format nama jabatan tidak valid',
+  tmtPelantikan: zod.string({
+    required_error: 'TMT Pelantikan harus di isi',
+    invalid_type_error: 'Format tmt pelantikan tidak valid',
   }),
   tmtJabatan: zod.string({
     required_error: 'TMT jabatan harus di isi',
@@ -25,5 +25,6 @@ export const TambahSchema = zod.object({
     required_error: 'Tanggal SK harus di isi',
     invalid_type_error: 'Format tanggal SK tidak valid',
   }),
-  path: zod.string().optional().nullable().nullish(),
+  dokumen: zod.string().optional().nullable().nullish(),
+  dokumensk: zod.string().optional().nullable().nullish(),
 })

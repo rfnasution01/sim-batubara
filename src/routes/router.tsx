@@ -54,7 +54,7 @@ export const router = createBrowserRouter([
                 element: <DetailPegawaiLayoutMain />,
               },
               {
-                path: ':nama/tambah',
+                path: ':nama/:jenis/tambah',
                 element: <TambahPage />,
               },
             ],

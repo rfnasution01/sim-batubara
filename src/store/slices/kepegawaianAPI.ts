@@ -221,6 +221,14 @@ export const KepegawaianEndpoints = api.injectEndpoints({
       }),
       invalidatesTags: ['riwayat-penghargan'],
     }),
+    createSavaJabatan: builder.mutation<void, { data: FormData }>({
+      query: ({ data }) => ({
+        url: `kepegawaian/pns_riwayat/jabatan`,
+        method: 'POST',
+        body: data,
+      }),
+      invalidatesTags: ['riwayat-jabatan'],
+    }),
   }),
 })
 
@@ -240,4 +248,5 @@ export const {
   useCreateSinkronRiwayatDiklatLainnyaMutation,
   useCreateSinkronRiwayatDiklatMutation,
   useCreateSinkronRiwayatPenghargaanMutation,
+  useCreateSavaJabatanMutation,
 } = KepegawaianEndpoints
