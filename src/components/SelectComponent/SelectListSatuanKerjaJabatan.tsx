@@ -1,4 +1,4 @@
-import { useGetSatuanKerjaQuery } from '@/store/slices/referensiAPI'
+import { useGetSatuanKerjaJabatanQuery } from '@/store/slices/referensiAPI'
 import {
   FormControl,
   FormField,
@@ -7,12 +7,12 @@ import {
   FormMessage,
 } from '../Form'
 import { cn } from '@/libs/helpers/utils'
-import { Dispatch, SetStateAction, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { UseFormReturn } from 'react-hook-form'
 import Select, { components } from 'react-select'
-import { SatuanKerjaType } from '@/libs/type'
 import { customStyles } from '@/libs/variants/SelectProps'
 import clsx from 'clsx'
+import { SatuanKerjaJabatanType } from '@/libs/type'
 
 type inputProps = {
   placeholder: string
@@ -21,29 +21,33 @@ type inputProps = {
   headerLabel?: string
   useFormReturn: UseFormReturn
   className?: string
-  setSatuanKerja?: Dispatch<SetStateAction<string>>
 }
 
-export function SelectListSatuanKerja({
+export function SelectListSatuanKerjaJabatan({
   name,
   headerLabel,
   placeholder,
   isDisabled,
   useFormReturn,
   className,
-  setSatuanKerja,
 }: inputProps) {
   const [query, setQuery] = useState<string>(null)
-  const [listSatuanKerja, setListSatuanKerja] = useState<SatuanKerjaType[]>([])
+  const [listSatuanKerjaJabatan, setListSatuanKerjaJabatan] = useState<
+    SatuanKerjaJabatanType[]
+  >([])
 
-  const { data, isSuccess, isLoading, isFetching } = useGetSatuanKerjaQuery()
+  const { data, isSuccess, isLoading, isFetching } =
+    useGetSatuanKerjaJabatanQuery()
 
   useEffect(() => {
     if (!isFetching) {
       if (data?.meta?.page > 1) {
-        setListSatuanKerja((prevData) => [...prevData, ...(data?.data ?? [])])
+        setListSatuanKerjaJabatan((prevData) => [
+          ...prevData,
+          ...(data?.data ?? []),
+        ])
       } else {
-        setListSatuanKerja([...(data?.data ?? [])])
+        setListSatuanKerjaJabatan([...(data?.data ?? [])])
       }
     }
   }, [data])
@@ -57,8 +61,8 @@ export function SelectListSatuanKerja({
 
     // Build the hierarchy
     data?.forEach((item) => {
-      const parentId = item?.id_parent ?? '0'
-      if (parentId === '0') {
+      const parentId = item?.id_parent ?? 'A8ACA73B6E5D3912E040640A040269BB'
+      if (parentId === 'A8ACA73B6E5D3912E040640A040269BB') {
         map.get(item?.id).level = 1
         result?.push(map?.get(item?.id))
       } else {
@@ -73,11 +77,10 @@ export function SelectListSatuanKerja({
       items?.forEach((item) => {
         flat?.push({
           id: item?.id,
-          kode: item?.kode,
-          nama: item?.nama,
+          nama_satker: item?.nama_satker,
+          nama_jabatan: item?.nama_jabatan,
           id_parent: item?.id_parent,
           level: item?.level,
-          urutan: item?.urutan,
         })
         if (item?.children?.length) {
           flat.push(...flatten(item?.children))
@@ -89,15 +92,16 @@ export function SelectListSatuanKerja({
     return flatten(result)
   }
 
-  const sortedData = addLevelAndSort(listSatuanKerja)
+  const sortedData = addLevelAndSort(listSatuanKerjaJabatan)
 
-  let SatuanKerjaOption = []
+  let SatuanKerjaJabatanOption = []
   if (isSuccess) {
-    SatuanKerjaOption = sortedData.map((item) => {
+    SatuanKerjaJabatanOption = sortedData.map((item) => {
       return {
         value: item?.id,
-        label: item?.nama,
+        label: item?.nama_jabatan,
         level: item?.level,
+        satker: item?.nama_satker,
       }
     })
   }
@@ -113,13 +117,16 @@ export function SelectListSatuanKerja({
       <components.Option {...props}>
         <div ref={props.innerRef}>
           <div
-            className={clsx('text-[2rem]', {
+            className={clsx('flex flex-col gap-4 text-[2rem]', {
               'ml-0 font-bold': Number(props?.data?.level) === 1,
               'ml-16 font-medium': Number(props?.data?.level) === 2,
               'ml-32 font-light': Number(props?.data?.level) === 3,
             })}
           >
-            {props.label}
+            <p className="text-[2rem] font-bold">{props?.label ?? '-'}</p>
+            <p className="text-[1.6rem] uppercase">
+              {props?.data?.satker ?? '-'}
+            </p>
           </div>
         </div>
       </components.Option>
@@ -197,9 +204,9 @@ export function SelectListSatuanKerja({
                     }),
                   }}
                   className={'text-[2rem]'}
-                  options={SatuanKerjaOption}
+                  options={SatuanKerjaJabatanOption}
                   value={
-                    SatuanKerjaOption.filter(
+                    SatuanKerjaJabatanOption.filter(
                       (item) => item.value === field.value,
                     )[0]
                   }
@@ -207,9 +214,6 @@ export function SelectListSatuanKerja({
                   onInputChange={search}
                   onChange={(optionSelected) => {
                     field.onChange(optionSelected?.value)
-                    if (setListSatuanKerja) {
-                      setSatuanKerja(optionSelected?.value)
-                    }
                   }}
                   isDisabled={isDisabled}
                   isLoading={isFetching || isLoading}

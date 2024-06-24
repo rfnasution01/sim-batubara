@@ -7,6 +7,7 @@ import {
   LoginLayoutMain,
   PNSPage,
   RootLayoutMain,
+  TambahPage,
 } from './loadables'
 import Cookies from 'js-cookie'
 
@@ -51,6 +52,10 @@ export const router = createBrowserRouter([
               {
                 path: ':nama',
                 element: <DetailPegawaiLayoutMain />,
+              },
+              {
+                path: ':nama/tambah',
+                element: <TambahPage />,
               },
             ],
           },

@@ -19,3 +19,4 @@ export const LoginLayoutMain = loadable(() => import('@/layouts/LoginLayout'))
 
 export const ComingSoonPage = loadable(() => import('@/pages/ComingSoon'))
 export const PNSPage = loadable(() => import('@/pages/PNS'))
+export const TambahPage = loadable(() => import('@/pages/Tambah'))

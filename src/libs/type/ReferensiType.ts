@@ -12,3 +12,15 @@ export type GolonganType = {
   pangkat: string
   urutan: string
 }
+
+export type JenisJabatanType = {
+  id: string
+  nama: string
+}
+
+export type SatuanKerjaJabatanType = {
+  id: string
+  nama_satker: string
+  id_parent: string
+  nama_jabatan: string
+}

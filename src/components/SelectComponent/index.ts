@@ -1,3 +1,5 @@
 export * from './SelectListDataPerPage'
 export * from './SelectListGolongan'
 export * from './SelectListSatuanKerja'
+export * from './SelectListJenisJabatan'
+export * from './SelectListSatuanKerjaJabatan'

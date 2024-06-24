@@ -49,9 +49,15 @@ export function Breadcrumb({ length }: { length: number }) {
               <span>
                 <ChevronRight size={16} />
               </span>
-              <p className="text-sim-primary hover:cursor-not-allowed">
-                Detail Data Pegawai
-              </p>
+              {length === 5 ? (
+                <p className="text-sim-primary hover:cursor-not-allowed">
+                  Tambah Data
+                </p>
+              ) : (
+                <p className="text-sim-primary hover:cursor-not-allowed">
+                  Detail Data Pegawai
+                </p>
+              )}
             </div>
           )}
         </div>

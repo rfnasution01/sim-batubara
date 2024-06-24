@@ -1,4 +1,9 @@
-import { GolonganType, SatuanKerjaType } from '@/libs/type'
+import {
+  GolonganType,
+  JenisJabatanType,
+  SatuanKerjaJabatanType,
+  SatuanKerjaType,
+} from '@/libs/type'
 import { Res, api } from '../api'
 
 export const SatuanKerjaEndpoints = api.injectEndpoints({
@@ -15,8 +20,24 @@ export const SatuanKerjaEndpoints = api.injectEndpoints({
         method: 'GET',
       }),
     }),
+    getJenisJabatan: builder.query<Res<JenisJabatanType[]>, void>({
+      query: () => ({
+        url: `referensi/jenis_jabatan`,
+        method: 'GET',
+      }),
+    }),
+    getSatuanKerjaJabatan: builder.query<Res<SatuanKerjaJabatanType[]>, void>({
+      query: () => ({
+        url: `referensi/satker_jabatan`,
+        method: 'GET',
+      }),
+    }),
   }),
 })
 
-export const { useGetSatuanKerjaQuery, useGetGolonganQuery } =
-  SatuanKerjaEndpoints
+export const {
+  useGetSatuanKerjaQuery,
+  useGetGolonganQuery,
+  useGetJenisJabatanQuery,
+  useGetSatuanKerjaJabatanQuery,
+} = SatuanKerjaEndpoints

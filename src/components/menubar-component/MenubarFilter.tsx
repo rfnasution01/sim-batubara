@@ -75,7 +75,7 @@ export function MenubarFilter() {
                     useFormReturn={form}
                     name="satuanKerja"
                     headerLabel="Satuan Kerja"
-                    placeholder="Pilih Golongan"
+                    placeholder="Pilih Satuan Kerja"
                     className="w-full"
                   />
                   <FormLabelInput
