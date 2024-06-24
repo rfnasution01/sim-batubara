@@ -44,7 +44,7 @@ export function DataRiwayatMain({
   handleSubmitRiwayatPenghargaan: () => Promise<void>
   isSinkronRiwayatPenghargaan: boolean
 }) {
-  const [isShow, setIsShow] = useState<boolean>(false)
+  const [isShow, setIsShow] = useState<boolean>(true)
   const [tab, setTab] = useState<string>('Golongan & Pangkat')
 
   return (

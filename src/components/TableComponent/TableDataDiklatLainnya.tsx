@@ -48,7 +48,10 @@ export function TableDataDiklatLainnya({
       }
     }
 
-    if (errorMsg?.data?.message === 'Token Expired') {
+    if (
+      errorMsg?.data?.message === 'Token Expired' ||
+      errorMsg?.data?.message === 'Token Tidak Sesuai'
+    ) {
       Cookies.remove('token')
       navigate('/login')
     }
