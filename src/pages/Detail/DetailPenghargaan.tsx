@@ -5,6 +5,7 @@ import {
   PenghargaanDetailType,
 } from '@/libs/type'
 import {
+  useCreateSinkronRiwayatPenghargaanMutation,
   useGetKepegawaianPNSUtamaQuery,
   useGetPNSRiwayatPenghargaanDetailQuery,
 } from '@/store/slices/kepegawaianAPI'
@@ -16,8 +17,16 @@ import Cookies from 'js-cookie'
 import { Loading } from '@/components/Loading'
 import { ModalShowFile } from '@/components/ModalComponent'
 import dayjs from 'dayjs'
-import { ArrowLeft } from 'lucide-react'
+import { ArrowLeft, RefreshCcw } from 'lucide-react'
 import { usePathname } from '@/libs/hooks/usePathname'
+import { Bounce, ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import * as zod from 'zod'
+import { Form } from '@/components/Form'
+import { SinkronSchema } from '@/libs/schema'
+import clsx from 'clsx'
 
 export default function DetailPenghargaanPage() {
   const { firstPathname, secondPathname, thirdPathname } = usePathname()
@@ -27,6 +36,11 @@ export default function DetailPenghargaanPage() {
   const [isShow, setIsShow] = useState<boolean>(false)
   const [nama, setNama] = useState<string>('')
   const [uri, setUri] = useState<string>('')
+
+  const form = useForm<zod.infer<typeof SinkronSchema>>({
+    resolver: zodResolver(SinkronSchema),
+    defaultValues: {},
+  })
 
   // --- Data Utama ---
   const [kepegawaianUtamaHeader, setKepegawaianUtamaHeader] =
@@ -90,6 +104,65 @@ export default function DetailPenghargaanPage() {
     }
   }, [PenghargaanDetailData, idParams])
 
+  // --- Sinkron Penghargaan ---
+  const [
+    createSinkronPenghargaan,
+    {
+      isError: isErrorSinkronPenghargaan,
+      error: errorSinkronPenghargaan,
+      isLoading: isLoadingSinkronPenghargaan,
+      isSuccess: isSuccessSinkronPenghargaan,
+    },
+  ] = useCreateSinkronRiwayatPenghargaanMutation()
+
+  const handleSubmitPenghargaan = async () => {
+    try {
+      await createSinkronPenghargaan({
+        data: {
+          id_pegawai: idParams,
+        },
+      })
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
+  useEffect(() => {
+    if (isSuccessSinkronPenghargaan) {
+      toast.success('Data penghargaan berhasil disinkronkan', {
+        position: 'bottom-right',
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'light',
+        transition: Bounce,
+      })
+    }
+  }, [isSuccessSinkronPenghargaan])
+
+  useEffect(() => {
+    if (isErrorSinkronPenghargaan) {
+      const errorMsg = errorSinkronPenghargaan as {
+        data?: { message?: string }
+      }
+
+      toast.error(`${errorMsg?.data?.message ?? 'Terjadi Kesalahan'}`, {
+        position: 'bottom-right',
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'light',
+        transition: Bounce,
+      })
+    }
+  }, [isErrorSinkronPenghargaan, errorSinkronPenghargaan])
+
   return (
     <div className="flex flex-col gap-32">
       {isLoadingKepegawaianUtama ? (
@@ -109,7 +182,27 @@ export default function DetailPenghargaanPage() {
               <tr>
                 <th
                   className={`sticky top-0 w-[20%] border px-24 py-16 text-left align-middle text-sim-dark`}
-                ></th>
+                >
+                  <Form {...form}>
+                    <form onSubmit={form.handleSubmit(handleSubmitPenghargaan)}>
+                      <button
+                        type="submit"
+                        disabled={isLoadingSinkronPenghargaan}
+                        className="text-dark flex items-center gap-12 rounded-2xl border border-sim-dark px-24 py-12 text-[1.8rem] hover:cursor-pointer hover:border-transparent hover:bg-sim-dark hover:text-white"
+                      >
+                        Sinkron Data{' '}
+                        <span
+                          className={clsx('', {
+                            'animate-spin duration-300':
+                              isLoadingSinkronPenghargaan,
+                          })}
+                        >
+                          <RefreshCcw size={16} />
+                        </span>
+                      </button>
+                    </form>
+                  </Form>
+                </th>
                 <th
                   className={`sticky top-0 w-[40%] border bg-sim-pale-primary px-24 py-24 text-left align-middle text-sim-dark`}
                 >
@@ -240,6 +333,7 @@ export default function DetailPenghargaanPage() {
         uri={uri}
         nama={nama}
       />
+      <ToastContainer />
     </div>
   )
 }
