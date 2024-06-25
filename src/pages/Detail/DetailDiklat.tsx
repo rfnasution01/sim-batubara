@@ -9,16 +9,19 @@ import {
   useGetPNSRiwayatDiklatDetailQuery,
 } from '@/store/slices/kepegawaianAPI'
 import { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import 'react-toastify/dist/ReactToastify.css'
 import { ProfilPegawai } from '@/features/DetailPegawai'
 import Cookies from 'js-cookie'
 import { Loading } from '@/components/Loading'
 import { ModalShowFile } from '@/components/ModalComponent'
 import dayjs from 'dayjs'
+import { ArrowLeft } from 'lucide-react'
+import { usePathname } from '@/libs/hooks/usePathname'
 
 export default function DetailDiklatPage() {
   const navigate = useNavigate()
+  const { firstPathname, secondPathname, thirdPathname } = usePathname()
   const idParams = localStorage.getItem('pegawaiID')
   const idDiklat = localStorage.getItem('jabatanID')
   const [isShow, setIsShow] = useState<boolean>(false)
@@ -242,6 +245,15 @@ export default function DetailDiklatPage() {
               </tr>
             </tbody>
           </table>
+          <div className="flex justify-end">
+            <Link
+              to={`/${firstPathname}/${secondPathname}/${thirdPathname}`}
+              className="flex items-center gap-12 rounded-2xl border bg-sim-primary px-16 py-8 text-[2rem] text-white hover:bg-opacity-80"
+            >
+              <ArrowLeft size={16} />
+              Kembali ke halaman kepegawaian
+            </Link>
+          </div>
         </div>
       )}
       <ModalShowFile
