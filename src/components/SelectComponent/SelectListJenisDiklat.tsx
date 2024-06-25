@@ -9,9 +9,9 @@ import { cn } from '@/libs/helpers/utils'
 import { useEffect, useState } from 'react'
 import { UseFormReturn } from 'react-hook-form'
 import Select, { components } from 'react-select'
-import { JenisJabatanType } from '@/libs/type'
 import { customStyles } from '@/libs/variants/SelectProps'
-import { useGetJenisJabatanQuery } from '@/store/slices/referensiAPI'
+import { JenisJabatanType } from '@/libs/type'
+import { useGetJenisDiklatQuery } from '@/store/slices/referensiAPI'
 
 type inputProps = {
   placeholder: string
@@ -22,7 +22,7 @@ type inputProps = {
   className?: string
 }
 
-export function SelectListJenisJabatan({
+export function SelectListJenisDiklat({
   name,
   headerLabel,
   placeholder,
@@ -31,25 +31,23 @@ export function SelectListJenisJabatan({
   className,
 }: inputProps) {
   const [query, setQuery] = useState<string>(null)
-  const [listJenisJabatan, setListJenisJabatan] = useState<JenisJabatanType[]>(
-    [],
-  )
+  const [listJenisDiklat, setListJenisDiklat] = useState<JenisJabatanType[]>([])
 
-  const { data, isSuccess, isLoading, isFetching } = useGetJenisJabatanQuery()
+  const { data, isSuccess, isLoading, isFetching } = useGetJenisDiklatQuery()
 
   useEffect(() => {
     if (!isFetching) {
       if (data?.meta?.page > 1) {
-        setListJenisJabatan((prevData) => [...prevData, ...(data?.data ?? [])])
+        setListJenisDiklat((prevData) => [...prevData, ...(data?.data ?? [])])
       } else {
-        setListJenisJabatan([...(data?.data ?? [])])
+        setListJenisDiklat([...(data?.data ?? [])])
       }
     }
   }, [data])
 
-  let JenisJabatanOption = []
+  let JenisDiklatOption = []
   if (isSuccess) {
-    JenisJabatanOption = listJenisJabatan.map((item) => {
+    JenisDiklatOption = listJenisDiklat.map((item) => {
       return {
         value: item?.id,
         label: item?.nama,
@@ -147,9 +145,9 @@ export function SelectListJenisJabatan({
                     }),
                   }}
                   className={'text-[2rem]'}
-                  options={JenisJabatanOption}
+                  options={JenisDiklatOption}
                   value={
-                    JenisJabatanOption.filter(
+                    JenisDiklatOption.filter(
                       (item) => item.value === field.value,
                     )[0]
                   }
@@ -158,7 +156,7 @@ export function SelectListJenisJabatan({
                   onChange={(optionSelected) => {
                     field.onChange(optionSelected?.value)
                     useFormReturn.setValue(
-                      'jenisJabatanString',
+                      'latihanStrukturalIdString',
                       optionSelected?.label,
                     )
                   }}

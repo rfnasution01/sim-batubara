@@ -1,5 +1,4 @@
 import { Pagination } from '@/components/Pagination'
-import { Table } from '@/components/Table'
 import { columnsListDataPNS } from '@/libs/helpers/table'
 import { DataKepegawaianType, PageInfoType } from '@/libs/type'
 import { getFilterSlice } from '@/store/reducer/stateFilter'
@@ -8,6 +7,7 @@ import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import Cookies from 'js-cookie'
 import { useNavigate } from 'react-router-dom'
+import { TablePNS } from '@/components/TablePNS'
 
 export default function PNS() {
   const navigate = useNavigate()
@@ -66,7 +66,7 @@ export default function PNS() {
 
   return (
     <div className="flex h-full flex-col gap-32">
-      <Table
+      <TablePNS
         data={kepegawaianPNS}
         columns={columnsListDataPNS}
         containerClasses="w-full h-full"
@@ -74,6 +74,7 @@ export default function PNS() {
         isNumber
         pageSize={pageSize}
         currentPage={pageNumber}
+        isPegawaiPNS
       />
       <div className="flex items-center justify-end">
         {kepegawaianPNS?.length > 0 && (

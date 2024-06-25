@@ -62,13 +62,13 @@ export function Breadcrumb({ length }: { length: number }) {
                   },
                   {
                     'text-sim-primary': length <= 4,
-                    'text-sim-primary ': !(length <= 5),
+                    'text-sim-primary ': !(length >= 5),
                   },
                 )}
               >
                 Detail Data Pegawai
               </p>
-              {length === 5 && (
+              {length >= 5 && (
                 <>
                   <span>
                     <ChevronRight size={16} />

@@ -12,6 +12,10 @@ import {
   useCreateSinkronRiwayatJabatanMutation,
   useCreateSinkronRiwayatPendidikanMutation,
   useCreateSinkronRiwayatPenghargaanMutation,
+  useDeleteDiklatMutation,
+  useDeleteJabatanMutation,
+  useDeleteKursusMutation,
+  useDeletePenghargaanMutation,
   useGetKepegawaianPNSUtamaQuery,
 } from '@/store/slices/kepegawaianAPI'
 import { useEffect, useState } from 'react'
@@ -22,7 +26,7 @@ import { Bounce, ToastContainer, toast } from 'react-toastify'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as zod from 'zod'
-import { SinkronSchema } from '@/libs/schema'
+import { DeleteSchema, SinkronSchema } from '@/libs/schema'
 
 export default function DetailPegawaiLayoutMain() {
   const navigate = useNavigate()
@@ -32,6 +36,231 @@ export default function DetailPegawaiLayoutMain() {
     resolver: zodResolver(SinkronSchema),
     defaultValues: {},
   })
+
+  const formDelete = useForm<zod.infer<typeof DeleteSchema>>({
+    resolver: zodResolver(DeleteSchema),
+    defaultValues: {},
+  })
+
+  // --- Delete Jabatan ---
+  const [
+    deleteJabatan,
+    {
+      isSuccess: deleteJabatanSuccess,
+      isError: deleteJabatanIsError,
+      error: deleteJabatanError,
+      isLoading: deleteJabatanLoading,
+    },
+  ] = useDeleteJabatanMutation()
+
+  const handleDeleteJabatan = async (id: string) => {
+    try {
+      await deleteJabatan({
+        id: id,
+      })
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  useEffect(() => {
+    if (deleteJabatanSuccess) {
+      toast.success('Data berhasil di delete', {
+        position: 'bottom-right',
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'light',
+        transition: Bounce,
+      })
+    }
+  }, [deleteJabatanSuccess])
+
+  useEffect(() => {
+    if (deleteJabatanIsError) {
+      const errorMsg = deleteJabatanError as { data?: { message?: string } }
+
+      toast.error(`${errorMsg?.data?.message ?? 'Terjadi Kesalahan'}`, {
+        position: 'bottom-right',
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'light',
+        transition: Bounce,
+      })
+    }
+  }, [deleteJabatanIsError, deleteJabatanError])
+
+  // --- Delete Diklat ---
+  const [
+    deleteDiklat,
+    {
+      isSuccess: deleteDiklatSuccess,
+      isError: deleteDiklatIsError,
+      error: deleteDiklatError,
+      isLoading: deleteDiklatLoading,
+    },
+  ] = useDeleteDiklatMutation()
+
+  const handleDeleteDiklat = async (id: string) => {
+    try {
+      await deleteDiklat({
+        id: id,
+      })
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  useEffect(() => {
+    if (deleteDiklatSuccess) {
+      toast.success('Data berhasil di delete', {
+        position: 'bottom-right',
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'light',
+        transition: Bounce,
+      })
+    }
+  }, [deleteDiklatSuccess])
+
+  useEffect(() => {
+    if (deleteDiklatIsError) {
+      const errorMsg = deleteDiklatError as { data?: { message?: string } }
+
+      toast.error(`${errorMsg?.data?.message ?? 'Terjadi Kesalahan'}`, {
+        position: 'bottom-right',
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'light',
+        transition: Bounce,
+      })
+    }
+  }, [deleteDiklatIsError, deleteDiklatError])
+
+  // --- Delete Kursus ---
+  const [
+    deleteKursus,
+    {
+      isSuccess: deleteKursusSuccess,
+      isError: deleteKursusIsError,
+      error: deleteKursusError,
+      isLoading: deleteKursusLoading,
+    },
+  ] = useDeleteKursusMutation()
+
+  const handleDeleteKursus = async (id: string) => {
+    try {
+      await deleteKursus({
+        id: id,
+      })
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  useEffect(() => {
+    if (deleteKursusSuccess) {
+      toast.success('Data berhasil di delete', {
+        position: 'bottom-right',
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'light',
+        transition: Bounce,
+      })
+    }
+  }, [deleteKursusSuccess])
+
+  useEffect(() => {
+    if (deleteKursusIsError) {
+      const errorMsg = deleteKursusError as { data?: { message?: string } }
+
+      toast.error(`${errorMsg?.data?.message ?? 'Terjadi Kesalahan'}`, {
+        position: 'bottom-right',
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'light',
+        transition: Bounce,
+      })
+    }
+  }, [deleteKursusIsError, deleteKursusError])
+
+  // --- Delete Penghargaan ---
+  const [
+    deletePenghargaan,
+    {
+      isSuccess: deletePenghargaanSuccess,
+      isError: deletePenghargaanIsError,
+      error: deletePenghargaanError,
+      isLoading: deletePenghargaanLoading,
+    },
+  ] = useDeletePenghargaanMutation()
+
+  const handleDeletePenghargaan = async (id: string) => {
+    try {
+      await deletePenghargaan({
+        id: id,
+      })
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  useEffect(() => {
+    if (deletePenghargaanSuccess) {
+      toast.success('Data berhasil di delete', {
+        position: 'bottom-right',
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'light',
+        transition: Bounce,
+      })
+    }
+  }, [deletePenghargaanSuccess])
+
+  useEffect(() => {
+    if (deletePenghargaanIsError) {
+      const errorMsg = deletePenghargaanError as { data?: { message?: string } }
+
+      toast.error(`${errorMsg?.data?.message ?? 'Terjadi Kesalahan'}`, {
+        position: 'bottom-right',
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'light',
+        transition: Bounce,
+      })
+    }
+  }, [deletePenghargaanIsError, deletePenghargaanError])
 
   // --- Data Utama ---
   const [kepegawaianUtama, setKepegawaianUtama] =
@@ -43,7 +272,7 @@ export default function DetailPegawaiLayoutMain() {
     data: kepegawaianUtamaData,
     isLoading: kepegawaianUtamaIsLoading,
     isFetching: kepegawaianUtamaIsFetching,
-    error,
+    error: kepegawaianError,
   } = useGetKepegawaianPNSUtamaQuery(
     {
       id_pegawai: idParams,
@@ -59,7 +288,7 @@ export default function DetailPegawaiLayoutMain() {
       setKepegawaianUtama(kepegawaianUtamaData?.data)
       setKepegawaianUtamaHeader(kepegawaianUtamaData?.header)
     }
-    const errorMsg = error as {
+    const errorMsg = kepegawaianError as {
       data?: {
         message?: string
       }
@@ -72,7 +301,24 @@ export default function DetailPegawaiLayoutMain() {
       Cookies.remove('token')
       navigate('/login')
     }
-  }, [kepegawaianUtamaData, idParams, error])
+
+    if (
+      errorMsg?.data?.message.includes('Client error') ||
+      errorMsg?.data?.message.includes('Server error')
+    ) {
+      toast.error(`Terjadi Kesalahan di server BKN`, {
+        position: 'bottom-right',
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'light',
+        transition: Bounce,
+      })
+    }
+  }, [kepegawaianUtamaData, idParams, kepegawaianError])
 
   // --- Sinkron Data Utama ---
   const [
@@ -500,6 +746,7 @@ export default function DetailPegawaiLayoutMain() {
             handleSubmitDataUtama={handleSubmitDataUtama}
             isSinkronDataUtama={isLoadingSinkron}
             form={form}
+            formDelete={formDelete}
             handleSubmitRiwayatGolongan={handleSubmitRiwayatGolongan}
             isSinkronRiwayatGolongan={isLoadingSinkronRiwayatGolongan}
             handleSubmitRiwayatPendidikan={handleSubmitRiwayatPendidikan}
@@ -512,6 +759,14 @@ export default function DetailPegawaiLayoutMain() {
             isSinkronRiwayatDiklatLainnya={isLoadingSinkronRiwayatDiklatLainnya}
             handleSubmitRiwayatPenghargaan={handleSubmitPenghargaan}
             isSinkronRiwayatPenghargaan={isLoadingSinkronPenghargaan}
+            handleDeleteJabatan={handleDeleteJabatan}
+            isLoadingDeleteJabatan={deleteJabatanLoading}
+            handleDeleteDiklat={handleDeleteDiklat}
+            isLoadingDeleteDiklat={deleteDiklatLoading}
+            handleDeleteKursus={handleDeleteKursus}
+            isLoadingDeleteKursus={deleteKursusLoading}
+            handleDeletePenghargaan={handleDeletePenghargaan}
+            isLoadingDeletePenghargaan={deletePenghargaanLoading}
           />
         </>
       )}

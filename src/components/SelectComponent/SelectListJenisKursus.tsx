@@ -9,9 +9,9 @@ import { cn } from '@/libs/helpers/utils'
 import { useEffect, useState } from 'react'
 import { UseFormReturn } from 'react-hook-form'
 import Select, { components } from 'react-select'
-import { JenisJabatanType } from '@/libs/type'
 import { customStyles } from '@/libs/variants/SelectProps'
-import { useGetJenisJabatanQuery } from '@/store/slices/referensiAPI'
+import { useGetJenisKursusQuery } from '@/store/slices/referensiAPI'
+import { JenisJabatanType } from '@/libs/type'
 
 type inputProps = {
   placeholder: string
@@ -22,7 +22,7 @@ type inputProps = {
   className?: string
 }
 
-export function SelectListJenisJabatan({
+export function SelectListJenisKursus({
   name,
   headerLabel,
   placeholder,
@@ -31,25 +31,23 @@ export function SelectListJenisJabatan({
   className,
 }: inputProps) {
   const [query, setQuery] = useState<string>(null)
-  const [listJenisJabatan, setListJenisJabatan] = useState<JenisJabatanType[]>(
-    [],
-  )
+  const [listJenisKursus, setListJenisKursus] = useState<JenisJabatanType[]>([])
 
-  const { data, isSuccess, isLoading, isFetching } = useGetJenisJabatanQuery()
+  const { data, isSuccess, isLoading, isFetching } = useGetJenisKursusQuery()
 
   useEffect(() => {
     if (!isFetching) {
       if (data?.meta?.page > 1) {
-        setListJenisJabatan((prevData) => [...prevData, ...(data?.data ?? [])])
+        setListJenisKursus((prevData) => [...prevData, ...(data?.data ?? [])])
       } else {
-        setListJenisJabatan([...(data?.data ?? [])])
+        setListJenisKursus([...(data?.data ?? [])])
       }
     }
   }, [data])
 
-  let JenisJabatanOption = []
+  let JenisKursusOption = []
   if (isSuccess) {
-    JenisJabatanOption = listJenisJabatan.map((item) => {
+    JenisKursusOption = listJenisKursus.map((item) => {
       return {
         value: item?.id,
         label: item?.nama,
@@ -147,9 +145,9 @@ export function SelectListJenisJabatan({
                     }),
                   }}
                   className={'text-[2rem]'}
-                  options={JenisJabatanOption}
+                  options={JenisKursusOption}
                   value={
-                    JenisJabatanOption.filter(
+                    JenisKursusOption.filter(
                       (item) => item.value === field.value,
                     )[0]
                   }
@@ -158,7 +156,7 @@ export function SelectListJenisJabatan({
                   onChange={(optionSelected) => {
                     field.onChange(optionSelected?.value)
                     useFormReturn.setValue(
-                      'jenisJabatanString',
+                      'jenisKursusString',
                       optionSelected?.label,
                     )
                   }}

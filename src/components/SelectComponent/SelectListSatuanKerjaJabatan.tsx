@@ -141,7 +141,7 @@ export function SelectListSatuanKerjaJabatan({
         return (
           <FormItem
             className={cn(
-              'z-50 flex w-full flex-col gap-12 phones:flex-col phones:items-start phones:gap-12 phones:text-[2.4rem]',
+              'z-20 flex w-full flex-col gap-12 phones:flex-col phones:items-start phones:gap-12 phones:text-[2.4rem]',
               className,
             )}
           >
@@ -213,7 +213,17 @@ export function SelectListSatuanKerjaJabatan({
                   placeholder={placeholder ?? 'Pilih'}
                   onInputChange={search}
                   onChange={(optionSelected) => {
+                    console.log({ optionSelected })
+
                     field.onChange(optionSelected?.value)
+                    useFormReturn.setValue(
+                      'satuanKerjaString',
+                      optionSelected?.satker,
+                    )
+                    useFormReturn.setValue(
+                      'namaJabatanString',
+                      optionSelected?.label,
+                    )
                   }}
                   isDisabled={isDisabled}
                   isLoading={isFetching || isLoading}

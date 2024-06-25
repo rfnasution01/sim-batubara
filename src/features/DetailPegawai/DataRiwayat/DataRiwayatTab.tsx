@@ -1,5 +1,7 @@
+import { setStateDetailRiwayat } from '@/store/reducer/stateDetailRiwayat'
 import clsx from 'clsx'
 import { Dispatch, SetStateAction } from 'react'
+import { useDispatch } from 'react-redux'
 
 export function DataRiwayatTab({
   tab,
@@ -19,6 +21,8 @@ export function DataRiwayatTab({
     'PMK',
   ]
 
+  const dispatch = useDispatch()
+
   return (
     <div className="flex flex-col rounded-2x border">
       {riwayatMenu.map((item, idx) => (
@@ -26,6 +30,8 @@ export function DataRiwayatTab({
           key={idx}
           onClick={() => {
             setTab(item)
+            dispatch(setStateDetailRiwayat({ tab: item }))
+            localStorage.setItem('tabRiwayat', item)
           }}
           className={clsx(
             'w-[30rem] border-b p-24 hover:cursor-pointer hover:bg-sim-primary hover:text-white',

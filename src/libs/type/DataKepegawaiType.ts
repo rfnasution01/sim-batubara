@@ -74,6 +74,14 @@ export type DataKepegawaianUtamaParams = {
   id_pegawai: string
 }
 
+export type DataKepegawaianDetailParams = {
+  id: string
+}
+
+export type FileKepegawaianParams = {
+  dok_uri: string
+}
+
 export type PageInfoType = {
   last_page: number
   total: number
@@ -105,27 +113,70 @@ export type PendidikanType = {
 export type RiwayatJabatanType = {
   lokal: JabatanType[]
   siasn: JabatanType[]
+  last_update: string
 }
 
+export type JabatanDetailType = {
+  jenisJabatan: string
+  satuanKerja: string
+  namaJabatan: string
+  tmtJabatan: string
+  nomorSk: string
+  tanggalSk: string
+  tmtPelantikan: string
+  eselon: string
+  last_update: string
+  user_update: string
+  path: string
+}
+
+export type DiklatDetailType = {
+  id: string
+  latihanStrukturalNama: string
+  nomor: string
+  tahun: string
+  tanggal: string
+  tanggalSelesai: string
+  jumlahJam: string
+  institusiPenyelenggara: string
+  path: string
+  last_update: string
+  user_update: string
+}
 export type JabatanType = {
+  id: string
   jenisJabatan: string
   namaUnor: string
   namaJabatan: string
   tmtJabatan: string
   nomorSk: string
   tanggalSk: string
-  path: string
   tmtPelantikan: string
   dokumen: string
-  dokumenSK: string
+  dokumensk: string
+  path: string
+}
+
+export type PostDiklatType = {
+  jenisKursus: string
+  institusiPenyelenggara: string
+  noSertipikat: string
+  namaKursus: string
+  jam: string
+  tanggalKursus: string
+  tanggalSelesaiKursus: string
+  dokumen: string
+  path: string
 }
 
 export type RiwayatDiklatType = {
   lokal: DiklatType[]
   siasn: DiklatType[]
+  last_update: string
 }
 
 export type DiklatType = {
+  id: string
   latihanStrukturalNama: string
   tanggal: string
   tanggalSelesai: string
@@ -136,9 +187,11 @@ export type DiklatType = {
 export type RiwayatDiklatLainnyaType = {
   lokal: DiklatLainnyaType[]
   siasn: DiklatLainnyaType[]
+  last_update: string
 }
 
 export type DiklatLainnyaType = {
+  id: string
   jenisKursusSertifikat: string
   namaKursus: string
   tanggalKursus: string
@@ -147,12 +200,29 @@ export type DiklatLainnyaType = {
   path: string
 }
 
+export type KursusDetailType = {
+  id: string
+  jenisKursus: string
+  namaKursus: string
+  institusiPenyelenggara: string
+  jumlahJam: string
+  nomor: string
+  tahun: string
+  tanggal: string
+  tanggalSelesai: string
+  path: string
+  last_update: string
+  user_update: string
+}
+
 export type RiwayatPenghargaanType = {
   lokal: PenghargaanType[]
   siasn: PenghargaanType[]
+  last_update: string
 }
 
 export type PenghargaanType = {
+  id: string
   hargaNama: string
   tahun: string
   skNomor: string
@@ -168,4 +238,12 @@ export type DataSaveJabatanParams = {
   tmtJabatan: string
   nomorSk: string
   tanggalSk: string
+}
+
+export type PathFileType = {
+  dok_id: string
+  dok_nama: string
+  dok_uri: string
+  object: string
+  slug: string
 }

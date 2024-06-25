@@ -23,7 +23,7 @@ export function FormLabelInput({
   name: string
   prefix?: JSX.Element
   suffix?: JSX.Element
-  type?: 'text' | 'number' | 'password' | 'date' | 'file'
+  type?: 'text' | 'number' | 'password' | 'date' | 'file' | 'time'
   handlerClick?: () => void
   className?: string
   isDisabled?: boolean

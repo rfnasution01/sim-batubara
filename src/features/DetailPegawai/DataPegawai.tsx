@@ -1,9 +1,11 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { DataDetailPegawaiTab } from './DataPegawaiTab'
 import { DataRiwayatMain } from './DataRiwayat'
 import { DataUtamaMain } from './DataUtama'
 import { DataKepegawaianUtamaType } from '@/libs/type'
 import { UseFormReturn } from 'react-hook-form'
+import { useSelector } from 'react-redux'
+import { getDetailPegawaiSlice } from '@/store/reducer/stateDetailPegawai'
 
 export function DataDetailPegawai({
   data,
@@ -23,10 +25,20 @@ export function DataDetailPegawai({
   isSinkronRiwayatDiklat,
   isSinkronRiwayatDiklatLainnya,
   isSinkronRiwayatPenghargaan,
+  handleDeleteJabatan,
+  isLoadingDeleteJabatan,
+  formDelete,
+  handleDeleteDiklat,
+  isLoadingDeleteDiklat,
+  handleDeleteKursus,
+  handleDeletePenghargaan,
+  isLoadingDeleteKursus,
+  isLoadingDeletePenghargaan,
 }: {
   data: DataKepegawaianUtamaType
   idPegawai: string
   form: UseFormReturn
+  formDelete: UseFormReturn
   handleSubmitDataUtama: () => Promise<void>
   isSinkronDataUtama: boolean
   handleSubmitRiwayatGolongan: () => Promise<void>
@@ -41,23 +53,31 @@ export function DataDetailPegawai({
   isSinkronRiwayatDiklatLainnya: boolean
   handleSubmitRiwayatPenghargaan: () => Promise<void>
   isSinkronRiwayatPenghargaan: boolean
+  handleDeleteJabatan: (id: string) => Promise<void>
+  isLoadingDeleteJabatan: boolean
+  handleDeleteDiklat: (id: string) => Promise<void>
+  isLoadingDeleteDiklat: boolean
+  handleDeleteKursus: (id: string) => Promise<void>
+  isLoadingDeleteKursus: boolean
+  handleDeletePenghargaan: (id: string) => Promise<void>
+  isLoadingDeletePenghargaan: boolean
 }) {
-  // const stateTab = useSelector(getDetailPegawaiSlice)?.tab
+  const stateTab = useSelector(getDetailPegawaiSlice)?.tab
 
-  // useEffect(() => {
-  //   if (stateTab) {
-  //     setTab(stateTab)
-  //   }
-  // }, [stateTab])
+  useEffect(() => {
+    if (stateTab) {
+      setTab(stateTab)
+    }
+  }, [stateTab])
 
-  // const tabParams = localStorage.getItem('tab') ?? 'utama'
+  const tabParams = localStorage.getItem('tab') ?? 'utama'
 
-  const [tab, setTab] = useState<string>('utama')
+  const [tab, setTab] = useState<string>(tabParams ?? 'utama')
 
   const isIDPegawaiValid = data?.siasn?.ID === data?.lokal?.ID
 
   return (
-    <div className="flex flex-col gap-32 rounded-2x bg-white py-32">
+    <div className="flex flex-col gap-32 overflow-y-auto rounded-2x bg-white py-32 pb-96">
       <DataDetailPegawaiTab
         setTab={setTab}
         tab={tab}
@@ -74,6 +94,7 @@ export function DataDetailPegawai({
         <DataRiwayatMain
           idPegawai={idPegawai}
           form={form}
+          formDelete={formDelete}
           handleSubmitRiwayatGolongan={handleSubmitRiwayatGolongan}
           isSinkronRiwayatGolongan={isSinkronRiwayatGolongan}
           handleSubmitRiwayatPendidikan={handleSubmitRiwayatPendidikan}
@@ -86,6 +107,14 @@ export function DataDetailPegawai({
           isSinkronRiwayatDiklatLainnya={isSinkronRiwayatDiklatLainnya}
           handleSubmitRiwayatPenghargaan={handleSubmitRiwayatPenghargaan}
           isSinkronRiwayatPenghargaan={isSinkronRiwayatPenghargaan}
+          handleDeleteJabatan={handleDeleteJabatan}
+          isLoadingDeleteJabatan={isLoadingDeleteJabatan}
+          handleDeleteDiklat={handleDeleteDiklat}
+          handleDeleteKursus={handleDeleteKursus}
+          handleDeletePenghargaan={handleDeletePenghargaan}
+          isLoadingDeleteDiklat={isLoadingDeleteDiklat}
+          isLoadingDeleteKursus={isLoadingDeleteKursus}
+          isLoadingDeletePenghargaan={isLoadingDeletePenghargaan}
         />
       )}
     </div>

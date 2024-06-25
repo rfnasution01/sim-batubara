@@ -2,12 +2,19 @@ import { createBrowserRouter, redirect } from 'react-router-dom'
 import {
   ComingSoonPage,
   CustomLayoutMain,
+  DetailDiklatPage,
+  DetailJabatanPage,
+  DetailKursusPage,
   DetailPegawaiLayoutMain,
+  DetailPenghargaanPage,
   KepegawaianLayoutMain,
   LoginLayoutMain,
   PNSPage,
   RootLayoutMain,
-  TambahPage,
+  TambahDiklatPage,
+  TambahJabatanPage,
+  TambahKursusPage,
+  TambahPenghargaanPage,
 } from './loadables'
 import Cookies from 'js-cookie'
 
@@ -54,8 +61,36 @@ export const router = createBrowserRouter([
                 element: <DetailPegawaiLayoutMain />,
               },
               {
-                path: ':nama/:jenis/tambah',
-                element: <TambahPage />,
+                path: ':nama/jabatan/tambah',
+                element: <TambahJabatanPage />,
+              },
+              {
+                path: ':nama/diklat/tambah',
+                element: <TambahDiklatPage />,
+              },
+              {
+                path: ':nama/kursus/tambah',
+                element: <TambahKursusPage />,
+              },
+              {
+                path: ':nama/penghargaan/tambah',
+                element: <TambahPenghargaanPage />,
+              },
+              {
+                path: ':nama/jabatan/detail',
+                element: <DetailJabatanPage />,
+              },
+              {
+                path: ':nama/diklat/detail',
+                element: <DetailDiklatPage />,
+              },
+              {
+                path: ':nama/kursus/detail',
+                element: <DetailKursusPage />,
+              },
+              {
+                path: ':nama/penghargaan/detail',
+                element: <DetailPenghargaanPage />,
               },
             ],
           },

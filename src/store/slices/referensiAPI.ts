@@ -32,6 +32,24 @@ export const SatuanKerjaEndpoints = api.injectEndpoints({
         method: 'GET',
       }),
     }),
+    getJenisDiklat: builder.query<Res<JenisJabatanType[]>, void>({
+      query: () => ({
+        url: `referensi/jenis_diklat`,
+        method: 'GET',
+      }),
+    }),
+    getJenisKursus: builder.query<Res<JenisJabatanType[]>, void>({
+      query: () => ({
+        url: `referensi/jenis_kursus`,
+        method: 'GET',
+      }),
+    }),
+    getJenisPenghargaan: builder.query<Res<JenisJabatanType[]>, void>({
+      query: () => ({
+        url: `referensi/jenis_penghargaan`,
+        method: 'GET',
+      }),
+    }),
   }),
 })
 
@@ -40,4 +58,7 @@ export const {
   useGetGolonganQuery,
   useGetJenisJabatanQuery,
   useGetSatuanKerjaJabatanQuery,
+  useGetJenisDiklatQuery,
+  useGetJenisKursusQuery,
+  useGetJenisPenghargaanQuery,
 } = SatuanKerjaEndpoints

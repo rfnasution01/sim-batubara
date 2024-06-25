@@ -2,7 +2,7 @@
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as zod from 'zod'
-import { TambahSchema } from '@/libs/schema'
+import { TambahPenghargaanSchema } from '@/libs/schema'
 import {
   Form,
   FormControl,
@@ -14,32 +14,31 @@ import { DataKepegawaianUtamaHeaderType } from '@/libs/type'
 import { FormLabelInput, Input } from '@/components/InputComponent'
 import { Check, Loader2, Save, Upload } from 'lucide-react'
 import {
-  SelectListJenisJabatan,
-  SelectListSatuanKerjaJabatan,
-} from '@/components/SelectComponent'
-import {
-  useCreateSavaJabatanMutation,
+  useCreateSavaPenghargaanMutation,
   useGetKepegawaianPNSUtamaQuery,
 } from '@/store/slices/kepegawaianAPI'
 import { useEffect, useState } from 'react'
 import { Bounce, ToastContainer, toast } from 'react-toastify'
 import { useNavigate } from 'react-router-dom'
 import 'react-toastify/dist/ReactToastify.css'
+import { usePathname } from '@/libs/hooks/usePathname'
+import { convertSlugToText } from '@/libs/helpers/format-text'
 import clsx from 'clsx'
 import { ProfilPegawai } from '@/features/DetailPegawai'
 import Cookies from 'js-cookie'
 import { Loading } from '@/components/Loading'
-import { ModalShowKonfirmasiJabatan } from '@/components/ModalComponent'
+import { ModalShowKonfirmasiPenghargaan } from '@/components/ModalComponent/ModalKonfirmasiPenghargaan'
+import { SelectListJenisPenghargaan } from '@/components/SelectComponent'
 
-export default function TambahPage() {
+export default function TambahPenghargaanPage() {
   const navigate = useNavigate()
+  const { fourthPathname } = usePathname()
   const idParams = localStorage.getItem('pegawaiID')
   const [file, setFile] = useState<File>()
-  const [fileSK, setFileSK] = useState<File>()
   const [isShow, setIsShow] = useState<boolean>(false)
 
-  const form = useForm<zod.infer<typeof TambahSchema>>({
-    resolver: zodResolver(TambahSchema),
+  const form = useForm<zod.infer<typeof TambahPenghargaanSchema>>({
+    resolver: zodResolver(TambahPenghargaanSchema),
     defaultValues: {},
   })
 
@@ -82,40 +81,34 @@ export default function TambahPage() {
   }, [kepegawaianUtamaData, idParams, error])
 
   const [
-    createSaveJabatan,
+    createSavePenghargaan,
     {
-      isError: isErrorSaveJabatan,
-      error: errorSaveJabatan,
-      isLoading: isLoadingSaveJabatan,
-      isSuccess: isSuccessSaveJabatan,
+      isError: isErrorSavePenghargaan,
+      error: errorSavePenghargaan,
+      isLoading: isLoadingSavePenghargaan,
+      isSuccess: isSuccessSavePenghargaan,
     },
-  ] = useCreateSavaJabatanMutation()
+  ] = useCreateSavaPenghargaanMutation()
 
-  const handleSubmitJabatan = async () => {
+  const handleSubmitPenghargaan = async () => {
     const values = form.getValues()
 
     const formData = new FormData()
 
     formData.append('id_pegawai', idParams)
-    formData.append('id_jenis_jabatan', values?.jenisJabatan ?? '')
-    formData.append('id_jabatan', values?.namaUnor ?? '')
-    formData.append('tmt_pelantikan', values?.tmtPelantikan ?? '')
-    formData.append('tmt_jabatan', values?.tmtJabatan ?? '')
-    formData.append('nomor_sk_jabatan', values?.nomorSk ?? '')
-    formData.append('tanggal_sk_jabatan', values?.tanggalSk ?? '')
+    formData.append('hargaId', values?.hargaId ?? '')
+    formData.append('skDate', values?.skDate ?? '')
+    formData.append('skNomor', values?.skNomor ?? '')
+    formData.append('tahun', values?.tahun ?? '')
 
     if (file) {
       formData.append('dokumen', file)
     }
 
-    if (fileSK) {
-      formData.append('dokumensk', fileSK)
-    }
-
     console.log(...formData.entries())
 
     try {
-      const res = await createSaveJabatan({
+      const res = await createSavePenghargaan({
         data: formData,
       })
 
@@ -126,7 +119,7 @@ export default function TambahPage() {
   }
 
   useEffect(() => {
-    if (isSuccessSaveJabatan) {
+    if (isSuccessSavePenghargaan) {
       toast.success('Data berhasil di simpan', {
         position: 'bottom-right',
         autoClose: 3000,
@@ -139,14 +132,14 @@ export default function TambahPage() {
         transition: Bounce,
       })
       setTimeout(() => {
-        navigate(`/kepegawaian/pns/${idParams}/jabatan/detail`)
+        navigate(`/kepegawaian/pns/${idParams}/penghargaan/detail`)
       }, 3000)
     }
-  }, [isSuccessSaveJabatan])
+  }, [isSuccessSavePenghargaan])
 
   useEffect(() => {
-    if (isErrorSaveJabatan) {
-      const errorMsg = errorSaveJabatan as { data?: { message?: string } }
+    if (isErrorSavePenghargaan) {
+      const errorMsg = errorSavePenghargaan as { data?: { message?: string } }
 
       toast.error(`${errorMsg?.data?.message ?? 'Terjadi Kesalahan'}`, {
         position: 'bottom-right',
@@ -160,7 +153,7 @@ export default function TambahPage() {
         transition: Bounce,
       })
     }
-  }, [isErrorSaveJabatan, errorSaveJabatan])
+  }, [isErrorSavePenghargaan, errorSavePenghargaan])
 
   return (
     <div className="flex flex-col gap-32">
@@ -171,85 +164,65 @@ export default function TambahPage() {
       )}
       <Form {...form}>
         <form
-          onSubmit={form.handleSubmit(handleSubmitJabatan)}
+          onSubmit={form.handleSubmit(handleSubmitPenghargaan)}
           className="flex flex-col gap-32 rounded-3x bg-white p-32"
         >
-          <p className="text-[2.8rem] font-bold">Tambah Data Riwayat Jabatan</p>
+          <p className="text-[2.8rem] font-bold">
+            Tambah Data Riwayat {convertSlugToText(fourthPathname)}
+          </p>
           <div className="flex flex-col gap-32 rounded-3x border bg-white p-32">
-            <SelectListJenisJabatan
-              useFormReturn={form}
-              name="jenisJabatan"
-              headerLabel="Jenis Jabatan"
-              placeholder="Pilih Jenis Jabatan"
-              className="w-1/2 phones:w-full"
-              isDisabled={isLoadingSaveJabatan}
-            />
-            <hr className="w-full border" />
-
-            <SelectListSatuanKerjaJabatan
-              useFormReturn={form}
-              name="namaUnor"
-              headerLabel="Unit Organisasi"
-              placeholder="Pilih Satuan Kerja"
-              className="w-1/2 phones:w-full"
-              isDisabled={isLoadingSaveJabatan}
-            />
+            <div className="flex items-center gap-32">
+              <SelectListJenisPenghargaan
+                useFormReturn={form}
+                name="hargaId"
+                headerLabel="Jenis Penghargaan"
+                placeholder="Pilih Jenis Penghargaan"
+                className="w-1/2 phones:w-full"
+                isDisabled={isLoadingSavePenghargaan}
+              />
+            </div>
 
             <div className="flex items-center gap-32">
               <FormLabelInput
-                name="nomorSk"
+                name="tahun"
+                form={form}
+                label="Tahun Perolehan"
+                placeholder="Masukkan Tahun Perolehan"
+                className="text-sim-dark"
+                type="text"
+                isNumber
+                isDisabled={isLoadingSavePenghargaan}
+              />
+              <FormLabelInput
+                name="skNomor"
                 form={form}
                 label="Nomor SK"
                 placeholder="Masukkan Nomor SK"
                 className="text-sim-dark"
                 type="text"
-                isDisabled={isLoadingSaveJabatan}
-              />
-              <FormLabelInput
-                name="tanggalSk"
-                form={form}
-                label="Tanggal SK"
-                placeholder="Masukkan Tanggal SK"
-                className="text-sim-dark"
-                type="date"
-                isDisabled={isLoadingSaveJabatan}
+                isDisabled={isLoadingSavePenghargaan}
               />
             </div>
-
-            <hr className="w-full border" />
 
             <div className="flex items-center gap-32">
               <FormLabelInput
-                name="tmtJabatan"
+                name="skDate"
                 form={form}
-                label="TMT Jabatan"
-                placeholder="Masukkan TMT Jabatan"
-                className="text-sim-dark"
+                label="Tanggal SK"
+                placeholder="Masukkan Tanggal SK"
+                className="w-1/2 text-sim-dark phones:w-full"
                 type="date"
-                isDisabled={isLoadingSaveJabatan}
+                isDisabled={isLoadingSavePenghargaan}
               />
-
-              <FormLabelInput
-                name="tmtPelantikan"
-                form={form}
-                label="TMT Pelantikan"
-                placeholder="Masukkan TMT Pelantikan"
-                className="text-sim-dark"
-                type="date"
-                isDisabled={isLoadingSaveJabatan}
-              />
-            </div>
-
-            <div className="flex gap-32">
               <FormField
                 name="dokumen"
                 control={form.control}
                 render={({ field }) => (
-                  <FormItem className="w-full">
+                  <FormItem className="w-1/2 phones:w-full">
                     <FormControl>
                       <div className="flex flex-col gap-8">
                         <p>
-                          Dokumen SK Jabatan (
+                          Dokumen SK Penghargaan (
                           <span className="text-[1.6rem] text-danger">
                             *PDF
                           </span>
@@ -262,7 +235,7 @@ export default function TambahPage() {
                           type="file"
                           value={''}
                           accept=".pdf"
-                          disabled={isLoadingSaveJabatan}
+                          disabled={isLoadingSavePenghargaan}
                           placeholder="Lampiran"
                           onChange={(e) => {
                             if (e.target.files[0] != null) {
@@ -307,74 +280,6 @@ export default function TambahPage() {
                   </FormItem>
                 )}
               />
-
-              <FormField
-                name="dokumensk"
-                control={form.control}
-                render={({ field }) => (
-                  <FormItem className="w-full">
-                    <FormControl>
-                      <div className="flex flex-col gap-8">
-                        <p>
-                          Dokumen SK Pelantikan (
-                          <span className="text-[1.6rem] text-danger">
-                            *PDF
-                          </span>
-                          )
-                        </p>
-                        <Input
-                          className="absolute w-full overflow-hidden opacity-0"
-                          {...field}
-                          id="berkassk"
-                          type="file"
-                          value={''}
-                          accept=".pdf"
-                          disabled={isLoadingSaveJabatan}
-                          placeholder="Lampiran"
-                          onChange={(e) => {
-                            if (e.target.files[0] != null) {
-                              setFileSK(e.target.files[0])
-                            }
-                          }}
-                        />
-                        <div
-                          className={clsx(
-                            'flex w-full gap-12 phones:flex-col',
-                            {
-                              'items-center': !fileSK?.name,
-                            },
-                          )}
-                        >
-                          <div className="">
-                            <label
-                              className={clsx(
-                                'flex items-center gap-12 rounded-2xl border px-16 py-8 hover:cursor-pointer phones:w-full',
-                                {
-                                  'bg-sim-dark text-white': fileSK?.name,
-                                  'border-sim-dark text-sim-dark ':
-                                    !fileSK?.name,
-                                },
-                              )}
-                              htmlFor="berkassk"
-                            >
-                              <span>
-                                <Upload size={12} />
-                              </span>
-                              Upload
-                            </label>
-                          </div>
-                          {fileSK?.name ? (
-                            <p>{fileSK?.name}</p>
-                          ) : (
-                            <p className="text-sim-pale-grey">Belum ada file</p>
-                          )}
-                        </div>
-                      </div>
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
             </div>
           </div>
 
@@ -390,17 +295,17 @@ export default function TambahPage() {
               Simpan
             </button>
           </div>
-          <ModalShowKonfirmasiJabatan
+          <ModalShowKonfirmasiPenghargaan
             isOpen={isShow}
             setIsOpen={setIsShow}
             children={
               <button
                 type="submit"
-                onClick={handleSubmitJabatan}
-                disabled={isLoadingSaveJabatan}
+                onClick={handleSubmitPenghargaan}
+                disabled={isLoadingSavePenghargaan}
                 className="flex items-center gap-12 rounded-2xl bg-sim-primary px-24 py-12 text-white hover:bg-opacity-80 disabled:cursor-not-allowed"
               >
-                {isLoadingSaveJabatan ? (
+                {isLoadingSavePenghargaan ? (
                   <div className="animate-spin duration-300">
                     <Loader2 size={16} />
                   </div>
@@ -412,7 +317,6 @@ export default function TambahPage() {
             }
             form={form}
             file={file?.name}
-            fileSk={fileSK?.name}
           />
         </form>
       </Form>

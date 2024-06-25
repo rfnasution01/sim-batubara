@@ -1,6 +1,6 @@
 import { Searching } from '@/components/Search'
 import { AlignJustify, X } from 'lucide-react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { DataRiwayatTab } from './DataRiwayatTab'
 import { ComingSoonPage } from '@/routes/loadables'
 import {
@@ -12,6 +12,8 @@ import {
   TableDataPenghargaan,
 } from '@/components/TableComponent'
 import { UseFormReturn } from 'react-hook-form'
+import { useSelector } from 'react-redux'
+import { getDetailRiwayatSlice } from '@/store/reducer/stateDetailRiwayat'
 
 export function DataRiwayatMain({
   idPegawai,
@@ -28,9 +30,19 @@ export function DataRiwayatMain({
   isSinkronRiwayatDiklat,
   isSinkronRiwayatDiklatLainnya,
   isSinkronRiwayatPenghargaan,
+  formDelete,
+  handleDeleteJabatan,
+  isLoadingDeleteJabatan,
+  handleDeleteDiklat,
+  handleDeleteKursus,
+  handleDeletePenghargaan,
+  isLoadingDeleteDiklat,
+  isLoadingDeleteKursus,
+  isLoadingDeletePenghargaan,
 }: {
   idPegawai: string
   form: UseFormReturn
+  formDelete: UseFormReturn
   handleSubmitRiwayatGolongan: () => Promise<void>
   isSinkronRiwayatGolongan: boolean
   handleSubmitRiwayatPendidikan: () => Promise<void>
@@ -43,9 +55,27 @@ export function DataRiwayatMain({
   isSinkronRiwayatDiklatLainnya: boolean
   handleSubmitRiwayatPenghargaan: () => Promise<void>
   isSinkronRiwayatPenghargaan: boolean
+  handleDeleteJabatan: (id: string) => Promise<void>
+  isLoadingDeleteJabatan: boolean
+  handleDeleteDiklat: (id: string) => Promise<void>
+  isLoadingDeleteDiklat: boolean
+  handleDeleteKursus: (id: string) => Promise<void>
+  isLoadingDeleteKursus: boolean
+  handleDeletePenghargaan: (id: string) => Promise<void>
+  isLoadingDeletePenghargaan: boolean
 }) {
   const [isShow, setIsShow] = useState<boolean>(true)
-  const [tab, setTab] = useState<string>('Golongan & Pangkat')
+
+  const stateTab = useSelector(getDetailRiwayatSlice)?.tab
+
+  useEffect(() => {
+    if (stateTab) {
+      setTab(stateTab)
+    }
+  }, [stateTab])
+
+  const tabParams = localStorage.getItem('tabRiwayat') ?? 'Golongan & Pangkat'
+  const [tab, setTab] = useState<string>(tabParams ?? 'Golongan & Pangkat')
 
   return (
     <div className="flex w-full gap-32 px-32">
@@ -90,6 +120,9 @@ export function DataRiwayatMain({
             isSinkronriwayatJabatan={isSinkronRiwayatJabatan}
             form={form}
             idPegawai={idPegawai}
+            handleDeleteJabatan={handleDeleteJabatan}
+            formDelete={formDelete}
+            isLoadingDeleteJabatan={isLoadingDeleteJabatan}
           />
         ) : tab === 'Diklat Struktural' ? (
           <TableDataDiklat
@@ -97,6 +130,9 @@ export function DataRiwayatMain({
             isSinkronriwayatDiklat={isSinkronRiwayatDiklat}
             form={form}
             idPegawai={idPegawai}
+            handleDeleteDiklat={handleDeleteDiklat}
+            isLoadingDeleteDiklat={isLoadingDeleteDiklat}
+            formDelete={formDelete}
           />
         ) : tab === 'Diklat Lainnya' ? (
           <TableDataDiklatLainnya
@@ -104,6 +140,9 @@ export function DataRiwayatMain({
             isSinkronriwayatDiklatLainnya={isSinkronRiwayatDiklatLainnya}
             form={form}
             idPegawai={idPegawai}
+            handleDeleteKursus={handleDeleteKursus}
+            isLoadingDeleteKursus={isLoadingDeleteKursus}
+            formDelete={formDelete}
           />
         ) : tab === 'Penghargaan' ? (
           <TableDataPenghargaan
@@ -111,6 +150,9 @@ export function DataRiwayatMain({
             handleSubmitriwayatPenghargaan={handleSubmitRiwayatPenghargaan}
             form={form}
             idPegawai={idPegawai}
+            handleDeletePenghargaan={handleDeletePenghargaan}
+            isLoadingDeletePenghargaan={isLoadingDeletePenghargaan}
+            formDelete={formDelete}
           />
         ) : (
           <ComingSoonPage />
