@@ -108,7 +108,9 @@ export function TableDataPendidikan({
                       {item?.pendidikanNama ?? '-'}
                     </td>
                     <td className="border px-24 py-12 align-middle leading-medium">
-                      {riwayatPendidikan?.lokal?.[idx]?.pendidikanNama ?? '-'}
+                      {riwayatPendidikan?.lokal?.find(
+                        (list) => list?.id === item?.id,
+                      )?.pendidikanNama ?? '-'}
                     </td>
                   </tr>
                   <tr className="transition-all ease-in hover:cursor-pointer">
@@ -119,7 +121,9 @@ export function TableDataPendidikan({
                       {item?.tglLulus ?? '-'}
                     </td>
                     <td className="border px-24 py-12 align-middle leading-medium">
-                      {riwayatPendidikan?.lokal?.[idx]?.tglLulus ?? '-'}
+                      {riwayatPendidikan?.lokal?.find(
+                        (list) => list?.id === item?.id,
+                      )?.tglLulus ?? '-'}
                     </td>
                   </tr>
                   <tr className="transition-all ease-in hover:cursor-pointer">
@@ -130,7 +134,9 @@ export function TableDataPendidikan({
                       {item?.nomorIjasah ?? '-'}
                     </td>
                     <td className="border px-24 py-12 align-middle leading-medium">
-                      {riwayatPendidikan?.lokal?.[idx]?.nomorIjasah ?? '-'}
+                      {riwayatPendidikan?.lokal?.find(
+                        (list) => list?.id === item?.id,
+                      )?.nomorIjasah ?? '-'}
                     </td>
                   </tr>
                   <tr className="transition-all ease-in hover:cursor-pointer">
@@ -141,7 +147,9 @@ export function TableDataPendidikan({
                       {item?.namaSekolah ?? '-'}
                     </td>
                     <td className="border px-24 py-12 align-middle leading-medium">
-                      {riwayatPendidikan?.lokal?.[idx]?.namaSekolah ?? '-'}
+                      {riwayatPendidikan?.lokal?.find(
+                        (list) => list?.id === item?.id,
+                      )?.namaSekolah ?? '-'}
                     </td>
                   </tr>
                   <tr className="transition-all ease-in hover:cursor-pointer">
@@ -152,7 +160,9 @@ export function TableDataPendidikan({
                       {item?.gelarDepan ?? '-'}
                     </td>
                     <td className="border px-24 py-12 align-middle leading-medium">
-                      {riwayatPendidikan?.lokal?.[idx]?.gelarDepan ?? '-'}
+                      {riwayatPendidikan?.lokal?.find(
+                        (list) => list?.id === item?.id,
+                      )?.gelarDepan ?? '-'}
                     </td>
                   </tr>
                   <tr className="transition-all ease-in hover:cursor-pointer">
@@ -163,7 +173,9 @@ export function TableDataPendidikan({
                       {item?.gelarBelakang ?? '-'}
                     </td>
                     <td className="border px-24 py-12 align-middle leading-medium">
-                      {riwayatPendidikan?.lokal?.[idx]?.gelarBelakang ?? '-'}
+                      {riwayatPendidikan?.lokal?.find(
+                        (list) => list?.id === item?.id,
+                      )?.gelarBelakang ?? '-'}
                     </td>
                   </tr>
                   {idx < riwayatPendidikan.siasn.length - 1 && (

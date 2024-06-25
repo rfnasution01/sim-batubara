@@ -104,6 +104,7 @@ export type RiwayatGolonganType = {
 }
 
 type GolonganType = {
+  id: string
   golongan: string
   pangkat: string
 }
@@ -113,6 +114,7 @@ export type RiwayatPendidikanType = {
 }
 
 export type PendidikanType = {
+  id: string
   pendidikanNama: string
   tglLulus: string
   nomorIjasah: string

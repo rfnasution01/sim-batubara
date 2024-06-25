@@ -118,7 +118,11 @@ export function TableDataGolongan({
                   {/* Kolom ketiga (lokal) */}
                   {idx < riwayatGolongan?.lokal?.length ? (
                     <td className="border px-24 py-12 align-middle leading-medium">
-                      {riwayatGolongan?.lokal?.[idx]?.golongan}
+                      {
+                        riwayatGolongan?.lokal?.find(
+                          (list) => list?.id === item?.id,
+                        )?.golongan
+                      }
                     </td>
                   ) : idx === 0 ? (
                     <td
