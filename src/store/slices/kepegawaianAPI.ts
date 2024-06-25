@@ -9,7 +9,7 @@ import {
   FileKepegawaianParams,
   JabatanDetailType,
   KursusDetailType,
-  PenghargaanType,
+  PenghargaanDetailType,
   RiwayatDiklatLainnyaType,
   RiwayatDiklatType,
   RiwayatGolonganType,
@@ -139,6 +139,21 @@ export const KepegawaianEndpoints = api.injectEndpoints({
         { type: 'riwayat-jabatan', id: id_pegawai },
       ],
     }),
+    getPNSRiwayatPindahInstansi: builder.query<
+      Res<RiwayatJabatanType>,
+      DataKepegawaianUtamaParams
+    >({
+      query: ({ id_pegawai }) => ({
+        url: `kepegawaian/pns_detail/riwayat/pindahinstansi`,
+        method: 'GET',
+        params: {
+          id_pegawai: id_pegawai,
+        },
+      }),
+      providesTags: (_res, _err, { id_pegawai }) => [
+        { type: 'pindah-instansi', id: id_pegawai },
+      ],
+    }),
     getPNSRiwayatJabatanDetail: builder.query<
       Res<JabatanDetailType>,
       DataKepegawaianDetailParams
@@ -181,7 +196,7 @@ export const KepegawaianEndpoints = api.injectEndpoints({
       providesTags: (_res, _err, { id }) => [{ type: 'detail-kursus', id: id }],
     }),
     getPNSRiwayatPenghargaanDetail: builder.query<
-      Res<PenghargaanType>,
+      Res<PenghargaanDetailType>,
       DataKepegawaianDetailParams
     >({
       query: ({ id }) => ({
@@ -275,7 +290,7 @@ export const KepegawaianEndpoints = api.injectEndpoints({
     }),
     getDokumenKepegawaian: builder.query<File, FileKepegawaianParams>({
       query: ({ dok_uri }) => ({
-        url: `kepegawaian/dokumen1_download`,
+        url: `kepegawaian/dokumen_download`,
         method: 'GET',
         params: {
           dok_uri: dok_uri,
@@ -400,4 +415,5 @@ export const {
   useDeletePenghargaanMutation,
   useGetPNSRiwayatKursusDetailQuery,
   useGetPNSRiwayatPenghargaanDetailQuery,
+  useGetPNSRiwayatPindahInstansiQuery,
 } = KepegawaianEndpoints

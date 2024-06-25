@@ -24,6 +24,7 @@ export const LoginEndpoints = api.injectEndpoints({
         'detail-kursus',
         'detail-diklat',
         'detail-penghargaan',
+        'pindah-instansi',
       ],
     }),
   }),

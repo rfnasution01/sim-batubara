@@ -155,6 +155,17 @@ export function DataRiwayatMain({
             formDelete={formDelete}
           />
         ) : (
+          // : tab === 'Pindah Instansi' ? (
+          //   <TableDataPindahInstansi
+          //     isSinkronriwayatPindahInstansi={isSinkronRiwayatPenghargaan}
+          //     handleSubmitriwayatPindahInstansi={handleSubmitRiwayatPenghargaan}
+          //     form={form}
+          //     idPegawai={idPegawai}
+          //     handleDeletePindahInstansi={handleDeletePenghargaan}
+          //     isLoadingDeletePindahInstansi={isLoadingDeletePenghargaan}
+          //     formDelete={formDelete}
+          //   />
+          // )
           <ComingSoonPage />
         )}
       </div>

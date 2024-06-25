@@ -29,6 +29,7 @@ export function TableDataDiklat({
   isLoadingDeleteDiklat: boolean
 }) {
   const navigate = useNavigate()
+  const idParams = localStorage.getItem('pegawaiID')
   const [riwayatDiklat, setRiwayatDiklat] = useState<RiwayatDiklatType>()
   const [isShow, setIsShow] = useState<boolean>(false)
   const [isShowDelete, setIsShowDelete] = useState<boolean>(false)
@@ -129,7 +130,7 @@ export function TableDataDiklat({
                           Nama Diklat
                         </th>
                         <td className="border px-24 py-12 align-middle leading-medium">
-                          <div className="flex items-center gap-16">
+                          <div className="flex flex-wrap items-center gap-16">
                             <p> {item?.latihanStrukturalNama ?? '-'}</p>
                             <button
                               type="submit"
@@ -137,10 +138,19 @@ export function TableDataDiklat({
                                 setId(item?.id)
                                 setIsShowDelete(true)
                               }}
-                              className="rounded-2xl border border-sim-dark px-16 py-8 text-[2rem] text-sim-dark hover:bg-sim-dark hover:text-white"
+                              className="text-nowrap rounded-2xl border border-sim-dark px-16 py-8 text-[2rem] text-sim-dark hover:bg-sim-dark hover:text-white"
                             >
                               Hapus Data
                             </button>
+                            <Link
+                              to={`/kepegawaian/pns/${idParams}/jabatan/detail`}
+                              onClick={() => {
+                                localStorage.setItem('jabatanID', item?.id)
+                              }}
+                              className="rounded-2xl border border-warning px-16 py-8 text-[2rem] text-warning hover:bg-warning hover:text-white"
+                            >
+                              Detail
+                            </Link>
                           </div>
                         </td>
                         <td className="border px-24 py-12 align-middle leading-medium">

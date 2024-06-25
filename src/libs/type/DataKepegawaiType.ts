@@ -70,6 +70,17 @@ export type DataKepegawaianUtamaHeaderType = {
   photo: string
 }
 
+export type PenghargaanDetailType = {
+  id: string
+  tahun: string
+  nomor: string
+  tanggal: string
+  nama: string
+  path: string
+  last_update: string
+  user_update: string
+}
+
 export type DataKepegawaianUtamaParams = {
   id_pegawai: string
 }

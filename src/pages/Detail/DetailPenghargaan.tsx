@@ -2,7 +2,7 @@
 import {
   DataKepegawaianUtamaHeaderType,
   PathFileType,
-  PenghargaanType,
+  PenghargaanDetailType,
 } from '@/libs/type'
 import {
   useGetKepegawaianPNSUtamaQuery,
@@ -64,7 +64,7 @@ export default function DetailPenghargaanPage() {
 
   // --- Detail ---
   const [kepegawaianPenghargaanDetail, setKepegawaianPenghargaanDetail] =
-    useState<PenghargaanType>()
+    useState<PenghargaanDetailType>()
 
   const {
     data: PenghargaanDetailData,
@@ -135,7 +135,7 @@ export default function DetailPenghargaanPage() {
                   Nama Penghargaan
                 </th>
                 <td className="border px-24 py-12 align-middle leading-medium">
-                  {kepegawaianPenghargaanDetail?.hargaNama ?? '-'}
+                  {kepegawaianPenghargaanDetail?.nama ?? '-'}
                 </td>
               </tr>
               <tr className="transition-all ease-in hover:cursor-pointer">
@@ -143,7 +143,7 @@ export default function DetailPenghargaanPage() {
                   Nomor SK
                 </th>
                 <td className="border px-24 py-12 align-middle leading-medium">
-                  {kepegawaianPenghargaanDetail?.skNomor ?? '-'}
+                  {kepegawaianPenghargaanDetail?.nomor ?? '-'}
                 </td>
               </tr>
               <tr className="transition-all ease-in hover:cursor-pointer">
@@ -151,7 +151,7 @@ export default function DetailPenghargaanPage() {
                   Tanggal SK
                 </th>
                 <td className="border px-24 py-12 align-middle leading-medium">
-                  {kepegawaianPenghargaanDetail?.skDate ?? '-'}
+                  {kepegawaianPenghargaanDetail?.tanggal ?? '-'}
                 </td>
               </tr>
               <tr className="transition-all ease-in hover:cursor-pointer">
