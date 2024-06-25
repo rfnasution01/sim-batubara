@@ -145,7 +145,7 @@ export function TableDataPenghargaan({
                               Hapus Data
                             </button>
                             <Link
-                              to={`/kepegawaian/pns/${idParams}/jabatan/detail`}
+                              to={`/kepegawaian/pns/${idParams}/penghargaan/detail`}
                               onClick={() => {
                                 localStorage.setItem('jabatanID', item?.id)
                               }}

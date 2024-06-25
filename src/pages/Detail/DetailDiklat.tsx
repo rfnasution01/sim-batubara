@@ -109,6 +109,11 @@ export default function DetailDiklatPage() {
                 >
                   Data SIASN BKN
                 </th>
+                <th
+                  className={`sticky top-0 w-[40%] border bg-sim-pale-primary px-24 py-24 text-left align-middle text-sim-dark`}
+                >
+                  Data SIMPEG Batu Bara
+                </th>
               </tr>
             </thead>
             <tbody>
@@ -117,7 +122,10 @@ export default function DetailDiklatPage() {
                   Jenis Diklat
                 </th>
                 <td className="border px-24 py-12 align-middle leading-medium">
-                  {kepegawaianDiklatDetail?.latihanStrukturalNama}
+                  {kepegawaianDiklatDetail?.siasn.latihanStrukturalNama}
+                </td>
+                <td className="border px-24 py-12 align-middle leading-medium">
+                  {kepegawaianDiklatDetail?.lokal.latihanStrukturalNama}
                 </td>
               </tr>
               <tr className="transition-all ease-in hover:cursor-pointer">
@@ -125,7 +133,10 @@ export default function DetailDiklatPage() {
                   Tanggal Mulai
                 </th>
                 <td className="border px-24 py-12 align-middle leading-medium">
-                  {kepegawaianDiklatDetail?.tanggal}
+                  {kepegawaianDiklatDetail?.siasn?.tanggal}
+                </td>
+                <td className="border px-24 py-12 align-middle leading-medium">
+                  {kepegawaianDiklatDetail?.lokal?.tanggal}
                 </td>
               </tr>
               <tr className="transition-all ease-in hover:cursor-pointer">
@@ -134,7 +145,10 @@ export default function DetailDiklatPage() {
                 </th>
 
                 <td className="border px-24 py-12 align-middle leading-medium">
-                  {kepegawaianDiklatDetail?.tanggalSelesai}
+                  {kepegawaianDiklatDetail?.siasn?.tanggalSelesai}
+                </td>
+                <td className="border px-24 py-12 align-middle leading-medium">
+                  {kepegawaianDiklatDetail?.lokal?.tanggalSelesai}
                 </td>
               </tr>
               <tr className="transition-all ease-in hover:cursor-pointer">
@@ -143,7 +157,10 @@ export default function DetailDiklatPage() {
                 </th>
 
                 <td className="border px-24 py-12 align-middle leading-medium">
-                  {kepegawaianDiklatDetail?.jumlahJam} Jam
+                  {kepegawaianDiklatDetail?.siasn?.jumlahJam} Jam
+                </td>
+                <td className="border px-24 py-12 align-middle leading-medium">
+                  {kepegawaianDiklatDetail?.lokal?.jumlahJam} Jam
                 </td>
               </tr>
               <tr className="transition-all ease-in hover:cursor-pointer">
@@ -151,7 +168,10 @@ export default function DetailDiklatPage() {
                   Nomor SK
                 </th>
                 <td className="border px-24 py-12 align-middle leading-medium">
-                  {kepegawaianDiklatDetail?.nomor}
+                  {kepegawaianDiklatDetail?.siasn?.nomor}
+                </td>
+                <td className="border px-24 py-12 align-middle leading-medium">
+                  {kepegawaianDiklatDetail?.lokal?.nomor}
                 </td>
               </tr>
               <tr className="transition-all ease-in hover:cursor-pointer">
@@ -159,14 +179,20 @@ export default function DetailDiklatPage() {
                   Penyelenggara
                 </th>
                 <td className="border px-24 py-12 align-middle leading-medium">
-                  {kepegawaianDiklatDetail?.institusiPenyelenggara}
+                  {kepegawaianDiklatDetail?.siasn?.institusiPenyelenggara}
+                </td>
+                <td className="border px-24 py-12 align-middle leading-medium">
+                  {kepegawaianDiklatDetail?.lokal?.institusiPenyelenggara}
                 </td>
               </tr>
               <tr className="transition-all ease-in hover:cursor-pointer">
                 <th className="border bg-sim-pale-primary px-24 py-12 text-left align-middle leading-medium text-sim-dark">
                   Sinkronisai Terakhir
                 </th>
-                <td className="border px-24 py-12 align-middle leading-medium">
+                <td
+                  colSpan={2}
+                  className="border px-24 py-12 align-middle leading-medium"
+                >
                   {dayjs(kepegawaianDiklatDetail?.last_update)
                     .locale('id')
                     .format('DD/MM/YYYY') ?? '-'}
@@ -176,7 +202,10 @@ export default function DetailDiklatPage() {
                 <th className="border bg-sim-pale-primary px-24 py-12 text-left align-middle leading-medium text-sim-dark">
                   Sinkronisai User
                 </th>
-                <td className="border px-24 py-12 align-middle leading-medium">
+                <td
+                  colSpan={2}
+                  className="border px-24 py-12 align-middle leading-medium"
+                >
                   {kepegawaianDiklatDetail?.user_update ?? '-'}
                 </td>
               </tr>
@@ -188,9 +217,9 @@ export default function DetailDiklatPage() {
                   colSpan={2}
                   className="border px-24 py-12 align-middle leading-medium"
                 >
-                  {kepegawaianDiklatDetail?.path ? (
+                  {kepegawaianDiklatDetail?.lokal?.path ? (
                     <div className="flex items-center gap-16">
-                      {JSON.parse(kepegawaianDiklatDetail?.path)?.map(
+                      {JSON.parse(kepegawaianDiklatDetail?.lokal?.path)?.map(
                         (item: PathFileType, idx) => (
                           <div
                             key={idx}

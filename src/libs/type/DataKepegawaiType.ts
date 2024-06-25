@@ -150,6 +150,13 @@ export type JabatanDetailsType = {
 }
 
 export type DiklatDetailType = {
+  lokal: DiklatDetailsType
+  siasn: DiklatDetailsType
+  last_update: string
+  user_update: string
+}
+
+export type DiklatDetailsType = {
   id: string
   latihanStrukturalNama: string
   nomor: string
@@ -159,9 +166,8 @@ export type DiklatDetailType = {
   jumlahJam: string
   institusiPenyelenggara: string
   path: string
-  last_update: string
-  user_update: string
 }
+
 export type JabatanType = {
   id: string
   jenisJabatan: string
@@ -220,6 +226,13 @@ export type DiklatLainnyaType = {
 }
 
 export type KursusDetailType = {
+  lokal: KursusDetailsType
+  siasn: KursusDetailsType
+  last_update: string
+  user_update: string
+}
+
+export type KursusDetailsType = {
   id: string
   jenisKursus: string
   namaKursus: string
@@ -230,8 +243,6 @@ export type KursusDetailType = {
   tanggal: string
   tanggalSelesai: string
   path: string
-  last_update: string
-  user_update: string
 }
 
 export type RiwayatPenghargaanType = {

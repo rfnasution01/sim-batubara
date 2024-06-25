@@ -109,6 +109,11 @@ export default function DetailKursusPage() {
                 >
                   Data SIASN BKN
                 </th>
+                <th
+                  className={`sticky top-0 w-[40%] border bg-sim-pale-primary px-24 py-24 text-left align-middle text-sim-dark`}
+                >
+                  Data SIMPEG Batu Bara
+                </th>
               </tr>
             </thead>
             <tbody>
@@ -117,7 +122,10 @@ export default function DetailKursusPage() {
                   Jenis Diklat
                 </th>
                 <td className="border px-24 py-12 align-middle leading-medium">
-                  {kepegawaianKursusDetail?.jenisKursus ?? '-'}
+                  {kepegawaianKursusDetail?.siasn?.jenisKursus ?? '-'}
+                </td>
+                <td className="border px-24 py-12 align-middle leading-medium">
+                  {kepegawaianKursusDetail?.lokal?.jenisKursus ?? '-'}
                 </td>
               </tr>
               <tr className="transition-all ease-in hover:cursor-pointer">
@@ -125,7 +133,10 @@ export default function DetailKursusPage() {
                   Nama Diklat
                 </th>
                 <td className="border px-24 py-12 align-middle leading-medium">
-                  {kepegawaianKursusDetail?.namaKursus ?? '-'}
+                  {kepegawaianKursusDetail?.siasn?.jenisKursus ?? '-'}
+                </td>
+                <td className="border px-24 py-12 align-middle leading-medium">
+                  {kepegawaianKursusDetail?.lokal?.jenisKursus ?? '-'}
                 </td>
               </tr>
               <tr className="transition-all ease-in hover:cursor-pointer">
@@ -133,7 +144,10 @@ export default function DetailKursusPage() {
                   Tanggal Mulai
                 </th>
                 <td className="border px-24 py-12 align-middle leading-medium">
-                  {kepegawaianKursusDetail?.tanggal ?? '-'}
+                  {kepegawaianKursusDetail?.siasn?.tanggal ?? '-'}
+                </td>
+                <td className="border px-24 py-12 align-middle leading-medium">
+                  {kepegawaianKursusDetail?.lokal?.tanggal ?? '-'}
                 </td>
               </tr>
               <tr className="transition-all ease-in hover:cursor-pointer">
@@ -141,7 +155,10 @@ export default function DetailKursusPage() {
                   Tanggal Selesai
                 </th>
                 <td className="border px-24 py-12 align-middle leading-medium">
-                  {kepegawaianKursusDetail?.tanggalSelesai ?? '-'}
+                  {kepegawaianKursusDetail?.siasn?.tanggalSelesai ?? '-'}
+                </td>
+                <td className="border px-24 py-12 align-middle leading-medium">
+                  {kepegawaianKursusDetail?.lokal?.tanggalSelesai ?? '-'}
                 </td>
               </tr>
               <tr className="transition-all ease-in hover:cursor-pointer">
@@ -149,7 +166,10 @@ export default function DetailKursusPage() {
                   Jumlah Jam
                 </th>
                 <td className="border px-24 py-12 align-middle leading-medium">
-                  {kepegawaianKursusDetail?.jumlahJam} Jam
+                  {kepegawaianKursusDetail?.siasn.jumlahJam} Jam
+                </td>
+                <td className="border px-24 py-12 align-middle leading-medium">
+                  {kepegawaianKursusDetail?.lokal.jumlahJam} Jam
                 </td>
               </tr>
               <tr className="transition-all ease-in hover:cursor-pointer">
@@ -157,7 +177,10 @@ export default function DetailKursusPage() {
                   Nomor Sertifikat
                 </th>
                 <td className="border px-24 py-12 align-middle leading-medium">
-                  {kepegawaianKursusDetail?.nomor}
+                  {kepegawaianKursusDetail?.siasn.nomor}
+                </td>
+                <td className="border px-24 py-12 align-middle leading-medium">
+                  {kepegawaianKursusDetail?.lokal.nomor}
                 </td>
               </tr>
               <tr className="transition-all ease-in hover:cursor-pointer">
@@ -165,14 +188,22 @@ export default function DetailKursusPage() {
                   Institusi Penyelenggara
                 </th>
                 <td className="border px-24 py-12 align-middle leading-medium">
-                  {kepegawaianKursusDetail?.institusiPenyelenggara ?? '-'}
+                  {kepegawaianKursusDetail?.siasn?.institusiPenyelenggara ??
+                    '-'}
+                </td>
+                <td className="border px-24 py-12 align-middle leading-medium">
+                  {kepegawaianKursusDetail?.lokal?.institusiPenyelenggara ??
+                    '-'}
                 </td>
               </tr>
               <tr className="transition-all ease-in hover:cursor-pointer">
                 <th className="border bg-sim-pale-primary px-24 py-12 text-left align-middle leading-medium text-sim-dark">
                   Sinkronisai Terakhir
                 </th>
-                <td className="border px-24 py-12 align-middle leading-medium">
+                <td
+                  colSpan={2}
+                  className="border px-24 py-12 align-middle leading-medium"
+                >
                   {dayjs(kepegawaianKursusDetail?.last_update)
                     .locale('id')
                     .format('DD/MM/YYYY') ?? '-'}
@@ -182,25 +213,10 @@ export default function DetailKursusPage() {
                 <th className="border bg-sim-pale-primary px-24 py-12 text-left align-middle leading-medium text-sim-dark">
                   Sinkronisai User
                 </th>
-                <td className="border px-24 py-12 align-middle leading-medium">
-                  {kepegawaianKursusDetail?.user_update ?? '-'}
-                </td>
-              </tr>
-              <tr className="transition-all ease-in hover:cursor-pointer">
-                <th className="border bg-sim-pale-primary px-24 py-12 text-left align-middle leading-medium text-sim-dark">
-                  Sinkronisai Terakhir
-                </th>
-                <td className="border px-24 py-12 align-middle leading-medium">
-                  {dayjs(kepegawaianKursusDetail?.last_update)
-                    .locale('id')
-                    .format('DD/MM/YYYY') ?? '-'}
-                </td>
-              </tr>
-              <tr className="transition-all ease-in hover:cursor-pointer">
-                <th className="border bg-sim-pale-primary px-24 py-12 text-left align-middle leading-medium text-sim-dark">
-                  Sinkronisai User
-                </th>
-                <td className="border px-24 py-12 align-middle leading-medium">
+                <td
+                  colSpan={2}
+                  className="border px-24 py-12 align-middle leading-medium"
+                >
                   {kepegawaianKursusDetail?.user_update ?? '-'}
                 </td>
               </tr>
@@ -213,8 +229,8 @@ export default function DetailKursusPage() {
                   className="border px-24 py-12 align-middle leading-medium"
                 >
                   <div className="flex items-center gap-16">
-                    {kepegawaianKursusDetail?.path &&
-                      JSON?.parse(kepegawaianKursusDetail?.path)?.map(
+                    {kepegawaianKursusDetail?.lokal?.path &&
+                      JSON?.parse(kepegawaianKursusDetail?.lokal?.path)?.map(
                         (item: PathFileType, idx) => (
                           <div
                             key={idx}

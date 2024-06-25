@@ -146,7 +146,7 @@ export function TableDataDiklatLainnya({
                               Hapus Data
                             </button>
                             <Link
-                              to={`/kepegawaian/pns/${idParams}/jabatan/detail`}
+                              to={`/kepegawaian/pns/${idParams}/kursus/detail`}
                               onClick={() => {
                                 localStorage.setItem('jabatanID', item?.id)
                               }}
