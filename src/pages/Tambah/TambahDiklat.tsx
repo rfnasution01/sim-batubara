@@ -20,10 +20,13 @@ import { useEffect, useState } from 'react'
 import { SelectListJenisDiklat } from '@/components/SelectComponent'
 import { ModalShowKonfirmasiDiklat } from '@/components/ModalComponent'
 import { TambahDiklatSchema } from '@/libs/schema'
+import { usePathname } from '@/libs/hooks/usePathname'
 
 export default function TambahDiklatPage() {
   const navigate = useNavigate()
   const idParams = localStorage.getItem('pegawaiID')
+  const { thirdPathname } = usePathname()
+
   const [file, setFile] = useState<File>()
   const [isShow, setIsShow] = useState<boolean>(false)
 
@@ -86,7 +89,7 @@ export default function TambahDiklatPage() {
         transition: Bounce,
       })
       setTimeout(() => {
-        navigate(`/kepegawaian/pns/${idParams}/diklat/detail`)
+        navigate(`/kepegawaian/pns/${thirdPathname}/diklat/detail`)
       }, 3000)
     }
   }, [isSuccessSaveDiklat])

@@ -20,10 +20,13 @@ import clsx from 'clsx'
 import { useEffect, useState } from 'react'
 import { SelectListJenisKursus } from '@/components/SelectComponent'
 import { ModalShowKonfirmasiKursus } from '@/components/ModalComponent'
+import { usePathname } from '@/libs/hooks/usePathname'
 
 export default function TambahKursusPage() {
   const navigate = useNavigate()
   const idParams = localStorage.getItem('pegawaiID')
+  const { thirdPathname } = usePathname()
+
   const [file, setFile] = useState<File>()
   const [isShow, setIsShow] = useState<boolean>(false)
 
@@ -87,7 +90,7 @@ export default function TambahKursusPage() {
         transition: Bounce,
       })
       setTimeout(() => {
-        navigate(`/kepegawaian/pns/${idParams}/kursus/detail`)
+        navigate(`/kepegawaian/pns/${thirdPathname}/kursus/detail`)
       }, 3000)
     }
   }, [isSuccessSaveKursus])

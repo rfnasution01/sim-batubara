@@ -265,7 +265,7 @@ export function TableDataDiklat({
       {!(isLoadingRiwayatDiklat || isSinkronriwayatDiklat) && (
         <div className="fixed bottom-80 right-64 z-50 flex justify-end">
           <Link
-            to={`/kepegawaian/pns/${idPegawai}/diklat/tambah`}
+            to={`/kepegawaian/pns/${thirdPathname}/diklat/tambah`}
             className="flex items-center gap-12 rounded-2xl bg-sim-primary px-24 py-16 text-white hover:bg-opacity-80"
           >
             Tambah <Plus size={16} />

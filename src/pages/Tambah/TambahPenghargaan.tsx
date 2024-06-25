@@ -34,6 +34,8 @@ export default function TambahPenghargaanPage() {
   const navigate = useNavigate()
   const { fourthPathname } = usePathname()
   const idParams = localStorage.getItem('pegawaiID')
+  const { thirdPathname } = usePathname()
+
   const [file, setFile] = useState<File>()
   const [isShow, setIsShow] = useState<boolean>(false)
 
@@ -132,7 +134,7 @@ export default function TambahPenghargaanPage() {
         transition: Bounce,
       })
       setTimeout(() => {
-        navigate(`/kepegawaian/pns/${idParams}/penghargaan/detail`)
+        navigate(`/kepegawaian/pns/${thirdPathname}/penghargaan/detail`)
       }, 3000)
     }
   }, [isSuccessSavePenghargaan])

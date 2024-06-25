@@ -30,10 +30,12 @@ import { ProfilPegawai } from '@/features/DetailPegawai'
 import Cookies from 'js-cookie'
 import { Loading } from '@/components/Loading'
 import { ModalShowKonfirmasiJabatan } from '@/components/ModalComponent'
+import { usePathname } from '@/libs/hooks/usePathname'
 
 export default function TambahPage() {
   const navigate = useNavigate()
   const idParams = localStorage.getItem('pegawaiID')
+  const { thirdPathname } = usePathname()
   const [file, setFile] = useState<File>()
   const [fileSK, setFileSK] = useState<File>()
   const [isShow, setIsShow] = useState<boolean>(false)
@@ -139,7 +141,7 @@ export default function TambahPage() {
         transition: Bounce,
       })
       setTimeout(() => {
-        navigate(`/kepegawaian/pns/${idParams}/jabatan/detail`)
+        navigate(`/kepegawaian/pns/${thirdPathname}/jabatan/detail`)
       }, 3000)
     }
   }, [isSuccessSaveJabatan])
