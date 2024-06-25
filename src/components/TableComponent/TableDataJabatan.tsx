@@ -10,6 +10,7 @@ import { Form } from '../Form'
 import { ModalShowFile } from '../ModalComponent'
 import dayjs from 'dayjs'
 import { ModalShowKonfirmasiDelete } from '../ModalComponent/ModalKonfirmasiDelete'
+import { usePathname } from '@/libs/hooks/usePathname'
 
 export function TableDataJabatan({
   idPegawai,
@@ -29,7 +30,7 @@ export function TableDataJabatan({
   isLoadingDeleteJabatan: boolean
 }) {
   const navigate = useNavigate()
-  const idParams = localStorage.getItem('pegawaiID')
+  const { thirdPathname } = usePathname()
   const [riwayatJabatan, setRiwayatJabatan] = useState<RiwayatJabatanType>()
   const [isShow, setIsShow] = useState<boolean>(false)
   const [isShowDelete, setIsShowDelete] = useState<boolean>(false)
@@ -137,16 +138,16 @@ export function TableDataJabatan({
                                 setId(item?.id)
                                 setIsShowDelete(true)
                               }}
-                              className="text-nowrap rounded-2xl border border-sim-dark px-16 py-8 text-[2rem] text-sim-dark hover:bg-sim-dark hover:text-white"
+                              className="text-nowrap rounded-2xl border bg-danger px-16 py-8 text-[2rem] text-white hover:bg-opacity-80"
                             >
                               Hapus Data
                             </button>
                             <Link
-                              to={`/kepegawaian/pns/${idParams}/jabatan/detail`}
+                              to={`/kepegawaian/pns/${thirdPathname}/jabatan/detail`}
                               onClick={() => {
                                 localStorage.setItem('jabatanID', item?.id)
                               }}
-                              className="rounded-2xl border border-warning px-16 py-8 text-[2rem] text-warning hover:bg-warning hover:text-white"
+                              className="rounded-2xl border bg-sim-primary px-16 py-8 text-[2rem] text-white hover:bg-opacity-80"
                             >
                               Detail
                             </Link>

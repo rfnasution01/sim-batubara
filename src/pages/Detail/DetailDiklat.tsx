@@ -251,7 +251,7 @@ export default function DetailDiklatPage() {
               className="flex items-center gap-12 rounded-2xl border bg-sim-primary px-16 py-8 text-[2rem] text-white hover:bg-opacity-80"
             >
               <ArrowLeft size={16} />
-              Kembali ke halaman kepegawaian
+              Kembali ke halaman profil kepegawaian
             </Link>
           </div>
         </div>
