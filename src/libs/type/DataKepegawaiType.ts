@@ -130,6 +130,14 @@ export type RiwayatJabatanType = {
 }
 
 export type JabatanDetailType = {
+  lokal: JabatanDetailsType
+  siasn: JabatanDetailsType
+  last_update: string
+  user_update: string
+}
+
+export type JabatanDetailsType = {
+  id: string
   jenisJabatan: string
   satuanKerja: string
   namaJabatan: string
@@ -138,8 +146,6 @@ export type JabatanDetailType = {
   tanggalSk: string
   tmtPelantikan: string
   eselon: string
-  last_update: string
-  user_update: string
   path: string
 }
 

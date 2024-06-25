@@ -112,6 +112,11 @@ export default function DetailJabatanPage() {
                 >
                   Data SIASN BKN
                 </th>
+                <th
+                  className={`sticky top-0 w-[40%] border bg-sim-pale-primary px-24 py-24 text-left align-middle text-sim-dark`}
+                >
+                  Data SIMPEG Batu Bara
+                </th>
               </tr>
             </thead>
             <tbody>
@@ -120,7 +125,10 @@ export default function DetailJabatanPage() {
                   Jenis Jabatan
                 </th>
                 <td className="border px-24 py-12 align-middle leading-medium">
-                  {kepegawaianJabatanDetail?.jenisJabatan}
+                  {kepegawaianJabatanDetail?.siasn?.jenisJabatan}
+                </td>
+                <td className="border px-24 py-12 align-middle leading-medium">
+                  {kepegawaianJabatanDetail?.lokal?.jenisJabatan}
                 </td>
               </tr>
               <tr className="transition-all ease-in hover:cursor-pointer">
@@ -128,7 +136,10 @@ export default function DetailJabatanPage() {
                   Satuan Kerja
                 </th>
                 <td className="border px-24 py-12 align-middle leading-medium">
-                  {kepegawaianJabatanDetail?.satuanKerja}
+                  {kepegawaianJabatanDetail?.siasn?.satuanKerja}
+                </td>
+                <td className="border px-24 py-12 align-middle leading-medium">
+                  {kepegawaianJabatanDetail?.lokal?.satuanKerja}
                 </td>
               </tr>
               <tr className="transition-all ease-in hover:cursor-pointer">
@@ -136,7 +147,10 @@ export default function DetailJabatanPage() {
                   Nama Jabatan
                 </th>
                 <td className="border px-24 py-12 align-middle leading-medium">
-                  {kepegawaianJabatanDetail?.namaJabatan ?? '-'}
+                  {kepegawaianJabatanDetail?.siasn?.namaJabatan ?? '-'}
+                </td>
+                <td className="border px-24 py-12 align-middle leading-medium">
+                  {kepegawaianJabatanDetail?.lokal?.namaJabatan ?? '-'}
                 </td>
               </tr>
               <tr className="transition-all ease-in hover:cursor-pointer">
@@ -144,7 +158,10 @@ export default function DetailJabatanPage() {
                   TMT Jabatan
                 </th>
                 <td className="border px-24 py-12 align-middle leading-medium">
-                  {kepegawaianJabatanDetail?.tmtJabatan ?? '-'}
+                  {kepegawaianJabatanDetail?.siasn?.tmtJabatan ?? '-'}
+                </td>
+                <td className="border px-24 py-12 align-middle leading-medium">
+                  {kepegawaianJabatanDetail?.lokal?.tmtJabatan ?? '-'}
                 </td>
               </tr>
               <tr className="transition-all ease-in hover:cursor-pointer">
@@ -152,7 +169,10 @@ export default function DetailJabatanPage() {
                   TMT Pelantikan
                 </th>
                 <td className="border px-24 py-12 align-middle leading-medium">
-                  {kepegawaianJabatanDetail?.tmtPelantikan ?? '-'}
+                  {kepegawaianJabatanDetail?.siasn?.tmtPelantikan ?? '-'}
+                </td>
+                <td className="border px-24 py-12 align-middle leading-medium">
+                  {kepegawaianJabatanDetail?.lokal?.tmtPelantikan ?? '-'}
                 </td>
               </tr>
               <tr className="transition-all ease-in hover:cursor-pointer">
@@ -160,7 +180,10 @@ export default function DetailJabatanPage() {
                   Nomor SK
                 </th>
                 <td className="border px-24 py-12 align-middle leading-medium">
-                  {kepegawaianJabatanDetail?.nomorSk ?? '-'}
+                  {kepegawaianJabatanDetail?.siasn?.nomorSk ?? '-'}
+                </td>
+                <td className="border px-24 py-12 align-middle leading-medium">
+                  {kepegawaianJabatanDetail?.lokal?.nomorSk ?? '-'}
                 </td>
               </tr>
               <tr className="transition-all ease-in hover:cursor-pointer">
@@ -168,14 +191,20 @@ export default function DetailJabatanPage() {
                   Tanggal SK
                 </th>
                 <td className="border px-24 py-12 align-middle leading-medium">
-                  {kepegawaianJabatanDetail?.tanggalSk ?? '-'}
+                  {kepegawaianJabatanDetail?.siasn?.tanggalSk ?? '-'}
+                </td>
+                <td className="border px-24 py-12 align-middle leading-medium">
+                  {kepegawaianJabatanDetail?.lokal?.tanggalSk ?? '-'}
                 </td>
               </tr>
               <tr className="transition-all ease-in hover:cursor-pointer">
                 <th className="border bg-sim-pale-primary px-24 py-12 text-left align-middle leading-medium text-sim-dark">
                   Sinkronisai Terakhir
                 </th>
-                <td className="border px-24 py-12 align-middle leading-medium">
+                <td
+                  colSpan={2}
+                  className="border px-24 py-12 align-middle leading-medium"
+                >
                   {dayjs(kepegawaianJabatanDetail?.last_update)
                     .locale('id')
                     .format('DD/MM/YYYY') ?? '-'}
@@ -185,7 +214,10 @@ export default function DetailJabatanPage() {
                 <th className="border bg-sim-pale-primary px-24 py-12 text-left align-middle leading-medium text-sim-dark">
                   Sinkronisai User
                 </th>
-                <td className="border px-24 py-12 align-middle leading-medium">
+                <td
+                  colSpan={2}
+                  className="border px-24 py-12 align-middle leading-medium"
+                >
                   {kepegawaianJabatanDetail?.user_update ?? '-'}
                 </td>
               </tr>
@@ -199,8 +231,8 @@ export default function DetailJabatanPage() {
                   className="border px-24 py-12 align-middle leading-medium"
                 >
                   <div className="flex items-center gap-16">
-                    {kepegawaianJabatanDetail?.path &&
-                      JSON?.parse(kepegawaianJabatanDetail?.path)?.map(
+                    {kepegawaianJabatanDetail?.lokal?.path &&
+                      JSON?.parse(kepegawaianJabatanDetail?.lokal?.path)?.map(
                         (item: PathFileType, idx) => (
                           <div
                             key={idx}
