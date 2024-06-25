@@ -71,14 +71,19 @@ export type DataKepegawaianUtamaHeaderType = {
 }
 
 export type PenghargaanDetailType = {
+  lokal: PenghargaanDetailsType
+  siasn: PenghargaanDetailsType
+  last_update: string
+  user_update: string
+}
+
+export type PenghargaanDetailsType = {
   id: string
   tahun: string
   nomor: string
   tanggal: string
   nama: string
   path: string
-  last_update: string
-  user_update: string
 }
 
 export type DataKepegawaianUtamaParams = {
