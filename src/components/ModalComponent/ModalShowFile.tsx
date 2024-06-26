@@ -2,7 +2,7 @@ import { Dispatch, SetStateAction, useEffect, useState } from 'react'
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '../Dialog'
 import * as DialogPrimitive from '@radix-ui/react-dialog'
 import { X } from 'lucide-react'
-import { useGetDokumenKepegawaianQuery } from '@/store/slices/kepegawaianAPI'
+import { useGetDokumenKepegawaianQuery } from '@/store/slices/dokumenAPI'
 import { Loading } from '../Loading'
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
@@ -17,7 +17,7 @@ export function ModalShowFile({
   uri: string
   nama: string
 }) {
-  const [dokumen, setDokumen] = useState<string>('')
+  const [base64, setBase64] = useState<string>('')
 
   const { data, isFetching, isLoading } = useGetDokumenKepegawaianQuery(
     {
@@ -31,15 +31,17 @@ export function ModalShowFile({
   useEffect(() => {
     if (data) {
       const blob = new Blob([data], { type: 'application/pdf' })
-      const url = window.URL.createObjectURL(blob)
-      setDokumen(url)
-
-      return () => {
-        // Bersihkan URL objek setelah selesai
-        window.URL.revokeObjectURL(url)
+      const reader = new FileReader()
+      reader.onloadend = () => {
+        // Mengambil base64 string tanpa prefix data URI
+        const base64String = reader.result?.toString().split(',')[1]
+        setBase64(base64String || '')
       }
+      reader.readAsDataURL(blob)
     }
   }, [data])
+
+  console.log(typeof data)
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
@@ -65,18 +67,18 @@ export function ModalShowFile({
             </DialogPrimitive.Close>
           </DialogHeader>
           <hr className="border" />
+
           <div className="flex flex-col items-center justify-center gap-32 text-[2.8rem] text-danger-700">
             {loading ? (
               <Loading width="6rem" height="6rem" />
             ) : (
               <>
-                {dokumen ? (
+                {base64 ? (
                   <iframe
                     id="dlRetpdfPreview"
                     width="60"
-                    style={{ width: '100%', height: '800px' }}
-                    // src={`data:application/pdf;${dokumen}`}
-                    src={dokumen}
+                    style={{ width: '100%', height: '90vh' }}
+                    src={`data:application/pdf;base64,${base64}`}
                   />
                 ) : (
                   <p>Terjadi masalah ketika menampilkan file</p>

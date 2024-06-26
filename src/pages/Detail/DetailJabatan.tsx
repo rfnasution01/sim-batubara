@@ -16,7 +16,6 @@ import { ProfilPegawai } from '@/features/DetailPegawai'
 import Cookies from 'js-cookie'
 import { Loading } from '@/components/Loading'
 import dayjs from 'dayjs'
-import { ModalShowFile } from '@/components/ModalComponent'
 import { ArrowLeft, RefreshCcw } from 'lucide-react'
 import { usePathname } from '@/libs/hooks/usePathname'
 import { Bounce, ToastContainer, toast } from 'react-toastify'
@@ -27,15 +26,16 @@ import * as zod from 'zod'
 import { Form } from '@/components/Form'
 import { SinkronSchema } from '@/libs/schema'
 import clsx from 'clsx'
+import FileDownload from '@/components/FileDownload'
 
 export default function DetailJabatanPage() {
   const navigate = useNavigate()
   const { firstPathname, secondPathname, thirdPathname } = usePathname()
   const idParams = localStorage.getItem('pegawaiID')
   const idJabatan = localStorage.getItem('jabatanID')
-  const [isShow, setIsShow] = useState<boolean>(false)
-  const [nama, setNama] = useState<string>('')
-  const [uri, setUri] = useState<string>('')
+  // const [isShow, setIsShow] = useState<boolean>(false)
+  // const [nama, setNama] = useState<string>('')
+  // const [uri, setUri] = useState<string>('')
 
   const form = useForm<zod.infer<typeof SinkronSchema>>({
     resolver: zodResolver(SinkronSchema),
@@ -334,14 +334,17 @@ export default function DetailJabatanPage() {
                         (item: PathFileType, idx) => (
                           <div
                             key={idx}
-                            onClick={() => {
-                              setIsShow(true)
-                              setUri(item?.dok_uri)
-                              setNama(item?.dok_nama)
-                            }}
+                            // onClick={() => {
+                            //   setIsShow(true)
+                            //   setUri(item?.dok_uri)
+                            //   setNama(item?.dok_nama)
+                            // }}
                             className="rounded-2xl bg-sim-dark px-16 py-8 text-white hover:bg-opacity-80"
                           >
-                            {item?.dok_nama}
+                            <FileDownload
+                              uri={item?.dok_uri}
+                              namaFile={item?.dok_nama}
+                            />
                           </div>
                         ),
                       )}
@@ -361,12 +364,12 @@ export default function DetailJabatanPage() {
           </div>
         </div>
       )}
-      <ModalShowFile
+      {/* <ModalShowFile
         isOpen={isShow}
         setIsOpen={setIsShow}
         uri={uri}
         nama={nama}
-      />
+      /> */}
       <ToastContainer />
     </div>
   )

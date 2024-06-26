@@ -6,7 +6,6 @@ import {
   DataKepegawaianUtamaParams,
   DataKepegawaianUtamaType,
   DiklatDetailType,
-  FileKepegawaianParams,
   JabatanDetailType,
   KursusDetailType,
   PenghargaanDetailType,
@@ -288,17 +287,6 @@ export const KepegawaianEndpoints = api.injectEndpoints({
         { type: 'riwayat-penghargan', id: id_pegawai },
       ],
     }),
-    getDokumenKepegawaian: builder.query<File, FileKepegawaianParams>({
-      query: ({ dok_uri }) => ({
-        url: `kepegawaian/dokumen_download`,
-        method: 'GET',
-        params: {
-          dok_uri: dok_uri,
-        },
-        responseHandler: 'content-type',
-      }),
-      providesTags: ['download-dokumen'],
-    }),
 
     createSinkronRiwayatPenghargaan: builder.mutation<
       void,
@@ -403,7 +391,6 @@ export const {
   useCreateSinkronRiwayatDiklatMutation,
   useCreateSinkronRiwayatPenghargaanMutation,
   useCreateSavaJabatanMutation,
-  useGetDokumenKepegawaianQuery,
   useCreateSavaKursusMutation,
   useCreateSavaDiklatMutation,
   useCreateSavaPenghargaanMutation,

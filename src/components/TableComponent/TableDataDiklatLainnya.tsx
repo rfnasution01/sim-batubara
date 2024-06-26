@@ -8,9 +8,9 @@ import Cookies from 'js-cookie'
 import { Loading } from '../Loading'
 import { Form } from '../Form'
 import dayjs from 'dayjs'
-import { ModalShowFile } from '../ModalComponent'
 import { ModalShowKonfirmasiDelete } from '../ModalComponent/ModalKonfirmasiDelete'
 import { usePathname } from '@/libs/hooks/usePathname'
+import FileDownload from '../FileDownload'
 
 export function TableDataDiklatLainnya({
   idPegawai,
@@ -33,10 +33,10 @@ export function TableDataDiklatLainnya({
   const { thirdPathname } = usePathname()
   const [riwayatDiklatLainnya, setRiwayatDiklatLainnya] =
     useState<RiwayatDiklatLainnyaType>()
-  const [isShow, setIsShow] = useState<boolean>(false)
+  // const [isShow, setIsShow] = useState<boolean>(false)
   const [isShowDelete, setIsShowDelete] = useState<boolean>(false)
-  const [isUri, setUri] = useState<string>('')
-  const [isNama, setNama] = useState<string>('')
+  // const [isUri, setUri] = useState<string>('')
+  // const [isNama, setNama] = useState<string>('')
   const [id, setId] = useState<string>('')
 
   const {
@@ -234,14 +234,17 @@ export function TableDataDiklatLainnya({
                               )?.map((item: PathFileType, idx) => (
                                 <div
                                   key={idx}
-                                  onClick={() => {
-                                    setIsShow(true)
-                                    setUri(item?.dok_uri)
-                                    setNama(item?.dok_nama)
-                                  }}
+                                  // onClick={() => {
+                                  //   setIsShow(true)
+                                  //   setUri(item?.dok_uri)
+                                  //   setNama(item?.dok_nama)
+                                  // }}
                                   className="rounded-2xl bg-sim-dark px-16 py-8 text-white hover:bg-opacity-80"
                                 >
-                                  {item?.dok_nama}
+                                  <FileDownload
+                                    uri={item?.dok_uri}
+                                    namaFile={item?.dok_nama}
+                                  />
                                 </div>
                               ))}
                             </div>
@@ -287,12 +290,12 @@ export function TableDataDiklatLainnya({
           </Link>
         </div>
       )}
-      <ModalShowFile
+      {/* <ModalShowFile
         isOpen={isShow}
         setIsOpen={setIsShow}
         uri={isUri}
         nama={isNama}
-      />
+      /> */}
 
       <ModalShowKonfirmasiDelete
         isLoading={isLoadingDeleteKursus}
