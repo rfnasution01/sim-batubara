@@ -106,6 +106,7 @@ export type PageInfoType = {
 export type RiwayatGolonganType = {
   lokal: GolonganType[]
   siasn: GolonganType[]
+  last_update: string
 }
 
 type GolonganType = {
@@ -116,6 +117,7 @@ type GolonganType = {
 export type RiwayatPendidikanType = {
   lokal: PendidikanType[]
   siasn: PendidikanType[]
+  last_update: string
 }
 
 export type PendidikanType = {
@@ -132,6 +134,56 @@ export type RiwayatJabatanType = {
   lokal: JabatanType[]
   siasn: JabatanType[]
   last_update: string
+}
+
+export type RiwayatPMKType = {
+  lokal: PMKType[]
+  siasn: PMKType[]
+  last_update: string
+}
+
+export type PMKType = {
+  id: string
+  idPns: string
+  nipBaru: string
+  nipLama: string
+  pengalaman: string
+  tanggalAwal: string
+  tanggalSelesai: string
+  nomorSk: string
+  tanggalSk: string
+  nomorBkn: string
+  tanggalBkn: string
+  masaKerjaTahun: string
+  masaKerjaBulan: string
+  dinilai: string
+  path: string
+}
+
+export type RiwayatPindahInstansiType = {
+  lokal: PindahInstansiType[]
+  siasn: PindahInstansiType[]
+  last_update: string
+}
+
+export type PindahInstansiType = {
+  id: string
+  instansiIndukLama: string
+  instansiIndukBaru: string
+  satuanKerjaLama: string
+  satuanKerjaBaru: string
+  jenisPegawai: string
+  unorLama: string
+  unorBaru: string
+  skUsulNomor: string
+  skUsulTanggal: string
+  skAsalNomor: string
+  skAsalTanggal: string
+  jenisPi: string
+  path: string
+  skBknNomor: string
+  skBknTanggal: string
+  kpknBaru: string
 }
 
 export type JabatanDetailType = {

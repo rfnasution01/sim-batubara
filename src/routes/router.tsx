@@ -7,6 +7,7 @@ import {
   DetailKursusPage,
   DetailPegawaiLayoutMain,
   DetailPenghargaanPage,
+  DownlodPDFPage,
   KepegawaianLayoutMain,
   LoginLayoutMain,
   PNSPage,
@@ -91,6 +92,10 @@ export const router = createBrowserRouter([
               {
                 path: ':nama/penghargaan/detail',
                 element: <DetailPenghargaanPage />,
+              },
+              {
+                path: ':nama/:url',
+                element: <DownlodPDFPage />,
               },
             ],
           },

@@ -11,6 +11,7 @@ import dayjs from 'dayjs'
 import { ModalShowKonfirmasiDelete } from '../ModalComponent/ModalKonfirmasiDelete'
 import { usePathname } from '@/libs/hooks/usePathname'
 import FileDownload from '../FileDownload'
+import Select from 'react-select'
 
 export function TableDataPenghargaan({
   idPegawai,
@@ -38,6 +39,7 @@ export function TableDataPenghargaan({
   // const [isUri, setUri] = useState<string>('')
   // const [isNama, setNama] = useState<string>('')
   const [id, setId] = useState<string>('')
+  const [selectedYear, setSelectedYear] = useState<string | null>(null)
 
   const {
     data: riwayatPenghargaanData,
@@ -73,6 +75,40 @@ export function TableDataPenghargaan({
     }
   }, [riwayatPenghargaanData, idPegawai, error])
 
+  const years = [
+    { value: 'all', label: 'Tampilkan Semua Tahun' },
+    ...Array.from(
+      new Set(
+        riwayatPenghargaan?.siasn
+          ?.map((item) => {
+            const dateStr = item?.skDate
+            const year = dateStr?.slice(-4) // Mengambil 4 karakter terakhir
+            console.log(`Date string: ${dateStr}, Year: ${year}`)
+            return year
+          })
+          .filter((year) => year !== null),
+      ),
+    ).map((year) => ({ value: year, label: year })),
+  ]
+
+  // console.log(years)
+
+  const handleYearChange = (selectedOption: { value: string } | null) => {
+    setSelectedYear(selectedOption?.value ?? null)
+  }
+
+  const filteredRiwayatPenghargaan =
+    selectedYear && selectedYear !== 'all' && riwayatPenghargaanData
+      ? {
+          ...riwayatPenghargaan,
+          siasn: riwayatPenghargaan.siasn.filter((item) => {
+            const dateStr = item?.skDate
+            const year = dateStr?.slice(-4) // Mengambil 4 karakter terakhir
+            return year === selectedYear
+          }),
+        }
+      : riwayatPenghargaan
+
   return (
     <div
       className={`scrollbar flex flex-col gap-32 overflow-auto`}
@@ -83,14 +119,23 @@ export function TableDataPenghargaan({
           <Loading width={'6rem'} height={'6rem'} />
         ) : (
           <>
-            <p className="text-sim-grey">
-              Sinkronisasi Terakhir:{' '}
-              {riwayatPenghargaan?.last_update
-                ? dayjs(riwayatPenghargaan?.last_update)
-                    .locale('id')
-                    .format('DD/MM/YYYY | HH:mm')
-                : 'Belum Sinkronisasi'}
-            </p>
+            <div className="flex items-center justify-between">
+              <p className="text-sim-grey">
+                Sinkronisasi Terakhir:{' '}
+                {riwayatPenghargaan?.last_update
+                  ? dayjs(riwayatPenghargaan?.last_update)
+                      .locale('id')
+                      .format('DD/MM/YYYY | HH:mm')
+                  : 'Belum Sinkronisasi'}
+              </p>
+              <Select
+                options={years}
+                onChange={handleYearChange}
+                isClearable
+                placeholder="Filter by Year"
+                className="z-50 w-1/4"
+              />
+            </div>
             <table className="flex-1 border-collapse rounded-3x bg-[#fcfcfc] text-24">
               <thead className="relative z-10 align-top leading-medium">
                 <tr>
@@ -125,8 +170,9 @@ export function TableDataPenghargaan({
                 </tr>
               </thead>
               <tbody>
-                {riwayatPenghargaan && riwayatPenghargaan?.siasn?.length > 0 ? (
-                  riwayatPenghargaan?.siasn?.map((item, idx) => (
+                {filteredRiwayatPenghargaan &&
+                filteredRiwayatPenghargaan?.siasn?.length > 0 ? (
+                  filteredRiwayatPenghargaan?.siasn?.map((item, idx) => (
                     <React.Fragment key={idx}>
                       <tr className="transition-all ease-in hover:cursor-pointer">
                         <th className="border bg-sim-pale-primary px-24 py-12 text-left align-middle leading-medium text-sim-dark">
@@ -157,7 +203,7 @@ export function TableDataPenghargaan({
                           </div>
                         </td>
                         <td className="border px-24 py-12 align-middle leading-medium">
-                          {riwayatPenghargaan?.lokal?.find(
+                          {filteredRiwayatPenghargaan?.lokal?.find(
                             (list) => list?.id === item?.id,
                           )?.hargaNama ?? '-'}
                         </td>
@@ -170,7 +216,7 @@ export function TableDataPenghargaan({
                           {item?.tahun ?? '-'}
                         </td>
                         <td className="border px-24 py-12 align-middle leading-medium">
-                          {riwayatPenghargaan?.lokal?.find(
+                          {filteredRiwayatPenghargaan?.lokal?.find(
                             (list) => list?.id === item?.id,
                           )?.tahun ?? '-'}
                         </td>
@@ -183,7 +229,7 @@ export function TableDataPenghargaan({
                           {item?.skNomor ?? '-'}
                         </td>
                         <td className="border px-24 py-12 align-middle leading-medium">
-                          {riwayatPenghargaan?.lokal?.find(
+                          {filteredRiwayatPenghargaan?.lokal?.find(
                             (list) => list?.id === item?.id,
                           )?.skNomor ?? '-'}
                         </td>
@@ -196,7 +242,7 @@ export function TableDataPenghargaan({
                           {item?.skDate ?? '-'}
                         </td>
                         <td className="border px-24 py-12 align-middle leading-medium">
-                          {riwayatPenghargaan?.lokal?.find(
+                          {filteredRiwayatPenghargaan?.lokal?.find(
                             (list) => list?.id === item?.id,
                           )?.skDate ?? '-'}
                         </td>
@@ -209,12 +255,12 @@ export function TableDataPenghargaan({
                           colSpan={2}
                           className="border px-24 py-12 align-middle leading-medium"
                         >
-                          {riwayatPenghargaan?.lokal?.find(
+                          {filteredRiwayatPenghargaan?.lokal?.find(
                             (list) => list?.id === item?.id,
                           )?.path ? (
                             <div className="flex items-center gap-16">
                               {JSON.parse(
-                                riwayatPenghargaan?.lokal?.find(
+                                filteredRiwayatPenghargaan?.lokal?.find(
                                   (list) => list?.id === item?.id,
                                 )?.path,
                               )?.map((item: PathFileType, idx) => (
@@ -240,7 +286,7 @@ export function TableDataPenghargaan({
                         </td>
                       </tr>
 
-                      {idx < riwayatPenghargaan.siasn.length - 1 && (
+                      {idx < filteredRiwayatPenghargaan.siasn.length - 1 && (
                         <tr className="border transition-all ease-in hover:cursor-pointer">
                           <td
                             className="border px-24 py-12 align-middle leading-medium text-white"

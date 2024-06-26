@@ -13,8 +13,10 @@ import {
   RiwayatDiklatType,
   RiwayatGolonganType,
   RiwayatJabatanType,
+  RiwayatPMKType,
   RiwayatPendidikanType,
   RiwayatPenghargaanType,
+  RiwayatPindahInstansiType,
 } from '@/libs/type'
 import { Res, api } from '../api'
 
@@ -139,7 +141,7 @@ export const KepegawaianEndpoints = api.injectEndpoints({
       ],
     }),
     getPNSRiwayatPindahInstansi: builder.query<
-      Res<RiwayatJabatanType>,
+      Res<RiwayatPindahInstansiType>,
       DataKepegawaianUtamaParams
     >({
       query: ({ id_pegawai }) => ({
@@ -151,6 +153,21 @@ export const KepegawaianEndpoints = api.injectEndpoints({
       }),
       providesTags: (_res, _err, { id_pegawai }) => [
         { type: 'pindah-instansi', id: id_pegawai },
+      ],
+    }),
+    getPNSRiwayatMasaKerja: builder.query<
+      Res<RiwayatPMKType>,
+      DataKepegawaianUtamaParams
+    >({
+      query: ({ id_pegawai }) => ({
+        url: `kepegawaian/pns_detail/riwayat/masakerja`,
+        method: 'GET',
+        params: {
+          id_pegawai: id_pegawai,
+        },
+      }),
+      providesTags: (_res, _err, { id_pegawai }) => [
+        { type: 'masa-kerja', id: id_pegawai },
       ],
     }),
     getPNSRiwayatJabatanDetail: builder.query<
@@ -246,6 +263,17 @@ export const KepegawaianEndpoints = api.injectEndpoints({
       }),
       invalidatesTags: ['riwayat-diklat'],
     }),
+    createSinkronRiwayatPMK: builder.mutation<
+      void,
+      { data: DataKepegawaianUtamaParams }
+    >({
+      query: ({ data }) => ({
+        url: `kepegawaian/sinkron/riwayat/masakerja`,
+        method: 'POST',
+        body: data,
+      }),
+      invalidatesTags: ['masa-kerja'],
+    }),
     getPNSRiwayatDiklatLainnya: builder.query<
       Res<RiwayatDiklatLainnyaType>,
       DataKepegawaianUtamaParams
@@ -298,6 +326,17 @@ export const KepegawaianEndpoints = api.injectEndpoints({
         body: data,
       }),
       invalidatesTags: ['riwayat-penghargan'],
+    }),
+    createSinkronRiwayatPindahInstansi: builder.mutation<
+      void,
+      { data: DataKepegawaianUtamaParams }
+    >({
+      query: ({ data }) => ({
+        url: `kepegawaian/sinkron/riwayat/pindahinstansi`,
+        method: 'POST',
+        body: data,
+      }),
+      invalidatesTags: ['pindah-instansi'],
     }),
     createSavaJabatan: builder.mutation<Res<string>, { data: FormData }>({
       query: ({ data }) => ({
@@ -403,4 +442,7 @@ export const {
   useGetPNSRiwayatKursusDetailQuery,
   useGetPNSRiwayatPenghargaanDetailQuery,
   useGetPNSRiwayatPindahInstansiQuery,
+  useGetPNSRiwayatMasaKerjaQuery,
+  useCreateSinkronRiwayatPMKMutation,
+  useCreateSinkronRiwayatPindahInstansiMutation,
 } = KepegawaianEndpoints

@@ -11,6 +11,7 @@ import dayjs from 'dayjs'
 import { ModalShowKonfirmasiDelete } from '../ModalComponent/ModalKonfirmasiDelete'
 import { usePathname } from '@/libs/hooks/usePathname'
 import FileDownload from '../FileDownload'
+import Select from 'react-select'
 
 export function TableDataJabatan({
   idPegawai,
@@ -37,6 +38,7 @@ export function TableDataJabatan({
   // const [isUri, setUri] = useState<string>('')
   // const [isNama, setNama] = useState<string>('')
   const [id, setId] = useState<string>('')
+  const [selectedYear, setSelectedYear] = useState<string | null>(null)
 
   const {
     data: riwayatJabatanData,
@@ -72,6 +74,40 @@ export function TableDataJabatan({
     }
   }, [riwayatJabatanData, idPegawai, error])
 
+  const years = [
+    { value: 'all', label: 'Tampilkan Semua Tahun' },
+    ...Array.from(
+      new Set(
+        riwayatJabatan?.siasn
+          ?.map((item) => {
+            const dateStr = item?.tmtJabatan ?? item?.tanggalSk
+            const year = dateStr?.slice(-4) // Mengambil 4 karakter terakhir
+            console.log(`Date string: ${dateStr}, Year: ${year}`)
+            return year
+          })
+          .filter((year) => year !== null),
+      ),
+    ).map((year) => ({ value: year, label: year })),
+  ]
+
+  // console.log(years)
+
+  const handleYearChange = (selectedOption: { value: string } | null) => {
+    setSelectedYear(selectedOption?.value ?? null)
+  }
+
+  const filteredRiwayatJabatan =
+    selectedYear && selectedYear !== 'all' && riwayatJabatan
+      ? {
+          ...riwayatJabatan,
+          siasn: riwayatJabatan.siasn.filter((item) => {
+            const dateStr = item?.tmtJabatan ?? item?.tanggalSk
+            const year = dateStr?.slice(-4) // Mengambil 4 karakter terakhir
+            return year === selectedYear
+          }),
+        }
+      : riwayatJabatan
+
   return (
     <div
       className={`scrollbar flex h-[80vh] flex-col gap-32 overflow-auto`}
@@ -82,14 +118,23 @@ export function TableDataJabatan({
           <Loading width={'6rem'} height={'6rem'} />
         ) : (
           <>
-            <p className="text-sim-grey">
-              Sinkronisasi Terakhir:{' '}
-              {riwayatJabatan?.last_update
-                ? dayjs(riwayatJabatan?.last_update)
-                    .locale('id')
-                    .format('DD/MM/YYYY | HH:mm')
-                : 'Belum Sinkronisasi'}
-            </p>
+            <div className="flex items-center justify-between">
+              <p className="text-sim-grey">
+                Sinkronisasi Terakhir:{' '}
+                {riwayatJabatan?.last_update
+                  ? dayjs(riwayatJabatan?.last_update)
+                      .locale('id')
+                      .format('DD/MM/YYYY | HH:mm')
+                  : 'Belum Sinkronisasi'}
+              </p>
+              <Select
+                options={years}
+                onChange={handleYearChange}
+                isClearable
+                placeholder="Filter by Year"
+                className="z-50 w-1/4"
+              />
+            </div>
             <table className="flex-1 border-collapse rounded-3x bg-[#fcfcfc] text-24">
               <thead className="relative z-10 align-top leading-medium">
                 <tr>
@@ -122,8 +167,9 @@ export function TableDataJabatan({
                 </tr>
               </thead>
               <tbody>
-                {riwayatJabatan && riwayatJabatan?.siasn?.length > 0 ? (
-                  riwayatJabatan?.siasn?.map((item, idx) => (
+                {filteredRiwayatJabatan &&
+                filteredRiwayatJabatan?.siasn?.length > 0 ? (
+                  filteredRiwayatJabatan?.siasn?.map((item, idx) => (
                     <React.Fragment key={idx}>
                       <tr className="transition-all ease-in hover:cursor-pointer">
                         <th className="border bg-sim-pale-primary px-24 py-12 text-left align-middle leading-medium text-sim-dark">
@@ -154,7 +200,7 @@ export function TableDataJabatan({
                           </div>
                         </td>
                         <td className="border px-24 py-12 align-middle leading-medium">
-                          {riwayatJabatan?.lokal?.find(
+                          {filteredRiwayatJabatan?.lokal?.find(
                             (list) => list?.id === item?.id,
                           )?.jenisJabatan ?? '-'}
                         </td>
@@ -167,7 +213,7 @@ export function TableDataJabatan({
                           {item?.namaUnor ?? '-'}
                         </td>
                         <td className="border px-24 py-12 align-middle leading-medium">
-                          {riwayatJabatan?.lokal?.find(
+                          {filteredRiwayatJabatan?.lokal?.find(
                             (list) => list?.id === item?.id,
                           )?.namaUnor ?? '-'}
                         </td>
@@ -180,7 +226,7 @@ export function TableDataJabatan({
                           {item?.namaJabatan ?? '-'}
                         </td>
                         <td className="border px-24 py-12 align-middle leading-medium">
-                          {riwayatJabatan?.lokal?.find(
+                          {filteredRiwayatJabatan?.lokal?.find(
                             (list) => list?.id === item?.id,
                           )?.namaJabatan ?? '-'}
                         </td>
@@ -193,7 +239,7 @@ export function TableDataJabatan({
                           {item?.tmtJabatan ?? '-'}
                         </td>
                         <td className="border px-24 py-12 align-middle leading-medium">
-                          {riwayatJabatan?.lokal?.find(
+                          {filteredRiwayatJabatan?.lokal?.find(
                             (list) => list?.id === item?.id,
                           )?.tmtJabatan ?? '-'}
                         </td>
@@ -206,7 +252,7 @@ export function TableDataJabatan({
                           {item?.tmtPelantikan ?? '-'}
                         </td>
                         <td className="border px-24 py-12 align-middle leading-medium">
-                          {riwayatJabatan?.lokal?.find(
+                          {filteredRiwayatJabatan?.lokal?.find(
                             (list) => list?.id === item?.id,
                           )?.tmtPelantikan ?? '-'}
                         </td>
@@ -219,7 +265,7 @@ export function TableDataJabatan({
                           {item?.nomorSk ?? '-'}
                         </td>
                         <td className="border px-24 py-12 align-middle leading-medium">
-                          {riwayatJabatan?.lokal?.find(
+                          {filteredRiwayatJabatan?.lokal?.find(
                             (list) => list?.id === item?.id,
                           )?.nomorSk ?? '-'}
                         </td>
@@ -232,7 +278,7 @@ export function TableDataJabatan({
                           {item?.tanggalSk ?? '-'}
                         </td>
                         <td className="border px-24 py-12 align-middle leading-medium">
-                          {riwayatJabatan?.lokal?.find(
+                          {filteredRiwayatJabatan?.lokal?.find(
                             (list) => list?.id === item?.id,
                           )?.tanggalSk ?? '-'}
                         </td>
@@ -245,12 +291,12 @@ export function TableDataJabatan({
                           colSpan={2}
                           className="border px-24 py-12 align-middle leading-medium"
                         >
-                          {riwayatJabatan?.lokal?.find(
+                          {filteredRiwayatJabatan?.lokal?.find(
                             (list) => list?.id === item?.id,
                           )?.path ? (
                             <div className="flex items-center gap-16">
                               {JSON.parse(
-                                riwayatJabatan?.lokal?.find(
+                                filteredRiwayatJabatan?.lokal?.find(
                                   (list) => list?.id === item?.id,
                                 )?.path,
                               )?.map((item: PathFileType, idx) => (
@@ -275,7 +321,7 @@ export function TableDataJabatan({
                           )}
                         </td>
                       </tr>
-                      {idx < riwayatJabatan.siasn.length - 1 && (
+                      {idx < filteredRiwayatJabatan.siasn.length - 1 && (
                         <tr className="border transition-all ease-in hover:cursor-pointer">
                           <td
                             className="border px-24 py-12 align-middle leading-medium text-white"

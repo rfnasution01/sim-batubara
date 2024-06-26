@@ -1,5 +1,4 @@
-import { PathFileType, RiwayatDiklatType } from '@/libs/type'
-import { useGetPNSRiwayatDiklatQuery } from '@/store/slices/kepegawaianAPI'
+import { PathFileType, RiwayatPMKType } from '@/libs/type'
 import { Plus, RefreshCcw } from 'lucide-react'
 import React, { useEffect, useState } from 'react'
 import { UseFormReturn } from 'react-hook-form'
@@ -7,58 +6,46 @@ import { Link, useNavigate } from 'react-router-dom'
 import Cookies from 'js-cookie'
 import { Loading } from '../Loading'
 import { Form } from '../Form'
-// import { ModalShowFile } from '../ModalComponent'
 import dayjs from 'dayjs'
-import { ModalShowKonfirmasiDelete } from '../ModalComponent/ModalKonfirmasiDelete'
-import { usePathname } from '@/libs/hooks/usePathname'
+import { useGetPNSRiwayatMasaKerjaQuery } from '@/store/slices/kepegawaianAPI'
 import FileDownload from '../FileDownload'
-import Select from 'react-select'
 
-export function TableDataDiklat({
+export function TableDataMasaKerja({
   idPegawai,
   form,
-  formDelete,
-  handleSubmitriwayatDiklat,
-  isSinkronriwayatDiklat,
-  handleDeleteDiklat,
-  isLoadingDeleteDiklat,
+  handleSubmitriwayatMasaKerja,
+  isSinkronriwayatMasaKerja,
 }: {
   idPegawai: string
   form: UseFormReturn
-  formDelete: UseFormReturn
-  handleSubmitriwayatDiklat: () => Promise<void>
-  isSinkronriwayatDiklat: boolean
-  handleDeleteDiklat: (id: string) => Promise<void>
-  isLoadingDeleteDiklat: boolean
+  handleSubmitriwayatMasaKerja: () => Promise<void>
+  isSinkronriwayatMasaKerja: boolean
 }) {
   const navigate = useNavigate()
-  const { thirdPathname } = usePathname()
-  const [riwayatDiklat, setRiwayatDiklat] = useState<RiwayatDiklatType>()
-  // const [isShow, setIsShow] = useState<boolean>(false)
-  const [isShowDelete, setIsShowDelete] = useState<boolean>(false)
-  // const [isUri, setUri] = useState<string>('')
-  // const [isNama, setNama] = useState<string>('')
-  const [id, setId] = useState<string>('')
-  const [selectedYear, setSelectedYear] = useState<string | null>(null)
+  const [riwayatMasaKerja, setRiwayatMasaKerja] = useState<RiwayatPMKType>()
+  //   const [isShow, setIsShow] = useState<boolean>(false)
+  //   const [isShowDelete, setIsShowDelete] = useState<boolean>(false)
+  //   const [isUri, setUri] = useState<string>('')
+  //   const [isNama, setNama] = useState<string>('')
 
   const {
-    data: riwayatDiklatData,
-    isLoading: riwayatDiklatIsLoading,
-    isFetching: riwayatDiklatIsFetching,
+    data: riwayatMasaKerjaData,
+    isLoading: riwayatMasaKerjaIsLoading,
+    isFetching: riwayatMasaKerjaIsFetching,
     error,
-  } = useGetPNSRiwayatDiklatQuery(
+  } = useGetPNSRiwayatMasaKerjaQuery(
     {
       id_pegawai: idPegawai,
     },
     { skip: !idPegawai },
   )
 
-  const isLoadingRiwayatDiklat =
-    riwayatDiklatIsLoading || riwayatDiklatIsFetching
+  const isLoadingRiwayatMasaKerja =
+    riwayatMasaKerjaIsLoading || riwayatMasaKerjaIsFetching
 
   useEffect(() => {
-    if (riwayatDiklatData) {
-      setRiwayatDiklat(riwayatDiklatData?.data)
+    if (riwayatMasaKerjaData) {
+      setRiwayatMasaKerja(riwayatMasaKerjaData?.data)
     }
     const errorMsg = error as {
       data?: {
@@ -73,41 +60,7 @@ export function TableDataDiklat({
       Cookies.remove('token')
       navigate('/login')
     }
-  }, [riwayatDiklatData, idPegawai, error])
-
-  const years = [
-    { value: 'all', label: 'Tampilkan Semua Tahun' },
-    ...Array.from(
-      new Set(
-        riwayatDiklat?.siasn
-          ?.map((item) => {
-            const dateStr = item?.tanggal
-            const year = dateStr?.slice(-4) // Mengambil 4 karakter terakhir
-            console.log(`Date string: ${dateStr}, Year: ${year}`)
-            return year
-          })
-          .filter((year) => year !== null),
-      ),
-    ).map((year) => ({ value: year, label: year })),
-  ]
-
-  // console.log(years)
-
-  const handleYearChange = (selectedOption: { value: string } | null) => {
-    setSelectedYear(selectedOption?.value ?? null)
-  }
-
-  const filteredRiwayatDiklat =
-    selectedYear && selectedYear !== 'all' && riwayatDiklat
-      ? {
-          ...riwayatDiklat,
-          siasn: riwayatDiklat.siasn.filter((item) => {
-            const dateStr = item?.tanggal
-            const year = dateStr?.slice(-4) // Mengambil 4 karakter terakhir
-            return year === selectedYear
-          }),
-        }
-      : riwayatDiklat
+  }, [riwayatMasaKerjaData, idPegawai, error])
 
   return (
     <div
@@ -115,28 +68,18 @@ export function TableDataDiklat({
       style={{ scrollbarGutter: 'stable' }}
     >
       <div className="flex flex-col gap-12 rounded-3x">
-        {isLoadingRiwayatDiklat || isSinkronriwayatDiklat ? (
+        {isLoadingRiwayatMasaKerja || isSinkronriwayatMasaKerja ? (
           <Loading width={'6rem'} height={'6rem'} />
         ) : (
           <>
-            <div className="flex items-center justify-between">
-              <p className="text-sim-grey">
-                Sinkronisasi Terakhir:{' '}
-                {riwayatDiklat?.last_update
-                  ? dayjs(riwayatDiklat?.last_update)
-                      .locale('id')
-                      .format('DD/MM/YYYY | HH:mm')
-                  : 'Belum Sinkronisasi'}
-              </p>
-              <Select
-                options={years}
-                onChange={handleYearChange}
-                isClearable
-                placeholder="Filter by Year"
-                className="z-50 w-1/4"
-              />
-            </div>
-
+            <p className="text-sim-grey">
+              Sinkronisasi Terakhir:{' '}
+              {riwayatMasaKerja?.last_update
+                ? dayjs(riwayatMasaKerja?.last_update)
+                    .locale('id')
+                    .format('DD/MM/YYYY | HH:mm')
+                : 'Belum Sinkronisasi'}
+            </p>
             <table className="flex-1 border-collapse rounded-3x bg-[#fcfcfc] text-24">
               <thead className="relative z-10 align-top leading-medium">
                 <tr>
@@ -145,7 +88,9 @@ export function TableDataDiklat({
                   >
                     <Form {...form}>
                       <form
-                        onSubmit={form.handleSubmit(handleSubmitriwayatDiklat)}
+                        onSubmit={form.handleSubmit(
+                          handleSubmitriwayatMasaKerja,
+                        )}
                       >
                         <button
                           type="submit"
@@ -169,81 +114,74 @@ export function TableDataDiklat({
                 </tr>
               </thead>
               <tbody>
-                {filteredRiwayatDiklat &&
-                filteredRiwayatDiklat?.siasn?.length > 0 ? (
-                  filteredRiwayatDiklat?.siasn?.map((item, idx) => (
+                {riwayatMasaKerja && riwayatMasaKerja?.siasn?.length > 0 ? (
+                  riwayatMasaKerja?.siasn?.map((item, idx) => (
                     <React.Fragment key={idx}>
                       <tr className="transition-all ease-in hover:cursor-pointer">
                         <th className="border bg-sim-pale-primary px-24 py-12 text-left align-middle leading-medium text-sim-dark">
-                          Nama Diklat
+                          Tanggal Awal
                         </th>
                         <td className="border px-24 py-12 align-middle leading-medium">
-                          <div className="flex flex-wrap items-center gap-16">
-                            <p> {item?.latihanStrukturalNama ?? '-'}</p>
-                            <button
-                              type="submit"
-                              onClick={() => {
-                                setId(item?.id)
-                                setIsShowDelete(true)
-                              }}
-                              className="text-nowrap rounded-2xl border bg-danger px-16 py-8 text-[2rem] text-white hover:bg-opacity-80"
-                            >
-                              Hapus Data
-                            </button>
-                            <Link
-                              to={`/kepegawaian/pns/${thirdPathname}/diklat/detail`}
-                              onClick={() => {
-                                localStorage.setItem('jabatanID', item?.id)
-                              }}
-                              className="rounded-2xl border bg-sim-primary px-16 py-8 text-[2rem] text-white hover:bg-opacity-80"
-                            >
-                              Detail
-                            </Link>
-                          </div>
+                          <p>{item?.tanggalAwal ?? '-'}</p>
                         </td>
                         <td className="border px-24 py-12 align-middle leading-medium">
-                          {filteredRiwayatDiklat?.lokal?.find(
+                          {riwayatMasaKerja?.lokal?.find(
                             (list) => list?.id === item?.id,
-                          )?.latihanStrukturalNama ?? '-'}
+                          )?.tanggalAwal ?? '-'}
                         </td>
                       </tr>
                       <tr className="transition-all ease-in hover:cursor-pointer">
                         <th className="border bg-sim-pale-primary px-24 py-12 text-left align-middle leading-medium text-sim-dark">
-                          Tanggal Mulai
-                        </th>
-                        <td className="border px-24 py-12 align-middle leading-medium">
-                          {item?.tanggal ?? '-'}
-                        </td>
-                        <td className="border px-24 py-12 align-middle leading-medium">
-                          {filteredRiwayatDiklat?.lokal?.find(
-                            (list) => list?.id === item?.id,
-                          )?.tanggal ?? '-'}
-                        </td>
-                      </tr>
-                      <tr className="transition-all ease-in hover:cursor-pointer">
-                        <th className="border bg-sim-pale-primary px-24 py-12 text-left align-middle leading-medium text-sim-dark">
-                          Tanggal Selesai
+                          Tanggal Akhir
                         </th>
                         <td className="border px-24 py-12 align-middle leading-medium">
                           {item?.tanggalSelesai ?? '-'}
                         </td>
                         <td className="border px-24 py-12 align-middle leading-medium">
-                          {filteredRiwayatDiklat?.lokal?.find(
+                          {riwayatMasaKerja?.lokal?.find(
                             (list) => list?.id === item?.id,
                           )?.tanggalSelesai ?? '-'}
                         </td>
                       </tr>
                       <tr className="transition-all ease-in hover:cursor-pointer">
                         <th className="border bg-sim-pale-primary px-24 py-12 text-left align-middle leading-medium text-sim-dark">
-                          Penyelenggara
+                          Nomor SK
                         </th>
                         <td className="border px-24 py-12 align-middle leading-medium">
-                          {item?.institusiPenyelenggara ?? '-'}
+                          {item?.nomorSk ?? '-'}
                         </td>
                         <td className="border px-24 py-12 align-middle leading-medium">
-                          {filteredRiwayatDiklat?.lokal?.find(
+                          {riwayatMasaKerja?.lokal?.find(
                             (list) => list?.id === item?.id,
-                          )?.institusiPenyelenggara ?? '-'}
+                          )?.nomorSk ?? '-'}
+                        </td>
+                      </tr>
+                      <tr className="transition-all ease-in hover:cursor-pointer">
+                        <th className="border bg-sim-pale-primary px-24 py-12 text-left align-middle leading-medium text-sim-dark">
+                          Masa Kerja(Tahun)
+                        </th>
+                        <td className="border px-24 py-12 align-middle leading-medium">
+                          {item?.masaKerjaTahun ?? '-'} Tahun
+                        </td>
+                        <td className="border px-24 py-12 align-middle leading-medium">
+                          {riwayatMasaKerja?.lokal?.find(
+                            (list) => list?.id === item?.id,
+                          )?.masaKerjaTahun ?? '-'}{' '}
+                          Tahun
+                        </td>
+                      </tr>
+                      <tr className="transition-all ease-in hover:cursor-pointer">
+                        <th className="border bg-sim-pale-primary px-24 py-12 text-left align-middle leading-medium text-sim-dark">
+                          Masa Kerja(Bulan)
+                        </th>
+                        <td className="border px-24 py-12 align-middle leading-medium">
+                          {item?.masaKerjaBulan ?? '-'} Bulan
+                        </td>
+                        <td className="border px-24 py-12 align-middle leading-medium">
+                          {riwayatMasaKerja?.lokal?.find(
+                            (list) => list?.id === item?.id,
+                          )?.masaKerjaBulan ?? '-'}{' '}
+                          Bulan
                         </td>
                       </tr>
                       <tr className="transition-all ease-in hover:cursor-pointer">
@@ -254,12 +192,12 @@ export function TableDataDiklat({
                           colSpan={2}
                           className="border px-24 py-12 align-middle leading-medium"
                         >
-                          {filteredRiwayatDiklat?.lokal?.find(
+                          {riwayatMasaKerja?.lokal?.find(
                             (list) => list?.id === item?.id,
                           )?.path ? (
                             <div className="flex items-center gap-16">
                               {JSON.parse(
-                                filteredRiwayatDiklat?.lokal?.find(
+                                riwayatMasaKerja?.lokal?.find(
                                   (list) => list?.id === item?.id,
                                 )?.path,
                               )?.map((item: PathFileType, idx) => (
@@ -285,7 +223,7 @@ export function TableDataDiklat({
                         </td>
                       </tr>
 
-                      {idx < filteredRiwayatDiklat.siasn.length - 1 && (
+                      {idx < riwayatMasaKerja.siasn.length - 1 && (
                         <tr className="border transition-all ease-in hover:cursor-pointer">
                           <td
                             className="border px-24 py-12 align-middle leading-medium text-white"
@@ -312,10 +250,10 @@ export function TableDataDiklat({
           </>
         )}
       </div>
-      {!(isLoadingRiwayatDiklat || isSinkronriwayatDiklat) && (
+      {!(isLoadingRiwayatMasaKerja || isSinkronriwayatMasaKerja) && (
         <div className="fixed bottom-80 right-64 z-50 flex justify-end">
           <Link
-            to={`/kepegawaian/pns/${thirdPathname}/diklat/tambah`}
+            to={`/kepegawaian/pns/${idPegawai}/MasaKerja/tambah`}
             className="flex items-center gap-12 rounded-2xl bg-sim-primary px-24 py-16 text-white hover:bg-opacity-80"
           >
             Tambah <Plus size={16} />
@@ -328,15 +266,6 @@ export function TableDataDiklat({
         uri={isUri}
         nama={isNama}
       /> */}
-
-      <ModalShowKonfirmasiDelete
-        isLoading={isLoadingDeleteDiklat}
-        setIsOpen={setIsShowDelete}
-        isOpen={isShowDelete}
-        handleDeleteJabatan={handleDeleteDiklat}
-        form={formDelete}
-        id={id}
-      />
     </div>
   )
 }

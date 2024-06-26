@@ -34,6 +34,10 @@ export function DataDetailPegawai({
   handleDeletePenghargaan,
   isLoadingDeleteKursus,
   isLoadingDeletePenghargaan,
+  handleSubmitRiwayatPMK,
+  isSinkronRiwayatPMK,
+  handleSubmitRiwayatPindahInstansi,
+  isSinkronRiwayatPindahInstansi,
 }: {
   data: DataKepegawaianUtamaType
   idPegawai: string
@@ -47,10 +51,14 @@ export function DataDetailPegawai({
   isSinkronRiwayatPendidikan: boolean
   handleSubmitRiwayatJabatan: () => Promise<void>
   isSinkronRiwayatJabatan: boolean
+  handleSubmitRiwayatPMK: () => Promise<void>
+  isSinkronRiwayatPMK: boolean
   handleSubmitRiwayatDiklat: () => Promise<void>
   isSinkronRiwayatDiklat: boolean
   handleSubmitRiwayatDiklatLainnya: () => Promise<void>
   isSinkronRiwayatDiklatLainnya: boolean
+  handleSubmitRiwayatPindahInstansi: () => Promise<void>
+  isSinkronRiwayatPindahInstansi: boolean
   handleSubmitRiwayatPenghargaan: () => Promise<void>
   isSinkronRiwayatPenghargaan: boolean
   handleDeleteJabatan: (id: string) => Promise<void>
@@ -115,6 +123,10 @@ export function DataDetailPegawai({
           isLoadingDeleteDiklat={isLoadingDeleteDiklat}
           isLoadingDeleteKursus={isLoadingDeleteKursus}
           isLoadingDeletePenghargaan={isLoadingDeletePenghargaan}
+          handleSubmitRiwayatPMK={handleSubmitRiwayatPMK}
+          isSinkronRiwayatPMK={isSinkronRiwayatPMK}
+          handleSubmitRiwayatPindahInstansi={handleSubmitRiwayatPindahInstansi}
+          isSinkronRiwayatPindahInstansi={isSinkronRiwayatPindahInstansi}
         />
       )}
     </div>

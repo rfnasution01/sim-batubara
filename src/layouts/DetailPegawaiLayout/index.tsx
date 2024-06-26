@@ -10,8 +10,10 @@ import {
   useCreateSinkronRiwayatDiklatMutation,
   useCreateSinkronRiwayatGolonganMutation,
   useCreateSinkronRiwayatJabatanMutation,
+  useCreateSinkronRiwayatPMKMutation,
   useCreateSinkronRiwayatPendidikanMutation,
   useCreateSinkronRiwayatPenghargaanMutation,
+  useCreateSinkronRiwayatPindahInstansiMutation,
   useDeleteDiklatMutation,
   useDeleteJabatanMutation,
   useDeleteKursusMutation,
@@ -554,6 +556,124 @@ export default function DetailPegawaiLayoutMain() {
     }
   }, [isErrorSinkronRiwayatJabatan, errorSinkronRiwayatJabatan])
 
+  // --- Sinkron Riwayat PMK ---
+  const [
+    createSinkronRiwayatPMK,
+    {
+      isError: isErrorSinkronRiwayatPMK,
+      error: errorSinkronRiwayatPMK,
+      isLoading: isLoadingSinkronRiwayatPMK,
+      isSuccess: isSuccessSinkronRiwayatPMK,
+    },
+  ] = useCreateSinkronRiwayatPMKMutation()
+
+  const handleSubmitRiwayatPMK = async () => {
+    try {
+      await createSinkronRiwayatPMK({
+        data: {
+          id_pegawai: idParams,
+        },
+      })
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
+  useEffect(() => {
+    if (isSuccessSinkronRiwayatPMK) {
+      toast.success('Data riwayat masa kerja berhasil disinkronkan', {
+        position: 'bottom-right',
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'light',
+        transition: Bounce,
+      })
+    }
+  }, [isSuccessSinkronRiwayatPMK])
+
+  useEffect(() => {
+    if (isErrorSinkronRiwayatPMK) {
+      const errorMsg = errorSinkronRiwayatPMK as {
+        data?: { message?: string }
+      }
+
+      toast.error(`${errorMsg?.data?.message ?? 'Terjadi Kesalahan'}`, {
+        position: 'bottom-right',
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'light',
+        transition: Bounce,
+      })
+    }
+  }, [isErrorSinkronRiwayatPMK, errorSinkronRiwayatPMK])
+
+  // --- Sinkron Riwayat PindahInstansi ---
+  const [
+    createSinkronRiwayatPindahInstansi,
+    {
+      isError: isErrorSinkronRiwayatPindahInstansi,
+      error: errorSinkronRiwayatPindahInstansi,
+      isLoading: isLoadingSinkronRiwayatPindahInstansi,
+      isSuccess: isSuccessSinkronRiwayatPindahInstansi,
+    },
+  ] = useCreateSinkronRiwayatPindahInstansiMutation()
+
+  const handleSubmitRiwayatPindahInstansi = async () => {
+    try {
+      await createSinkronRiwayatPindahInstansi({
+        data: {
+          id_pegawai: idParams,
+        },
+      })
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
+  useEffect(() => {
+    if (isSuccessSinkronRiwayatPindahInstansi) {
+      toast.success('Data riwayat pindah instansi berhasil disinkronkan', {
+        position: 'bottom-right',
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'light',
+        transition: Bounce,
+      })
+    }
+  }, [isSuccessSinkronRiwayatPindahInstansi])
+
+  useEffect(() => {
+    if (isErrorSinkronRiwayatPindahInstansi) {
+      const errorMsg = errorSinkronRiwayatPindahInstansi as {
+        data?: { message?: string }
+      }
+
+      toast.error(`${errorMsg?.data?.message ?? 'Terjadi Kesalahan'}`, {
+        position: 'bottom-right',
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'light',
+        transition: Bounce,
+      })
+    }
+  }, [isErrorSinkronRiwayatPindahInstansi, errorSinkronRiwayatPindahInstansi])
+
   // --- Sinkron Riwayat Diklat ---
   const [
     createSinkronRiwayatDiklat,
@@ -747,6 +867,12 @@ export default function DetailPegawaiLayoutMain() {
             isSinkronDataUtama={isLoadingSinkron}
             form={form}
             formDelete={formDelete}
+            handleSubmitRiwayatPindahInstansi={
+              handleSubmitRiwayatPindahInstansi
+            }
+            isSinkronRiwayatPindahInstansi={
+              isLoadingSinkronRiwayatPindahInstansi
+            }
             handleSubmitRiwayatGolongan={handleSubmitRiwayatGolongan}
             isSinkronRiwayatGolongan={isLoadingSinkronRiwayatGolongan}
             handleSubmitRiwayatPendidikan={handleSubmitRiwayatPendidikan}
@@ -767,6 +893,8 @@ export default function DetailPegawaiLayoutMain() {
             isLoadingDeleteKursus={deleteKursusLoading}
             handleDeletePenghargaan={handleDeletePenghargaan}
             isLoadingDeletePenghargaan={deletePenghargaanLoading}
+            handleSubmitRiwayatPMK={handleSubmitRiwayatPMK}
+            isSinkronRiwayatPMK={isLoadingSinkronRiwayatPMK}
           />
         </>
       )}
