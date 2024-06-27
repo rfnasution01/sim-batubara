@@ -1,7 +1,7 @@
 import { Breadcrumb } from '@/components/Breadcrumb'
 import { Searching } from '@/components/Search'
 import { SelectListDataPerPage } from '@/components/SelectComponent'
-import { MenubarFilter } from '@/components/menubar-component'
+import { MenubarFilter } from '@/components/MenubarComponent'
 import { usePathname } from '@/libs/hooks/usePathname'
 import clsx from 'clsx'
 import { Outlet } from 'react-router-dom'

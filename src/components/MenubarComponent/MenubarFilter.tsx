@@ -69,7 +69,7 @@ export function MenubarFilter() {
         {isMenuOpen && (
           <MenubarContent className="shadow-grey-light-1 absolute -right-[13rem] top-[1rem] w-[50rem] rounded-2xl text-[2rem] transition-all duration-300">
             <Form {...form}>
-              <form className="scrollbar flex h-full flex-col gap-32 overflow-y-auto bg-white p-24">
+              <form className="scrollbar flex h-full flex-col gap-32 overflow-y-auto bg-white p-32">
                 <div className="flex flex-col gap-24">
                   <SelectListSatuanKerja
                     useFormReturn={form}

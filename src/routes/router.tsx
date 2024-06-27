@@ -12,6 +12,8 @@ import {
   LoginLayoutMain,
   PNSPage,
   RootLayoutMain,
+  TabelReferensiLayout,
+  TabelReferensiPathPage,
   TambahDiklatPage,
   TambahJabatanPage,
   TambahKursusPage,
@@ -39,7 +41,13 @@ export const router = createBrowserRouter([
       },
       {
         path: 'tabel-referensi',
-        element: <ComingSoonPage />,
+        element: <TabelReferensiLayout />,
+        children: [
+          {
+            path: ':path',
+            element: <TabelReferensiPathPage />,
+          },
+        ],
       },
       {
         path: 'kepegawaian',

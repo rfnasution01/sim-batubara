@@ -4,8 +4,4 @@ export const listNavigasi = [
     name: 'Kepegawaian',
     child: [{ name: 'PNS' }, { name: 'PPPK' }],
   },
-  {
-    name: 'Tabel Referensi',
-  },
-  { name: 'Logout', child: [] },
 ]

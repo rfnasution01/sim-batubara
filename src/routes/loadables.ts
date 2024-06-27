@@ -12,6 +12,9 @@ export const DetailPegawaiLayoutMain = loadable(
 )
 export const CustomLayoutMain = loadable(() => import('@/layouts/CustomLayout'))
 export const LoginLayoutMain = loadable(() => import('@/layouts/LoginLayout'))
+export const TabelReferensiLayout = loadable(
+  () => import('@/layouts/TableReferensiLayout'),
+)
 
 // ------------------
 // ----- Pages -----
@@ -45,3 +48,7 @@ export const DetailPenghargaanPage = loadable(
 )
 
 export const DashboardPage = loadable(() => import('@/pages/Dashboard'))
+
+export const TabelReferensiPathPage = loadable(
+  () => import('@/pages/TabelReferensi'),
+)
