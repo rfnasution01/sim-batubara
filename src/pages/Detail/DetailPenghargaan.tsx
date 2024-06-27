@@ -26,16 +26,13 @@ import * as zod from 'zod'
 import { Form } from '@/components/Form'
 import { SinkronSchema } from '@/libs/schema'
 import clsx from 'clsx'
-import FileDownload from '@/components/FileDownload'
+import PDFViewer from '@/components/PDFShow'
 
 export default function DetailPenghargaanPage() {
   const { firstPathname, secondPathname, thirdPathname } = usePathname()
   const navigate = useNavigate()
   const idParams = localStorage.getItem('pegawaiID')
   const idPenghargaan = localStorage.getItem('jabatanID')
-  // const [isShow, setIsShow] = useState<boolean>(false)
-  // const [nama, setNama] = useState<string>('')
-  // const [uri, setUri] = useState<string>('')
 
   const form = useForm<zod.infer<typeof SinkronSchema>>({
     resolver: zodResolver(SinkronSchema),
@@ -293,27 +290,32 @@ export default function DetailPenghargaanPage() {
                   colSpan={2}
                   className="border px-24 py-12 align-middle leading-medium"
                 >
-                  <div className="flex items-center gap-16">
-                    {kepegawaianPenghargaanDetail?.lokal?.path &&
-                      JSON?.parse(
+                  {kepegawaianPenghargaanDetail?.lokal?.path ? (
+                    <div className="flex items-center gap-16">
+                      {JSON.parse(
                         kepegawaianPenghargaanDetail?.lokal?.path,
                       )?.map((item: PathFileType, idx) => (
-                        <div
-                          key={idx}
-                          // onClick={() => {
-                          //   setIsShow(true)
-                          //   setUri(item?.dok_uri)
-                          //   setNama(item?.dok_nama)
-                          // }}
-                          className="rounded-2xl bg-sim-dark px-16 py-8 text-white hover:bg-opacity-80"
-                        >
-                          <FileDownload
-                            uri={item?.dok_uri}
-                            namaFile={item?.dok_nama}
+                        // <Link
+                        //   to={`${downloadURL}penghargaan/${kepegawaianPenghargaanDetail?.lokal?.id}/${item?.dok_id}`}
+                        //   key={idx}
+                        //   target="_blank"
+                        //   className="rounded-2xl bg-sim-dark px-16 py-8 text-white hover:bg-opacity-80"
+                        // >
+                        //   {item?.dok_nama}
+                        // </Link>
+                        <div key={idx}>
+                          <PDFViewer
+                            dok_id={item?.dok_id}
+                            dok_nama={item?.dok_nama}
+                            id={kepegawaianPenghargaanDetail?.siasn?.id}
+                            riwayat="penghargaan"
                           />
                         </div>
                       ))}
-                  </div>
+                    </div>
+                  ) : (
+                    '-'
+                  )}
                 </td>
               </tr>
             </tbody>
@@ -330,12 +332,6 @@ export default function DetailPenghargaanPage() {
         </div>
       )}
 
-      {/* <ModalShowFile
-        isOpen={isShow}
-        setIsOpen={setIsShow}
-        uri={uri}
-        nama={nama}
-      /> */}
       <ToastContainer />
     </div>
   )

@@ -10,8 +10,8 @@ import { Form } from '../Form'
 import dayjs from 'dayjs'
 import { ModalShowKonfirmasiDelete } from '../ModalComponent/ModalKonfirmasiDelete'
 import { usePathname } from '@/libs/hooks/usePathname'
-import FileDownload from '../FileDownload'
 import Select from 'react-select'
+import PDFViewer from '../PDFShow'
 
 export function TableDataJabatan({
   idPegawai,
@@ -33,10 +33,7 @@ export function TableDataJabatan({
   const navigate = useNavigate()
   const { thirdPathname } = usePathname()
   const [riwayatJabatan, setRiwayatJabatan] = useState<RiwayatJabatanType>()
-  // const [isShow, setIsShow] = useState<boolean>(false)
   const [isShowDelete, setIsShowDelete] = useState<boolean>(false)
-  // const [isUri, setUri] = useState<string>('')
-  // const [isNama, setNama] = useState<string>('')
   const [id, setId] = useState<string>('')
   const [selectedYear, setSelectedYear] = useState<string | null>(null)
 
@@ -131,7 +128,7 @@ export function TableDataJabatan({
                 options={years}
                 onChange={handleYearChange}
                 isClearable
-                placeholder="Filter by Year"
+                placeholder="Filter berdasarkan tahun"
                 className="z-50 w-1/4"
               />
             </div>
@@ -296,22 +293,24 @@ export function TableDataJabatan({
                           )?.path ? (
                             <div className="flex items-center gap-16">
                               {JSON.parse(
-                                filteredRiwayatJabatan?.lokal?.find(
+                                riwayatJabatan?.lokal?.find(
                                   (list) => list?.id === item?.id,
                                 )?.path,
-                              )?.map((item: PathFileType, idx) => (
-                                <div
-                                  key={idx}
-                                  // onClick={() => {
-                                  //   setIsShow(true)
-                                  //   setUri(item?.dok_uri)
-                                  //   setNama(item?.dok_nama)
-                                  // }}
-                                  className="rounded-2xl bg-sim-dark px-16 py-8 text-white hover:bg-opacity-80"
-                                >
-                                  <FileDownload
-                                    uri={item?.dok_uri}
-                                    namaFile={item?.dok_nama}
+                              )?.map((pathItem: PathFileType, idx) => (
+                                // <Link
+                                //   to={`${downloadURL}jabatan/${item?.id}/${pathItem?.dok_id}`}
+                                //   key={idx}
+                                //   target="_blank"
+                                //   className="rounded-2xl bg-sim-dark px-16 py-8 text-white hover:bg-opacity-80"
+                                // >
+                                //   {pathItem?.dok_nama}
+                                // </Link>
+                                <div key={idx}>
+                                  <PDFViewer
+                                    dok_id={pathItem?.dok_id}
+                                    dok_nama={pathItem?.dok_nama}
+                                    id={item?.id}
+                                    riwayat="jabatan"
                                   />
                                 </div>
                               ))}
@@ -358,12 +357,6 @@ export function TableDataJabatan({
           </Link>
         </div>
       )}
-      {/* <ModalShowFile
-        isOpen={isShow}
-        setIsOpen={setIsShow}
-        uri={isUri}
-        nama={isNama}
-      /> */}
 
       <ModalShowKonfirmasiDelete
         isLoading={isLoadingDeleteJabatan}

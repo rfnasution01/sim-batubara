@@ -10,8 +10,8 @@ import { useGetPNSRiwayatPengharaagnQuery } from '@/store/slices/kepegawaianAPI'
 import dayjs from 'dayjs'
 import { ModalShowKonfirmasiDelete } from '../ModalComponent/ModalKonfirmasiDelete'
 import { usePathname } from '@/libs/hooks/usePathname'
-import FileDownload from '../FileDownload'
 import Select from 'react-select'
+import PDFViewer from '../PDFShow'
 
 export function TableDataPenghargaan({
   idPegawai,
@@ -34,10 +34,7 @@ export function TableDataPenghargaan({
   const { thirdPathname } = usePathname()
   const [riwayatPenghargaan, setRiwayatPenghargaan] =
     useState<RiwayatPenghargaanType>()
-  // const [isShow, setIsShow] = useState<boolean>(false)
   const [isShowDelete, setIsShowDelete] = useState<boolean>(false)
-  // const [isUri, setUri] = useState<string>('')
-  // const [isNama, setNama] = useState<string>('')
   const [id, setId] = useState<string>('')
   const [selectedYear, setSelectedYear] = useState<string | null>(null)
 
@@ -91,8 +88,6 @@ export function TableDataPenghargaan({
     ).map((year) => ({ value: year, label: year })),
   ]
 
-  // console.log(years)
-
   const handleYearChange = (selectedOption: { value: string } | null) => {
     setSelectedYear(selectedOption?.value ?? null)
   }
@@ -132,7 +127,7 @@ export function TableDataPenghargaan({
                 options={years}
                 onChange={handleYearChange}
                 isClearable
-                placeholder="Filter by Year"
+                placeholder="Filter berdasarkan tahun"
                 className="z-50 w-1/4"
               />
             </div>
@@ -247,6 +242,7 @@ export function TableDataPenghargaan({
                           )?.skDate ?? '-'}
                         </td>
                       </tr>
+
                       <tr className="transition-all ease-in hover:cursor-pointer">
                         <th className="border bg-sim-pale-primary px-24 py-12 text-left align-middle leading-medium text-sim-dark">
                           File
@@ -260,22 +256,24 @@ export function TableDataPenghargaan({
                           )?.path ? (
                             <div className="flex items-center gap-16">
                               {JSON.parse(
-                                filteredRiwayatPenghargaan?.lokal?.find(
+                                riwayatPenghargaan?.lokal?.find(
                                   (list) => list?.id === item?.id,
                                 )?.path,
-                              )?.map((item: PathFileType, idx) => (
-                                <div
-                                  key={idx}
-                                  // onClick={() => {
-                                  //   setIsShow(true)
-                                  //   setUri(item?.dok_uri)
-                                  //   setNama(item?.dok_nama)
-                                  // }}
-                                  className="rounded-2xl bg-sim-dark px-16 py-8 text-white hover:bg-opacity-80"
-                                >
-                                  <FileDownload
-                                    uri={item?.dok_uri}
-                                    namaFile={item?.dok_nama}
+                              )?.map((pathItem: PathFileType, idx) => (
+                                // <Link
+                                //   to={`https://devapimobile.simbatubarakab.id/apisiasn/download/dokumenpenghargaan/${item?.id}/${pathItem?.dok_id}`}
+                                //   key={idx}
+                                //   target="_blank"
+                                //   className="rounded-2xl bg-sim-dark px-16 py-8 text-white hover:bg-opacity-80"
+                                // >
+                                //   {pathItem?.dok_nama}
+                                // </Link>
+                                <div key={idx}>
+                                  <PDFViewer
+                                    dok_id={pathItem?.dok_id}
+                                    dok_nama={pathItem?.dok_nama}
+                                    id={item?.id}
+                                    riwayat="penghargaan"
                                   />
                                 </div>
                               ))}
@@ -323,12 +321,7 @@ export function TableDataPenghargaan({
           </Link>
         </div>
       )}
-      {/* <ModalShowFile
-        isOpen={isShow}
-        setIsOpen={setIsShow}
-        uri={isUri}
-        nama={isNama}
-      /> */}
+
       <ModalShowKonfirmasiDelete
         isLoading={isLoadingDeletePenghargaan}
         setIsOpen={setIsShowDelete}
