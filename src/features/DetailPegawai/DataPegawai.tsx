@@ -97,6 +97,13 @@ export function DataDetailPegawai({
           handleSubmitDataUtama={handleSubmitDataUtama}
           form={form}
           isSinkronDataUtama={isSinkronDataUtama}
+          handleSubmitRiwayatGolongan={handleSubmitRiwayatGolongan}
+          handleSubmitRiwayatJabatan={handleSubmitRiwayatJabatan}
+          handleSubmitRiwayatPendidikan={handleSubmitRiwayatPendidikan}
+          isSinkronRiwayatGolongan={isSinkronRiwayatGolongan}
+          isSinkronRiwayatJabatan={isSinkronRiwayatJabatan}
+          isSinkronRiwayatPendidikan={isSinkronRiwayatPendidikan}
+          idPegawai={idPegawai}
         />
       ) : (
         <DataRiwayatMain

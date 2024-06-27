@@ -113,7 +113,16 @@ type GolonganType = {
   id: string
   golongan: string
   pangkat: string
+  skNomor: string
+  skTanggal: string
+  tmtGolongan: string
+  noPertekBkn: string
+  tglPertekBkn: string
+  masaKerjaGolonganTahun: string
+  masaKerjaGolonganBulan: string
+  path: string
 }
+
 export type RiwayatPendidikanType = {
   lokal: PendidikanType[]
   siasn: PendidikanType[]
@@ -128,6 +137,8 @@ export type PendidikanType = {
   namaSekolah: string
   gelarDepan: string
   gelarBelakang: string
+  tahunLulus: string
+  path: string
 }
 
 export type RiwayatJabatanType = {

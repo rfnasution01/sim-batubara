@@ -1,6 +1,6 @@
-import { RiwayatGolonganType } from '@/libs/type'
+import { PathFileType, RiwayatGolonganType } from '@/libs/type'
 import { useGetPNSRiwayatGolonganQuery } from '@/store/slices/kepegawaianAPI'
-import { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Cookies from 'js-cookie'
 import { Loading } from '../Loading'
@@ -8,6 +8,7 @@ import { UseFormReturn } from 'react-hook-form'
 import { RefreshCcw } from 'lucide-react'
 import { Form } from '../Form'
 import dayjs from 'dayjs'
+import PDFViewer from '../PDFShow'
 
 export function TableDataGolongan({
   idPegawai,
@@ -111,41 +112,163 @@ export function TableDataGolongan({
               <tbody>
                 {riwayatGolongan && riwayatGolongan?.siasn?.length > 0 ? (
                   riwayatGolongan?.siasn?.map((item, idx) => (
-                    <tr
-                      className="transition-all ease-in hover:cursor-pointer"
-                      key={idx}
-                    >
-                      {/* Kolom pertama (Golongan) hanya pada baris pertama */}
-                      {idx === 0 && (
-                        <th
-                          className="border bg-sim-pale-primary px-24 py-12 text-left align-middle leading-medium text-sim-dark"
-                          rowSpan={riwayatGolongan?.siasn?.length}
-                        >
+                    <React.Fragment key={idx}>
+                      <tr className="transition-all ease-in hover:cursor-pointer">
+                        <th className="border bg-sim-pale-primary px-24 py-12 text-left align-middle leading-medium text-sim-dark">
                           Golongan
                         </th>
-                      )}
-                      {/* Kolom kedua (siasn) */}
-                      <td className="border px-24 py-12 align-middle leading-medium">
-                        {item?.golongan}
-                      </td>
-                      {/* Kolom ketiga (lokal) */}
-                      {idx < riwayatGolongan?.lokal?.length ? (
                         <td className="border px-24 py-12 align-middle leading-medium">
-                          {
+                          <p>{item?.golongan ?? '-'}</p>
+                        </td>
+                        <td className="border px-24 py-12 align-middle leading-medium">
+                          {riwayatGolongan?.lokal?.find(
+                            (list) => list?.id === item?.id,
+                          )?.golongan ?? '-'}
+                        </td>
+                      </tr>
+                      <tr className="transition-all ease-in hover:cursor-pointer">
+                        <th className="border bg-sim-pale-primary px-24 py-12 text-left align-middle leading-medium text-sim-dark">
+                          Pangkat
+                        </th>
+                        <td className="border px-24 py-12 align-middle leading-medium">
+                          {item?.pangkat ?? '-'}
+                        </td>
+                        <td className="border px-24 py-12 align-middle leading-medium">
+                          {riwayatGolongan?.lokal?.find(
+                            (list) => list?.id === item?.id,
+                          )?.pangkat ?? '-'}
+                        </td>
+                      </tr>
+                      <tr className="transition-all ease-in hover:cursor-pointer">
+                        <th className="border bg-sim-pale-primary px-24 py-12 text-left align-middle leading-medium text-sim-dark">
+                          TMT Golongan
+                        </th>
+                        <td className="border px-24 py-12 align-middle leading-medium">
+                          {dayjs(item?.tmtGolongan)
+                            .locale('id')
+                            .format('DD/MM/YYYY') ?? '-'}
+                        </td>
+                        <td className="border px-24 py-12 align-middle leading-medium">
+                          {dayjs(
                             riwayatGolongan?.lokal?.find(
                               (list) => list?.id === item?.id,
-                            )?.golongan
-                          }
+                            )?.tmtGolongan,
+                          )
+                            .locale('id')
+                            .format('DD/MM/YYYY') ?? '-'}
                         </td>
-                      ) : idx === 0 ? (
+                      </tr>
+                      <tr className="transition-all ease-in hover:cursor-pointer">
+                        <th className="border bg-sim-pale-primary px-24 py-12 text-left align-middle leading-medium text-sim-dark">
+                          Masa Kerja
+                        </th>
+                        <td className="border px-24 py-12 align-middle leading-medium">
+                          <p>
+                            {Number(item?.masaKerjaGolonganTahun) > 0 && (
+                              <span>{item?.masaKerjaGolonganTahun} Tahun</span>
+                            )}{' '}
+                            {Number(item?.masaKerjaGolonganBulan) > 0 && (
+                              <span>{item.masaKerjaGolonganBulan} Bulan</span>
+                            )}
+                          </p>
+                          {Number(item?.masaKerjaGolonganBulan) === 0 &&
+                            Number(item?.masaKerjaGolonganTahun) === 0 && (
+                              <p>-</p>
+                            )}
+                        </td>
+                        <td className="border px-24 py-12 align-middle leading-medium">
+                          <p>
+                            {Number(
+                              riwayatGolongan?.lokal?.find(
+                                (list) => list?.id === item?.id,
+                              )?.masaKerjaGolonganTahun,
+                            ) > 0 && (
+                              <span>
+                                {
+                                  riwayatGolongan?.lokal?.find(
+                                    (list) => list?.id === item?.id,
+                                  )?.masaKerjaGolonganTahun
+                                }{' '}
+                                Tahun
+                              </span>
+                            )}{' '}
+                            {Number(
+                              riwayatGolongan?.lokal?.find(
+                                (list) => list?.id === item?.id,
+                              )?.masaKerjaGolonganBulan,
+                            ) > 0 && (
+                              <span>
+                                {
+                                  riwayatGolongan?.lokal?.find(
+                                    (list) => list?.id === item?.id,
+                                  )?.masaKerjaGolonganBulan
+                                }
+                              </span>
+                            )}
+                            {Number(
+                              riwayatGolongan?.lokal?.find(
+                                (list) => list?.id === item?.id,
+                              )?.masaKerjaGolonganBulan,
+                            ) === 0 &&
+                              Number(
+                                riwayatGolongan?.lokal?.find(
+                                  (list) => list?.id === item?.id,
+                                )?.masaKerjaGolonganTahun,
+                              ) === 0 && <p>-</p>}
+                          </p>
+                        </td>
+                      </tr>
+                      <tr className="transition-all ease-in hover:cursor-pointer">
+                        <th className="border bg-sim-pale-primary px-24 py-12 text-left align-middle leading-medium text-sim-dark">
+                          File
+                        </th>
                         <td
-                          className="border px-24 py-12 text-center align-middle leading-medium"
-                          rowSpan={riwayatGolongan?.siasn?.length}
+                          colSpan={2}
+                          className="border px-24 py-12 align-middle leading-medium"
                         >
-                          Belum ada data, lakukan sinkronisasi
+                          {riwayatGolongan?.lokal?.find(
+                            (list) => list?.id === item?.id,
+                          )?.path ? (
+                            <div className="flex items-center gap-16">
+                              {JSON.parse(
+                                riwayatGolongan?.lokal?.find(
+                                  (list) => list?.id === item?.id,
+                                )?.path,
+                              )?.map((pathItem: PathFileType, idx) => (
+                                // <Link
+                                //   to={`${downloadURL}jabatan/${item?.id}/${pathItem?.dok_id}`}
+                                //   key={idx}
+                                //   target="_blank"
+                                //   className="rounded-2xl bg-sim-dark px-16 py-8 text-white hover:bg-opacity-80"
+                                // >
+                                //   {pathItem?.dok_nama}
+                                // </Link>
+                                <div key={idx}>
+                                  <PDFViewer
+                                    dok_id={pathItem?.dok_id}
+                                    dok_nama={pathItem?.dok_nama}
+                                    id={item?.id}
+                                    riwayat="golongan"
+                                  />
+                                </div>
+                              ))}
+                            </div>
+                          ) : (
+                            '-'
+                          )}
                         </td>
-                      ) : null}
-                    </tr>
+                      </tr>
+                      {idx < riwayatGolongan.siasn.length - 1 && (
+                        <tr className="border transition-all ease-in hover:cursor-pointer">
+                          <td
+                            className="border px-24 py-12 align-middle leading-medium text-white"
+                            colSpan={3}
+                          >
+                            #
+                          </td>
+                        </tr>
+                      )}
+                    </React.Fragment>
                   ))
                 ) : (
                   <tr className="border transition-all ease-in hover:cursor-pointer">

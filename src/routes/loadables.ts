@@ -44,4 +44,4 @@ export const DetailPenghargaanPage = loadable(
   () => import('@/pages/Detail/DetailPenghargaan'),
 )
 
-export const DownlodPDFPage = loadable(() => import('@/pages/ShowPDF'))
+export const DashboardPage = loadable(() => import('@/pages/Dashboard'))

@@ -1,25 +1,29 @@
-import { PathFileType, RiwayatPendidikanType } from '@/libs/type'
-import { useGetPNSRiwayatPendidikanQuery } from '@/store/slices/kepegawaianAPI'
 import { RefreshCcw } from 'lucide-react'
-import React, { useEffect, useState } from 'react'
-import { UseFormReturn } from 'react-hook-form'
-import { useNavigate } from 'react-router-dom'
-import Cookies from 'js-cookie'
 import { Loading } from '../Loading'
+import { UseFormReturn } from 'react-hook-form'
 import { Form } from '../Form'
 import dayjs from 'dayjs'
+import Cookies from 'js-cookie'
+import { useGetPNSRiwayatPendidikanQuery } from '@/store/slices/kepegawaianAPI'
+import React, { useEffect, useState } from 'react'
+import {
+  PathFileType,
+  PendidikanType,
+  RiwayatPendidikanType,
+} from '@/libs/type'
+import { useNavigate } from 'react-router-dom'
 import PDFViewer from '../PDFShow'
 
-export function TableDataPendidikan({
-  idPegawai,
+export function TableDataUtamaPendidikan({
+  handleSubmitDataUtama,
   form,
-  handleSubmitriwayatPendidikan,
-  isSinkronriwayatPendidikan,
+  isSinkronDataUtama,
+  idPegawai,
 }: {
-  idPegawai: string
+  handleSubmitDataUtama: () => Promise<void>
   form: UseFormReturn
-  handleSubmitriwayatPendidikan: () => Promise<void>
-  isSinkronriwayatPendidikan: boolean
+  isSinkronDataUtama: boolean
+  idPegawai: string
 }) {
   const navigate = useNavigate()
   const [riwayatPendidikan, setRiwayatPendidikan] =
@@ -59,71 +63,83 @@ export function TableDataPendidikan({
     }
   }, [riwayatPendidikanData, idPegawai, error])
 
+  const getJabatanTerbaru = (riwayatPendidikan) => {
+    if (!riwayatPendidikan || !riwayatPendidikan.siasn) return null
+
+    return riwayatPendidikan.siasn.reduce((latest, current) => {
+      const latestDate = dayjs(latest?.tahunLulus, 'DD-MM-YYYY')
+      const currentDate = dayjs(current?.tahunLulus, 'DD-MM-YYYY')
+
+      return currentDate.isAfter(latestDate) ? current : latest
+    })
+  }
+
+  const pendidikanTerbaru: PendidikanType = getJabatanTerbaru(riwayatPendidikan)
+
   return (
-    <div
-      className={`scrollbar flex flex-col overflow-auto`}
-      style={{ scrollbarGutter: 'stable' }}
-    >
-      <div className="flex flex-col gap-12 rounded-3x">
-        {isLoadingRiwayatPendidikan || isSinkronriwayatPendidikan ? (
-          <Loading width={'6rem'} height={'6rem'} />
-        ) : (
-          <>
-            <p className="text-sim-grey">
-              Sinkronisasi Terakhir:{' '}
-              {riwayatPendidikan?.last_update
-                ? dayjs(riwayatPendidikan?.last_update)
-                    .locale('id')
-                    .format('DD/MM/YYYY | HH:mm')
-                : 'Belum Sinkronisasi'}
-            </p>
-            <table className="flex-1 border-collapse rounded-3x bg-[#fcfcfc] text-24">
-              <thead className="relative z-10 align-top leading-medium">
-                <tr>
-                  <th
-                    className={`sticky top-0 w-[20%] border px-24 py-16 text-left align-middle text-sim-dark`}
-                  >
-                    <Form {...form}>
-                      <form
-                        onSubmit={form.handleSubmit(
-                          handleSubmitriwayatPendidikan,
-                        )}
-                      >
-                        <button
-                          type="submit"
-                          className="text-dark flex items-center gap-12 rounded-2xl border border-sim-dark px-24 py-12 text-[1.8rem] hover:cursor-pointer hover:border-transparent hover:bg-sim-dark hover:text-white"
+    <div className="flex flex-col gap-32">
+      <p className="text-[3rem] font-bold">Data Pendidikan</p>
+      <div
+        className={`scrollbar flex flex-col overflow-auto`}
+        style={{ scrollbarGutter: 'stable' }}
+      >
+        <div className="flex flex-col gap-12 rounded-3x">
+          {isSinkronDataUtama || isLoadingRiwayatPendidikan ? (
+            <Loading width={'6rem'} height={'6rem'} />
+          ) : (
+            <>
+              <p className="text-sim-grey">
+                Sinkronisasi Terakhir:{' '}
+                {riwayatPendidikan?.last_update
+                  ? dayjs(riwayatPendidikan?.last_update)
+                      .locale('id')
+                      .format('DD/MM/YYYY | HH:mm')
+                  : 'Belum Sinkronisasi'}
+              </p>
+              <table className="flex-1 border-collapse rounded-3x bg-[#fcfcfc] text-24">
+                <thead className="relative z-10 align-top leading-medium">
+                  <tr>
+                    <th
+                      className={`sticky top-0 w-[20%] border px-24 py-16 text-left align-middle text-sim-dark`}
+                    >
+                      <Form {...form}>
+                        <form
+                          onSubmit={form.handleSubmit(handleSubmitDataUtama)}
                         >
-                          Sinkron Data <RefreshCcw size={16} />
-                        </button>
-                      </form>
-                    </Form>
-                  </th>
-                  <th
-                    className={`sticky top-0 w-[40%] border bg-sim-pale-primary px-24 py-24 text-left align-middle text-sim-dark`}
-                  >
-                    Data SIASN BKN
-                  </th>
-                  <th
-                    className={`sticky top-0 w-[40%] border bg-sim-pale-primary px-24 py-24 text-left align-middle text-sim-dark`}
-                  >
-                    Data SIMPEG Batu Bara
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {riwayatPendidikan && riwayatPendidikan?.siasn?.length > 0 ? (
-                  riwayatPendidikan?.siasn?.map((item, idx) => (
-                    <React.Fragment key={idx}>
+                          <button
+                            type="submit"
+                            className="text-dark flex items-center gap-12 rounded-2xl border border-sim-dark px-24 py-12 text-[1.8rem] hover:cursor-pointer hover:border-transparent hover:bg-sim-dark hover:text-white"
+                          >
+                            Sinkron Data <RefreshCcw size={16} />
+                          </button>
+                        </form>
+                      </Form>
+                    </th>
+                    <th
+                      className={`sticky top-0 w-[40%] border bg-sim-pale-primary px-24 py-24 text-left align-middle text-sim-dark`}
+                    >
+                      Data SIASN BKN
+                    </th>
+                    <th
+                      className={`sticky top-0 w-[40%] border bg-sim-pale-primary px-24 py-24 text-left align-middle text-sim-dark`}
+                    >
+                      Data SIMPEG Batu Bara
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {riwayatPendidikan && riwayatPendidikan?.siasn?.length > 0 ? (
+                    <React.Fragment>
                       <tr className="transition-all ease-in hover:cursor-pointer">
                         <th className="border bg-sim-pale-primary px-24 py-12 text-left align-middle leading-medium text-sim-dark">
                           Jenjang Pendidikan
                         </th>
                         <td className="border px-24 py-12 align-middle leading-medium">
-                          {item?.pendidikanNama ?? '-'}
+                          {pendidikanTerbaru?.pendidikanNama ?? '-'}
                         </td>
                         <td className="border px-24 py-12 align-middle leading-medium">
                           {riwayatPendidikan?.lokal?.find(
-                            (list) => list?.id === item?.id,
+                            (list) => list?.id === pendidikanTerbaru?.id,
                           )?.pendidikanNama ?? '-'}
                         </td>
                       </tr>
@@ -132,11 +148,11 @@ export function TableDataPendidikan({
                           Tanggal Ijazah
                         </th>
                         <td className="border px-24 py-12 align-middle leading-medium">
-                          {item?.tglLulus ?? '-'}
+                          {pendidikanTerbaru?.tglLulus ?? '-'}
                         </td>
                         <td className="border px-24 py-12 align-middle leading-medium">
                           {riwayatPendidikan?.lokal?.find(
-                            (list) => list?.id === item?.id,
+                            (list) => list?.id === pendidikanTerbaru?.id,
                           )?.tglLulus ?? '-'}
                         </td>
                       </tr>
@@ -145,11 +161,11 @@ export function TableDataPendidikan({
                           Nomor Ijazah
                         </th>
                         <td className="border px-24 py-12 align-middle leading-medium">
-                          {item?.nomorIjasah ?? '-'}
+                          {pendidikanTerbaru?.nomorIjasah ?? '-'}
                         </td>
                         <td className="border px-24 py-12 align-middle leading-medium">
                           {riwayatPendidikan?.lokal?.find(
-                            (list) => list?.id === item?.id,
+                            (list) => list?.id === pendidikanTerbaru?.id,
                           )?.nomorIjasah ?? '-'}
                         </td>
                       </tr>
@@ -158,11 +174,11 @@ export function TableDataPendidikan({
                           Nama Instansi
                         </th>
                         <td className="border px-24 py-12 align-middle leading-medium">
-                          {item?.namaSekolah ?? '-'}
+                          {pendidikanTerbaru?.namaSekolah ?? '-'}
                         </td>
                         <td className="border px-24 py-12 align-middle leading-medium">
                           {riwayatPendidikan?.lokal?.find(
-                            (list) => list?.id === item?.id,
+                            (list) => list?.id === pendidikanTerbaru?.id,
                           )?.namaSekolah ?? '-'}
                         </td>
                       </tr>
@@ -171,11 +187,11 @@ export function TableDataPendidikan({
                           Gelar Depan
                         </th>
                         <td className="border px-24 py-12 align-middle leading-medium">
-                          {item?.gelarDepan ?? '-'}
+                          {pendidikanTerbaru?.gelarDepan ?? '-'}
                         </td>
                         <td className="border px-24 py-12 align-middle leading-medium">
                           {riwayatPendidikan?.lokal?.find(
-                            (list) => list?.id === item?.id,
+                            (list) => list?.id === pendidikanTerbaru?.id,
                           )?.gelarDepan ?? '-'}
                         </td>
                       </tr>
@@ -184,11 +200,11 @@ export function TableDataPendidikan({
                           Gelar Belakang
                         </th>
                         <td className="border px-24 py-12 align-middle leading-medium">
-                          {item?.gelarBelakang ?? '-'}
+                          {pendidikanTerbaru?.gelarBelakang ?? '-'}
                         </td>
                         <td className="border px-24 py-12 align-middle leading-medium">
                           {riwayatPendidikan?.lokal?.find(
-                            (list) => list?.id === item?.id,
+                            (list) => list?.id === pendidikanTerbaru?.id,
                           )?.gelarBelakang ?? '-'}
                         </td>
                       </tr>
@@ -201,12 +217,12 @@ export function TableDataPendidikan({
                           className="border px-24 py-12 align-middle leading-medium"
                         >
                           {riwayatPendidikan?.lokal?.find(
-                            (list) => list?.id === item?.id,
+                            (list) => list?.id === pendidikanTerbaru?.id,
                           )?.path ? (
                             <div className="flex items-center gap-16">
                               {JSON.parse(
                                 riwayatPendidikan?.lokal?.find(
-                                  (list) => list?.id === item?.id,
+                                  (list) => list?.id === pendidikanTerbaru?.id,
                                 )?.path,
                               )?.map((pathItem: PathFileType, idx) => (
                                 // <Link
@@ -221,7 +237,7 @@ export function TableDataPendidikan({
                                   <PDFViewer
                                     dok_id={pathItem?.dok_id}
                                     dok_nama={pathItem?.dok_nama}
-                                    id={item?.id}
+                                    id={pendidikanTerbaru?.id}
                                     riwayat="pendidikan"
                                   />
                                 </div>
@@ -232,32 +248,22 @@ export function TableDataPendidikan({
                           )}
                         </td>
                       </tr>
-                      {idx < riwayatPendidikan.siasn.length - 1 && (
-                        <tr className="border transition-all ease-in hover:cursor-pointer">
-                          <td
-                            className="border px-24 py-12 align-middle leading-medium text-white"
-                            colSpan={3}
-                          >
-                            #
-                          </td>
-                        </tr>
-                      )}
                     </React.Fragment>
-                  ))
-                ) : (
-                  <tr className="border transition-all ease-in hover:cursor-pointer">
-                    <td
-                      className="border px-24 py-12 text-center align-middle leading-medium"
-                      colSpan={3}
-                    >
-                      Tidak ada data
-                    </td>
-                  </tr>
-                )}
-              </tbody>
-            </table>
-          </>
-        )}
+                  ) : (
+                    <tr className="border transition-all ease-in hover:cursor-pointer">
+                      <td
+                        className="border px-24 py-12 text-center align-middle leading-medium"
+                        colSpan={3}
+                      >
+                        Tidak ada data
+                      </td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
+            </>
+          )}
+        </div>
       </div>
     </div>
   )
