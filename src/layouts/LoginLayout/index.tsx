@@ -8,13 +8,28 @@ import * as zod from 'zod'
 import { LoginSchema } from '@/libs/schema'
 import { useForm } from 'react-hook-form'
 import { useCreateLoginMutation } from '@/store/slices/loginAPI'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { LoginParams } from '@/libs/type/LoginType'
 import Cookies from 'js-cookie'
+import { Loading } from '@/components/Loading'
 
 export default function LoginLayoutMain() {
   const navigate = useNavigate()
+  const [angka1, setAngka1] = useState<number>(null)
+  const [angka2, setAngka2] = useState<number>(null)
+
+  // Fungsi untuk menghasilkan dua angka acak antara 1 dan 10
+  const generateRandomNumbers = () => {
+    const random1 = Math.floor(Math.random() * 10) + 1 // Menghasilkan angka acak antara 1 dan 10
+    const random2 = Math.floor(Math.random() * 10) + 1
+    setAngka1(random1)
+    setAngka2(random2)
+  }
+
+  useEffect(() => {
+    generateRandomNumbers()
+  }, [])
 
   const form = useForm<zod.infer<typeof LoginSchema>>({
     resolver: zodResolver(LoginSchema),
@@ -39,7 +54,7 @@ export default function LoginLayoutMain() {
       hasil: values?.hasil,
     }
 
-    if (Number(values?.hasil) === 27) {
+    if (Number(values?.hasil) === angka1 + angka2) {
       try {
         const res = await createLogin({ data: body })
         if ('data' in res) {
@@ -110,11 +125,17 @@ export default function LoginLayoutMain() {
         <div className="h-auto w-3/4  rounded-3x bg-white p-80 shadow-lg">
           <div className="flex w-full gap-32">
             <LoginInfo />
-            <LoginForm
-              form={form}
-              isLoading={isLoadingLogin}
-              handleSubmit={handleSubmit}
-            />
+            {angka1 && angka2 ? (
+              <LoginForm
+                angka1={angka1}
+                angka2={angka2}
+                form={form}
+                isLoading={isLoadingLogin}
+                handleSubmit={handleSubmit}
+              />
+            ) : (
+              <Loading />
+            )}
           </div>
         </div>
       </div>

@@ -9,10 +9,14 @@ export function LoginForm({
   form,
   handleSubmit,
   isLoading,
+  angka1,
+  angka2,
 }: {
   form: UseFormReturn
   handleSubmit: (values: LoginParams) => Promise<void>
   isLoading: boolean
+  angka1: number
+  angka2: number
 }) {
   const [isShow, setIsShow] = useState<boolean>(false)
 
@@ -52,7 +56,7 @@ export function LoginForm({
         <FormLabelInput
           name="hasil"
           form={form}
-          label="Hasil dari 10 + 17 = ?"
+          label={`Hasil dari ${angka1} + ${angka2} = ?`}
           placeholder="Masukkan hasil penjumlahan"
           className="text-sim-dark"
           type="text"
