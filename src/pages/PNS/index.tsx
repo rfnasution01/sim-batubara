@@ -8,6 +8,8 @@ import { useSelector } from 'react-redux'
 import Cookies from 'js-cookie'
 import { useNavigate } from 'react-router-dom'
 import { TablePNS } from '@/components/TablePNS'
+import { Bounce, ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 export default function PNS() {
   const navigate = useNavigate()
@@ -22,6 +24,8 @@ export default function PNS() {
     data: kepegawaianPNSData,
     isLoading: kepegawaianPNSIsLoading,
     isFetching: kepegawaianPNSIsFetching,
+    isSuccess,
+    isError,
     error,
   } = useGetKepegawaianPNSQuery({
     page_number: pageNumber ?? 1,
@@ -53,6 +57,23 @@ export default function PNS() {
       Cookies.remove('token')
       navigate('/login')
     }
+
+    if (
+      errorMsg?.data?.message.includes('Client error') ||
+      errorMsg?.data?.message.includes('Server error')
+    ) {
+      toast.error(`Terjadi Kesalahan di server BKN`, {
+        position: 'bottom-right',
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'light',
+        transition: Bounce,
+      })
+    }
   }, [
     kepegawaianPNSData,
     pageNumber,
@@ -63,6 +84,40 @@ export default function PNS() {
     jabatan,
     error,
   ])
+
+  useEffect(() => {
+    if (isSuccess) {
+      toast.success('Data kepegawaian berhasil di muat', {
+        position: 'bottom-right',
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'light',
+        transition: Bounce,
+      })
+    }
+  }, [isSuccess])
+
+  useEffect(() => {
+    if (isError) {
+      const errorMsg = error as { data?: { message?: string } }
+
+      toast.error(`${errorMsg?.data?.message ?? 'Terjadi Kesalahan'}`, {
+        position: 'bottom-right',
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'light',
+        transition: Bounce,
+      })
+    }
+  }, [isError, error])
 
   return (
     <div className="flex h-full flex-col gap-32">
@@ -84,6 +139,7 @@ export default function PNS() {
           />
         )}
       </div>
+      <ToastContainer />
     </div>
   )
 }

@@ -274,6 +274,8 @@ export default function DetailPegawaiLayoutMain() {
     data: kepegawaianUtamaData,
     isLoading: kepegawaianUtamaIsLoading,
     isFetching: kepegawaianUtamaIsFetching,
+    isSuccess,
+    isError,
     error: kepegawaianError,
   } = useGetKepegawaianPNSUtamaQuery(
     {
@@ -321,6 +323,40 @@ export default function DetailPegawaiLayoutMain() {
       })
     }
   }, [kepegawaianUtamaData, idParams, kepegawaianError])
+
+  useEffect(() => {
+    if (isSuccess) {
+      toast.success('Data profil pegawai berhasil di muat', {
+        position: 'bottom-right',
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'light',
+        transition: Bounce,
+      })
+    }
+  }, [isSuccess])
+
+  useEffect(() => {
+    if (isError) {
+      const errorMsg = kepegawaianError as { data?: { message?: string } }
+
+      toast.error(`${errorMsg?.data?.message ?? 'Terjadi Kesalahan'}`, {
+        position: 'bottom-right',
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'light',
+        transition: Bounce,
+      })
+    }
+  }, [isError, kepegawaianError])
 
   // --- Sinkron Data Utama ---
   const [

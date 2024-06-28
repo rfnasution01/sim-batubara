@@ -15,6 +15,8 @@ import { Loading } from '@/components/Loading'
 import { toRoman } from '@/libs/helpers/format-text'
 import Cookies from 'js-cookie'
 import { useNavigate } from 'react-router-dom'
+import { Bounce, ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 export default function Dashboard() {
   const navigate = useNavigate()
@@ -31,6 +33,8 @@ export default function Dashboard() {
     data: getDashboard,
     isLoading: isLoadingDashboard,
     isFetching: isFetchingDashboard,
+    isSuccess,
+    isError,
     error,
   } = useGetDashboardQuery({
     id_organisasi: satuanKerja ?? '',
@@ -61,7 +65,58 @@ export default function Dashboard() {
       Cookies.remove('token')
       navigate('/login')
     }
+
+    if (
+      errorMsg?.data?.message.includes('Client error') ||
+      errorMsg?.data?.message.includes('Server error')
+    ) {
+      toast.error(`Terjadi Kesalahan di server BKN`, {
+        position: 'bottom-right',
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'light',
+        transition: Bounce,
+      })
+    }
   }, [getDashboard?.data, satuanKerja, error])
+
+  useEffect(() => {
+    if (isSuccess) {
+      toast.success('Data dashboard berhasil di muat', {
+        position: 'bottom-right',
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'light',
+        transition: Bounce,
+      })
+    }
+  }, [isSuccess])
+
+  useEffect(() => {
+    if (isError) {
+      const errorMsg = error as { data?: { message?: string } }
+
+      toast.error(`${errorMsg?.data?.message ?? 'Terjadi Kesalahan'}`, {
+        position: 'bottom-right',
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'light',
+        transition: Bounce,
+      })
+    }
+  }, [isError, error])
 
   return (
     <div className="flex flex-col gap-32">
@@ -96,6 +151,7 @@ export default function Dashboard() {
           </div>
         </>
       )}
+      <ToastContainer />
     </div>
   )
 }
