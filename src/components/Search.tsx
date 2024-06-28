@@ -2,10 +2,21 @@ import { debounce } from 'lodash'
 import { useDispatch, useSelector } from 'react-redux'
 import { getFilterSlice, setStateFilter } from '@/store/reducer/stateFilter'
 import { Search } from 'lucide-react'
+import { useNavigate } from 'react-router-dom'
 
-export function Searching({ className }: { className?: string }) {
+export function Searching({
+  className,
+  isDashboard,
+  pegawai,
+}: {
+  className?: string
+  isDashboard?: boolean
+  pegawai?: string
+}) {
   const dispatch = useDispatch()
-  const { pageSize, id_golongan, id_organisasi, jabatan } =
+  const navigate = useNavigate()
+
+  const { pageSize, id_golongan, id_organisasi, jabatan, search } =
     useSelector(getFilterSlice)
 
   const handleSearch = debounce((searchValue: string) => {
@@ -30,14 +41,31 @@ export function Searching({ className }: { className?: string }) {
     const inputElement = document.querySelector(
       'input[type="text"]',
     ) as HTMLInputElement
-    handleSearch(inputElement.value)
+    debounce(() => {
+      dispatch(
+        setStateFilter({
+          pageNumber: 1,
+          pageSize: pageSize,
+          search: inputElement?.value,
+          id_golongan: id_golongan,
+          id_organisasi: id_organisasi,
+          jabatan: jabatan,
+        }),
+      )
+    }, 300)
+
+    if (isDashboard) {
+      navigate(`/kepegawaian/${pegawai}`)
+    }
   }
   return (
     <div className={`flex ${className}`}>
       <input
         type="text"
         className="w-full rounded-lg border border-gray-300 p-16 text-[2rem] focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 phones:w-full"
-        placeholder="Search"
+        placeholder={
+          (isDashboard && pegawai === 'pns') || !isDashboard ? search : 'Search'
+        }
         onChange={(e) => onSearch(e)}
       />
       <button

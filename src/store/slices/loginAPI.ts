@@ -27,6 +27,7 @@ export const LoginEndpoints = api.injectEndpoints({
         'pindah-instansi',
         'masa-kerja',
         'pindah-instansi',
+        'dashboard',
       ],
     }),
   }),

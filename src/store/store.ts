@@ -6,6 +6,7 @@ import stateDetailPegawai from './reducer/stateDetailPegawai'
 import stateDetailRiwayat from './reducer/stateDetailRiwayat'
 import stateIdPegawai from './reducer/stateIdPegawai'
 import stateIdJabatan from './reducer/stateIdJabatan'
+import stateSearch from './reducer/stateSearch'
 
 export const store = configureStore({
   reducer: {
@@ -15,6 +16,7 @@ export const store = configureStore({
     stateIdPegawai: stateIdPegawai,
     stateDetailRiwayat: stateDetailRiwayat,
     stateIdJabatan: stateIdJabatan,
+    stateSearch: stateSearch,
   },
   devTools: true,
   middleware: (getDefaultMiddleware) =>
