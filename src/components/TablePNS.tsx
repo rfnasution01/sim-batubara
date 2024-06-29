@@ -95,11 +95,11 @@ export function TablePNS<T extends PegawaiPNS, P>({
                     ))}
 
                   {/* --- Satuan Kerja --- */}
-                  {isPegawaiPNS && (
+                  {
                     <th className="sticky top-0 text-nowrap border-b-2 bg-sim-pale-primary px-24 py-24 text-left uppercase text-sim-primary">
                       Satuan Kerja
                     </th>
-                  )}
+                  }
 
                   {/* ----- Detail Header ----- */}
                   {collapseComponent && (
@@ -143,12 +143,12 @@ export function TablePNS<T extends PegawaiPNS, P>({
                           </td>
                         ))}
 
-                      {isPegawaiPNS && (
+                      {
                         <td className={`px-24 py-12 leading-medium`}>
                           <div className="flex items-center justify-between gap-32">
                             <p>{row?.satker}</p>
                             <Link
-                              to={`/kepegawaian/pns/${convertToSlug(row?.nama)}`}
+                              to={`/kepegawaian/${isPegawaiPNS ? 'pns' : 'pppk'}/${convertToSlug(row?.nama)}`}
                               onClick={() => {
                                 localStorage.setItem(
                                   'pegawaiID',
@@ -174,7 +174,7 @@ export function TablePNS<T extends PegawaiPNS, P>({
                             </Link>
                           </div>
                         </td>
-                      )}
+                      }
                       {/* ----- Collapse Trigger ----- */}
                       {collapseComponent && (
                         <td className="sticky right-0 bg-white p-16">

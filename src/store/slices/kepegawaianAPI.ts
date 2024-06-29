@@ -9,6 +9,8 @@ import {
   JabatanDetailType,
   KursusDetailType,
   PenghargaanDetailType,
+  RiwayatAngkaKreditType,
+  RiwayatDetailAngkaKreditType,
   RiwayatDiklatLainnyaType,
   RiwayatDiklatType,
   RiwayatGolonganType,
@@ -410,6 +412,66 @@ export const KepegawaianEndpoints = api.injectEndpoints({
       }),
       invalidatesTags: ['riwayat-penghargan', 'pegawai-pns-utama'],
     }),
+    getPNSRiwayatAngkaKredit: builder.query<
+      Res<RiwayatAngkaKreditType>,
+      DataKepegawaianUtamaParams
+    >({
+      query: ({ id_pegawai }) => ({
+        url: `kepegawaian/pns_detail/riwayat/angkakredit`,
+        method: 'GET',
+        params: {
+          id_pegawai: id_pegawai,
+        },
+      }),
+      providesTags: (_res, _err, { id_pegawai }) => [
+        { type: 'angka-kredit', id: id_pegawai },
+      ],
+    }),
+    createSinkronAngkaKredit: builder.mutation<
+      void,
+      { data: DataKepegawaianUtamaParams }
+    >({
+      query: ({ data }) => ({
+        url: `kepegawaian/sinkron/riwayat/angkakredit`,
+        method: 'POST',
+        body: data,
+      }),
+      invalidatesTags: ['angka-kredit', 'detail-angka-kredit'],
+    }),
+    getPNSDetailRiwayatAngkaKredit: builder.query<
+      Res<RiwayatDetailAngkaKreditType>,
+      DataKepegawaianDetailParams
+    >({
+      query: ({ id }) => ({
+        url: `kepegawaian/pns_riwayat/angkakredit`,
+        method: 'GET',
+        params: {
+          id: id,
+        },
+      }),
+      providesTags: (_res, _err, { id }) => [
+        { type: 'detail-angka-kredit', id: id },
+      ],
+    }),
+    createSavaAngkaKredit: builder.mutation<Res<string>, { data: FormData }>({
+      query: ({ data }) => ({
+        url: `kepegawaian/pns_riwayat/angkakredit`,
+        method: 'POST',
+        body: data,
+      }),
+      invalidatesTags: [
+        'angka-kredit',
+        'download-dokumen',
+        'detail-angka-kredit',
+      ],
+    }),
+    deleteAngkaKredit: builder.mutation<void, DataKepegawaianDetailParams>({
+      query: ({ id }) => ({
+        url: `kepegawaian/pns_riwayat/angkakredit/${id}`,
+        method: 'DELETE',
+      }),
+      invalidatesTags: ['angka-kredit', 'pegawai-pns-utama'],
+    }),
   }),
 })
 
@@ -445,4 +507,9 @@ export const {
   useGetPNSRiwayatMasaKerjaQuery,
   useCreateSinkronRiwayatPMKMutation,
   useCreateSinkronRiwayatPindahInstansiMutation,
+  useGetPNSRiwayatAngkaKreditQuery,
+  useGetPNSDetailRiwayatAngkaKreditQuery,
+  useCreateSavaAngkaKreditMutation,
+  useCreateSinkronAngkaKreditMutation,
+  useDeleteAngkaKreditMutation,
 } = KepegawaianEndpoints

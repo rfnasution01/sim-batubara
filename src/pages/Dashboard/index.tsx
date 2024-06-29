@@ -67,8 +67,8 @@ export default function Dashboard() {
     }
 
     if (
-      errorMsg?.data?.message.includes('Client error') ||
-      errorMsg?.data?.message.includes('Server error')
+      errorMsg?.data?.message?.includes('Client error') ||
+      errorMsg?.data?.message?.includes('Server error')
     ) {
       toast.error(`Terjadi Kesalahan di server BKN`, {
         position: 'bottom-right',

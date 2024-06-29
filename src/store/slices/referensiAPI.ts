@@ -1,4 +1,5 @@
 import {
+  DataKepegawaianUtamaParams,
   GolonganType,
   JenisJabatanType,
   SatuanKerjaJabatanType,
@@ -50,6 +51,18 @@ export const SatuanKerjaEndpoints = api.injectEndpoints({
         method: 'GET',
       }),
     }),
+    getJenisPenghargaanFungsional: builder.query<
+      Res<JenisJabatanType[]>,
+      DataKepegawaianUtamaParams
+    >({
+      query: ({ id_pegawai }) => ({
+        url: `referensi/jabatan_fungsional`,
+        method: 'GET',
+        params: {
+          id_pegawai: id_pegawai,
+        },
+      }),
+    }),
   }),
 })
 
@@ -61,4 +74,5 @@ export const {
   useGetJenisDiklatQuery,
   useGetJenisKursusQuery,
   useGetJenisPenghargaanQuery,
+  useGetJenisPenghargaanFungsionalQuery,
 } = SatuanKerjaEndpoints

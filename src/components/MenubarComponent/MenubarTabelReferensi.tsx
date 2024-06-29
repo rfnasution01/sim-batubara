@@ -23,8 +23,6 @@ export function MenubarTableReferensi({
   const { firstPathname, secondPathname } = usePathname()
 
   const isActivePage = (item: string) => {
-    console.log({ item })
-
     if (firstPathname === item || secondPathname === item) {
       return true
     }

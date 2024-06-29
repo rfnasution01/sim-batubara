@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import { DataRiwayatTab } from './DataRiwayatTab'
 import { ComingSoonPage } from '@/routes/loadables'
 import {
+  TableDataAngkaKredit,
   TableDataDiklat,
   TableDataDiklatLainnya,
   TableDataGolongan,
@@ -45,6 +46,11 @@ export function DataRiwayatMain({
   isSinkronRiwayatPMK,
   handleSubmitRiwayatPindahInstansi,
   isSinkronRiwayatPindahInstansi,
+  handleDeleteAngkaKredit,
+  handleSubmitRiwayatAngkaKredit,
+  isLoadingDeleteAngkaKredit,
+  isSinkronRiwayatAngkaKredit,
+  jenisJabatanId,
 }: {
   idPegawai: string
   form: UseFormReturn
@@ -73,6 +79,11 @@ export function DataRiwayatMain({
   isLoadingDeletePenghargaan: boolean
   handleSubmitRiwayatPindahInstansi: () => Promise<void>
   isSinkronRiwayatPindahInstansi: boolean
+  handleSubmitRiwayatAngkaKredit: () => Promise<void>
+  isSinkronRiwayatAngkaKredit: boolean
+  handleDeleteAngkaKredit: (id: string) => Promise<void>
+  isLoadingDeleteAngkaKredit: boolean
+  jenisJabatanId?: string
 }) {
   const [isShow, setIsShow] = useState<boolean>(true)
 
@@ -179,6 +190,17 @@ export function DataRiwayatMain({
             handleSubmitriwayatMasaKerja={handleSubmitRiwayatPMK}
             form={form}
             idPegawai={idPegawai}
+          />
+        ) : tab === 'Angka Kredit' ? (
+          <TableDataAngkaKredit
+            form={form}
+            formDelete={formDelete}
+            idPegawai={idPegawai}
+            isSinkronriwayatAngkaKredit={isSinkronRiwayatAngkaKredit}
+            handleDeleteAngkaKredit={handleDeleteAngkaKredit}
+            handleSubmitriwayatAngkaKredit={handleSubmitRiwayatAngkaKredit}
+            isLoadingDeleteAngkaKredit={isLoadingDeleteAngkaKredit}
+            jenisJabatanId={jenisJabatanId}
           />
         ) : (
           <ComingSoonPage />

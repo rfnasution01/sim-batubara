@@ -38,6 +38,10 @@ export function DataDetailPegawai({
   isSinkronRiwayatPMK,
   handleSubmitRiwayatPindahInstansi,
   isSinkronRiwayatPindahInstansi,
+  handleDeleteAngkaKredit,
+  handleSubmitRiwayatAngkaKredit,
+  isLoadingDeleteAngkaKredit,
+  isSinkronRiwayatAngkaKredit,
 }: {
   data: DataKepegawaianUtamaType
   idPegawai: string
@@ -69,6 +73,10 @@ export function DataDetailPegawai({
   isLoadingDeleteKursus: boolean
   handleDeletePenghargaan: (id: string) => Promise<void>
   isLoadingDeletePenghargaan: boolean
+  handleSubmitRiwayatAngkaKredit: () => Promise<void>
+  isSinkronRiwayatAngkaKredit: boolean
+  handleDeleteAngkaKredit: (id: string) => Promise<void>
+  isLoadingDeleteAngkaKredit: boolean
 }) {
   const stateTab = useSelector(getDetailPegawaiSlice)?.tab
 
@@ -83,6 +91,8 @@ export function DataDetailPegawai({
   const [tab, setTab] = useState<string>(tabParams ?? 'utama')
 
   const isIDPegawaiValid = data?.siasn?.ID === data?.lokal?.ID
+
+  const jenisJabatanID = data?.siasn?.jenisJabatanId
 
   return (
     <div className="flex flex-col gap-32 overflow-y-auto rounded-2x bg-white py-32 pb-96">
@@ -108,6 +118,7 @@ export function DataDetailPegawai({
       ) : (
         <DataRiwayatMain
           idPegawai={idPegawai}
+          jenisJabatanId={jenisJabatanID}
           form={form}
           formDelete={formDelete}
           handleSubmitRiwayatGolongan={handleSubmitRiwayatGolongan}
@@ -134,6 +145,10 @@ export function DataDetailPegawai({
           isSinkronRiwayatPMK={isSinkronRiwayatPMK}
           handleSubmitRiwayatPindahInstansi={handleSubmitRiwayatPindahInstansi}
           isSinkronRiwayatPindahInstansi={isSinkronRiwayatPindahInstansi}
+          handleDeleteAngkaKredit={handleDeleteAngkaKredit}
+          handleSubmitRiwayatAngkaKredit={handleSubmitRiwayatAngkaKredit}
+          isLoadingDeleteAngkaKredit={isLoadingDeleteAngkaKredit}
+          isSinkronRiwayatAngkaKredit={isSinkronRiwayatAngkaKredit}
         />
       )}
     </div>

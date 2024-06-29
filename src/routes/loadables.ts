@@ -52,3 +52,12 @@ export const DashboardPage = loadable(() => import('@/pages/Dashboard'))
 export const TabelReferensiPathPage = loadable(
   () => import('@/pages/TabelReferensi'),
 )
+
+export const DetailAngkaKreditPathPage = loadable(
+  () => import('@/pages/Detail/DetailKredit'),
+)
+export const TambahAngkaKreditPathPage = loadable(
+  () => import('@/pages/Tambah/TambahKredit'),
+)
+
+export const PPKPage = loadable(() => import('@/pages/PPPK'))

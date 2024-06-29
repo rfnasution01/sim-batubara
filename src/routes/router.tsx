@@ -3,6 +3,7 @@ import {
   ComingSoonPage,
   CustomLayoutMain,
   DashboardPage,
+  DetailAngkaKreditPathPage,
   DetailDiklatPage,
   DetailJabatanPage,
   DetailKursusPage,
@@ -11,9 +12,11 @@ import {
   KepegawaianLayoutMain,
   LoginLayoutMain,
   PNSPage,
+  PPKPage,
   RootLayoutMain,
   TabelReferensiLayout,
   TabelReferensiPathPage,
+  TambahAngkaKreditPathPage,
   TambahDiklatPage,
   TambahJabatanPage,
   TambahKursusPage,
@@ -86,6 +89,10 @@ export const router = createBrowserRouter([
                 element: <TambahPenghargaanPage />,
               },
               {
+                path: ':nama/angka-kredit/tambah',
+                element: <TambahAngkaKreditPathPage />,
+              },
+              {
                 path: ':nama/jabatan/detail',
                 element: <DetailJabatanPage />,
               },
@@ -101,11 +108,65 @@ export const router = createBrowserRouter([
                 path: ':nama/penghargaan/detail',
                 element: <DetailPenghargaanPage />,
               },
+              {
+                path: ':nama/angka-kredit/detail',
+                element: <DetailAngkaKreditPathPage />,
+              },
             ],
           },
           {
             path: 'pppk',
-            element: <ComingSoonPage />,
+            element: <CustomLayoutMain />,
+            children: [
+              {
+                path: '',
+                element: <PPKPage />,
+              },
+              {
+                path: ':nama',
+                element: <DetailPegawaiLayoutMain />,
+              },
+              {
+                path: ':nama/jabatan/tambah',
+                element: <TambahJabatanPage />,
+              },
+              {
+                path: ':nama/diklat/tambah',
+                element: <TambahDiklatPage />,
+              },
+              {
+                path: ':nama/kursus/tambah',
+                element: <TambahKursusPage />,
+              },
+              {
+                path: ':nama/penghargaan/tambah',
+                element: <TambahPenghargaanPage />,
+              },
+              {
+                path: ':nama/angka-kredit/tambah',
+                element: <TambahAngkaKreditPathPage />,
+              },
+              {
+                path: ':nama/jabatan/detail',
+                element: <DetailJabatanPage />,
+              },
+              {
+                path: ':nama/diklat/detail',
+                element: <DetailDiklatPage />,
+              },
+              {
+                path: ':nama/kursus/detail',
+                element: <DetailKursusPage />,
+              },
+              {
+                path: ':nama/penghargaan/detail',
+                element: <DetailPenghargaanPage />,
+              },
+              {
+                path: ':nama/angka-kredit/detail',
+                element: <DetailAngkaKreditPathPage />,
+              },
+            ],
           },
         ],
       },

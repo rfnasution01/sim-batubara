@@ -9,6 +9,7 @@ import { PathFileType, RiwayatGolonganType } from '@/libs/type'
 import { useNavigate } from 'react-router-dom'
 import Cookies from 'js-cookie'
 import PDFViewer from '../PDFShow'
+import { Bounce, toast } from 'react-toastify'
 
 export function TableDataUtamaGolongan({
   handleSubmitDataUtama,
@@ -55,6 +56,22 @@ export function TableDataUtamaGolongan({
     ) {
       Cookies.remove('token')
       navigate('/login')
+    }
+    if (
+      errorMsg?.data?.message?.includes('Client error') ||
+      errorMsg?.data?.message?.includes('Server error')
+    ) {
+      toast.error(`Terjadi Kesalahan di server BKN`, {
+        position: 'bottom-right',
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'light',
+        transition: Bounce,
+      })
     }
   }, [riwayatGolonganData, idPegawai, error])
 

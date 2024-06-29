@@ -36,6 +36,7 @@ export type DataKepegawaianLokalType = {
   kodepos: string
   hp: string
   email: string
+  jenisJabatanId: string
 }
 
 export type DataKepegawaianSIASNType = {
@@ -54,6 +55,7 @@ export type DataKepegawaianSIASNType = {
   kodepos: string
   hp: string
   email: string
+  jenisJabatanId: string
 }
 
 export type DataKepegawaianUtamaType = {
@@ -344,4 +346,34 @@ export type PathFileType = {
   dok_uri: string
   object: string
   slug: string
+}
+
+export type RiwayatAngkaKreditType = {
+  lokal: AngkaKreditType[]
+  siasn: AngkaKreditType[]
+  last_update: string
+}
+
+export type RiwayatDetailAngkaKreditType = {
+  lokal: AngkaKreditType
+  siasn: AngkaKreditType
+  last_update: string
+  user_update: string
+}
+
+export type AngkaKreditType = {
+  id: string
+  nomorSk: string
+  tanggalSk: string
+  bulanMulaiPenilaian: string
+  tahunMulaiPenilaian: string
+  bulanSelesaiPenilaian: string
+  tahunSelesaiPenilaian: string
+  kreditUtamaBaru: string
+  kreditPenunjangBaru: string
+  kreditBaruTotal: string
+  isAngkaKreditPertama: string
+  namaJabatan: string
+  Sumber: string
+  path: string
 }

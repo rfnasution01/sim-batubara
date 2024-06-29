@@ -26,6 +26,7 @@ export default function TambahDiklatPage() {
   const navigate = useNavigate()
   const idParams = localStorage.getItem('pegawaiID')
   const { thirdPathname } = usePathname()
+  const [isSubmit, setIsSubmit] = useState<boolean>(false)
 
   const [file, setFile] = useState<File>()
   const [isShow, setIsShow] = useState<boolean>(false)
@@ -65,13 +66,17 @@ export default function TambahDiklatPage() {
       formData.append('dokumen', file)
     }
 
-    try {
-      const res = await createSaveDiklat({
-        data: formData,
-      })
-      localStorage.setItem('jabatanID', res?.data?.data)
-    } catch (error) {
-      console.error(error)
+    if (isSubmit) {
+      try {
+        const res = await createSaveDiklat({
+          data: formData,
+        })
+        localStorage.setItem('jabatanID', res?.data?.data)
+      } catch (error) {
+        console.error(error)
+      } finally {
+        setIsShow(false)
+      }
     }
   }
 
@@ -247,9 +252,12 @@ export default function TambahDiklatPage() {
 
           <div className="flex justify-end">
             <button
-              type="button"
-              onClick={() => {
-                setIsShow(true)
+              type="submit"
+              onClick={async () => {
+                const isValid = await form.trigger()
+                if (isValid) {
+                  setIsShow(true)
+                }
               }}
               className="flex items-center gap-12 rounded-2xl bg-sim-primary px-24 py-12 text-white hover:bg-opacity-80 disabled:cursor-not-allowed"
             >
@@ -263,7 +271,10 @@ export default function TambahDiklatPage() {
             children={
               <button
                 type="submit"
-                onClick={handleSubmitDiklat}
+                onClick={() => {
+                  setIsSubmit(true)
+                  handleSubmitDiklat()
+                }}
                 disabled={isLoadingSaveDiklat}
                 className="flex items-center gap-12 rounded-2xl bg-sim-primary px-24 py-12 text-white hover:bg-opacity-80 disabled:cursor-not-allowed"
               >

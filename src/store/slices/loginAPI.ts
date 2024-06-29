@@ -28,6 +28,8 @@ export const LoginEndpoints = api.injectEndpoints({
         'masa-kerja',
         'pindah-instansi',
         'dashboard',
+        'angka-kredit',
+        'detail-angka-kredit',
       ],
     }),
   }),

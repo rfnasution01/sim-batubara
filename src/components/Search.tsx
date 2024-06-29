@@ -16,7 +16,7 @@ export function Searching({
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
-  const { pageSize, id_golongan, id_organisasi, jabatan, search } =
+  const { pageSize, id_golongan, id_organisasi, jabatan } =
     useSelector(getFilterSlice)
 
   const handleSearch = debounce((searchValue: string) => {
@@ -63,9 +63,7 @@ export function Searching({
       <input
         type="text"
         className="w-full rounded-lg border border-gray-300 p-16 text-[2rem] focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 phones:w-full"
-        placeholder={
-          (isDashboard && pegawai === 'pns') || !isDashboard ? search : 'Search'
-        }
+        placeholder={'Search'}
         onChange={(e) => onSearch(e)}
       />
       <button

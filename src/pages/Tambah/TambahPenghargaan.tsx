@@ -38,6 +38,7 @@ export default function TambahPenghargaanPage() {
 
   const [file, setFile] = useState<File>()
   const [isShow, setIsShow] = useState<boolean>(false)
+  const [isSubmit, setIsSubmit] = useState<boolean>(false)
 
   const form = useForm<zod.infer<typeof TambahPenghargaanSchema>>({
     resolver: zodResolver(TambahPenghargaanSchema),
@@ -93,6 +94,8 @@ export default function TambahPenghargaanPage() {
   ] = useCreateSavaPenghargaanMutation()
 
   const handleSubmitPenghargaan = async () => {
+    console.log({ isSubmit })
+
     const values = form.getValues()
 
     const formData = new FormData()
@@ -107,16 +110,20 @@ export default function TambahPenghargaanPage() {
       formData.append('dokumen', file)
     }
 
-    console.log(...formData.entries())
+    if (isSubmit) {
+      try {
+        console.log(...formData.entries())
 
-    try {
-      const res = await createSavePenghargaan({
-        data: formData,
-      })
+        const res = await createSavePenghargaan({
+          data: formData,
+        })
 
-      localStorage.setItem('jabatanID', res?.data?.data)
-    } catch (error) {
-      console.error(error)
+        localStorage.setItem('jabatanID', res?.data?.data)
+      } catch (error) {
+        console.error(error)
+      } finally {
+        setIsSubmit(false)
+      }
     }
   }
 
@@ -156,6 +163,8 @@ export default function TambahPenghargaanPage() {
       })
     }
   }, [isErrorSavePenghargaan, errorSavePenghargaan])
+
+  console.log({ isSubmit })
 
   return (
     <div className="flex flex-col gap-32">
@@ -287,9 +296,12 @@ export default function TambahPenghargaanPage() {
 
           <div className="flex justify-end">
             <button
-              type="button"
-              onClick={() => {
-                setIsShow(true)
+              type="submit"
+              onClick={async () => {
+                const isValid = await form.trigger()
+                if (isValid) {
+                  setIsShow(true)
+                }
               }}
               className="flex items-center gap-12 rounded-2xl bg-sim-primary px-24 py-12 text-white hover:bg-opacity-80 disabled:cursor-not-allowed"
             >
@@ -303,7 +315,10 @@ export default function TambahPenghargaanPage() {
             children={
               <button
                 type="submit"
-                onClick={handleSubmitPenghargaan}
+                onClick={() => {
+                  setIsSubmit(true)
+                  handleSubmitPenghargaan()
+                }}
                 disabled={isLoadingSavePenghargaan}
                 className="flex items-center gap-12 rounded-2xl bg-sim-primary px-24 py-12 text-white hover:bg-opacity-80 disabled:cursor-not-allowed"
               >

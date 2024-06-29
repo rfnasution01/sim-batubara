@@ -5,6 +5,7 @@ import {
   DataKepegawaianUtamaType,
 } from '@/libs/type'
 import {
+  useCreateSinkronAngkaKreditMutation,
   useCreateSinkronPNSUtamaMutation,
   useCreateSinkronRiwayatDiklatLainnyaMutation,
   useCreateSinkronRiwayatDiklatMutation,
@@ -14,6 +15,7 @@ import {
   useCreateSinkronRiwayatPendidikanMutation,
   useCreateSinkronRiwayatPenghargaanMutation,
   useCreateSinkronRiwayatPindahInstansiMutation,
+  useDeleteAngkaKreditMutation,
   useDeleteDiklatMutation,
   useDeleteJabatanMutation,
   useDeleteKursusMutation,
@@ -264,6 +266,61 @@ export default function DetailPegawaiLayoutMain() {
     }
   }, [deletePenghargaanIsError, deletePenghargaanError])
 
+  // --- Delete Kredit ---
+  const [
+    deleteAngkaKredit,
+    {
+      isSuccess: deleteAngkaKreditSuccess,
+      isError: deleteAngkaKreditIsError,
+      error: deleteAngkaKreditError,
+      isLoading: deleteAngkaKreditLoading,
+    },
+  ] = useDeleteAngkaKreditMutation()
+
+  const handleDeleteAngkaKredit = async (id: string) => {
+    try {
+      await deleteAngkaKredit({
+        id: id,
+      })
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  useEffect(() => {
+    if (deleteAngkaKreditSuccess) {
+      toast.success('Data berhasil di delete', {
+        position: 'bottom-right',
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'light',
+        transition: Bounce,
+      })
+    }
+  }, [deleteAngkaKreditSuccess])
+
+  useEffect(() => {
+    if (deleteAngkaKreditIsError) {
+      const errorMsg = deleteAngkaKreditError as { data?: { message?: string } }
+
+      toast.error(`${errorMsg?.data?.message ?? 'Terjadi Kesalahan'}`, {
+        position: 'bottom-right',
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'light',
+        transition: Bounce,
+      })
+    }
+  }, [deleteAngkaKreditIsError, deleteAngkaKreditError])
+
   // --- Data Utama ---
   const [kepegawaianUtama, setKepegawaianUtama] =
     useState<DataKepegawaianUtamaType>()
@@ -307,8 +364,8 @@ export default function DetailPegawaiLayoutMain() {
     }
 
     if (
-      errorMsg?.data?.message.includes('Client error') ||
-      errorMsg?.data?.message.includes('Server error')
+      errorMsg?.data?.message?.includes('Client error') ||
+      errorMsg?.data?.message?.includes('Server error')
     ) {
       toast.error(`Terjadi Kesalahan di server BKN`, {
         position: 'bottom-right',
@@ -887,6 +944,65 @@ export default function DetailPegawaiLayoutMain() {
     }
   }, [isErrorSinkronPenghargaan, errorSinkronPenghargaan])
 
+  // --- Sinkron AngkaKredit ---
+  const [
+    createSinkronAngkaKredit,
+    {
+      isError: isErrorSinkronAngkaKredit,
+      error: errorSinkronAngkaKredit,
+      isLoading: isLoadingSinkronAngkaKredit,
+      isSuccess: isSuccessSinkronAngkaKredit,
+    },
+  ] = useCreateSinkronAngkaKreditMutation()
+
+  const handleSubmitAngkaKredit = async () => {
+    try {
+      await createSinkronAngkaKredit({
+        data: {
+          id_pegawai: idParams,
+        },
+      })
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
+  useEffect(() => {
+    if (isSuccessSinkronAngkaKredit) {
+      toast.success('Data angka kredit berhasil disinkronkan', {
+        position: 'bottom-right',
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'light',
+        transition: Bounce,
+      })
+    }
+  }, [isSuccessSinkronAngkaKredit])
+
+  useEffect(() => {
+    if (isErrorSinkronAngkaKredit) {
+      const errorMsg = errorSinkronAngkaKredit as {
+        data?: { message?: string }
+      }
+
+      toast.error(`${errorMsg?.data?.message ?? 'Terjadi Kesalahan'}`, {
+        position: 'bottom-right',
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'light',
+        transition: Bounce,
+      })
+    }
+  }, [isErrorSinkronAngkaKredit, errorSinkronAngkaKredit])
+
   return (
     <div className="flex flex-col gap-32">
       {isLoadingKepegawaianUtama ? (
@@ -931,6 +1047,10 @@ export default function DetailPegawaiLayoutMain() {
             isLoadingDeletePenghargaan={deletePenghargaanLoading}
             handleSubmitRiwayatPMK={handleSubmitRiwayatPMK}
             isSinkronRiwayatPMK={isLoadingSinkronRiwayatPMK}
+            handleDeleteAngkaKredit={handleDeleteAngkaKredit}
+            isLoadingDeleteAngkaKredit={deleteAngkaKreditLoading}
+            handleSubmitRiwayatAngkaKredit={handleSubmitAngkaKredit}
+            isSinkronRiwayatAngkaKredit={isLoadingSinkronAngkaKredit}
           />
         </>
       )}

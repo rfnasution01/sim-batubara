@@ -12,6 +12,7 @@ import { ModalShowKonfirmasiDelete } from '../ModalComponent/ModalKonfirmasiDele
 import { usePathname } from '@/libs/hooks/usePathname'
 import Select from 'react-select'
 import PDFViewer from '../PDFShow'
+import { Bounce, toast } from 'react-toastify'
 
 export function TableDataDiklatLainnya({
   idPegawai,
@@ -69,6 +70,22 @@ export function TableDataDiklatLainnya({
     ) {
       Cookies.remove('token')
       navigate('/login')
+    }
+    if (
+      errorMsg?.data?.message?.includes('Client error') ||
+      errorMsg?.data?.message?.includes('Server error')
+    ) {
+      toast.error(`Terjadi Kesalahan di server BKN`, {
+        position: 'bottom-right',
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'light',
+        transition: Bounce,
+      })
     }
   }, [riwayatDiklatLainnyaData, idPegawai, error])
 

@@ -1,5 +1,4 @@
-import { PathFileType, RiwayatJabatanType } from '@/libs/type'
-import { useGetPNSRiwayatJabatanQuery } from '@/store/slices/kepegawaianAPI'
+import { PathFileType, RiwayatAngkaKreditType } from '@/libs/type'
 import { Plus, RefreshCcw } from 'lucide-react'
 import React, { useEffect, useState } from 'react'
 import { UseFormReturn } from 'react-hook-form'
@@ -11,51 +10,59 @@ import dayjs from 'dayjs'
 import { ModalShowKonfirmasiDelete } from '../ModalComponent/ModalKonfirmasiDelete'
 import { usePathname } from '@/libs/hooks/usePathname'
 import Select from 'react-select'
+import { useGetPNSRiwayatAngkaKreditQuery } from '@/store/slices/kepegawaianAPI'
 import PDFViewer from '../PDFShow'
 import { Bounce, toast } from 'react-toastify'
+import clsx from 'clsx'
+import { ModalValidasiTambah } from '../ModalComponent'
 
-export function TableDataJabatan({
+export function TableDataAngkaKredit({
   idPegawai,
   form,
-  handleSubmitriwayatJabatan,
-  isSinkronriwayatJabatan,
   formDelete,
-  handleDeleteJabatan,
-  isLoadingDeleteJabatan,
+  handleSubmitriwayatAngkaKredit,
+  isSinkronriwayatAngkaKredit,
+  handleDeleteAngkaKredit,
+  isLoadingDeleteAngkaKredit,
+  jenisJabatanId,
 }: {
   idPegawai: string
   form: UseFormReturn
   formDelete: UseFormReturn
-  handleSubmitriwayatJabatan: () => Promise<void>
-  isSinkronriwayatJabatan: boolean
-  handleDeleteJabatan: (id: string) => Promise<void>
-  isLoadingDeleteJabatan: boolean
+  handleSubmitriwayatAngkaKredit: () => Promise<void>
+  isSinkronriwayatAngkaKredit: boolean
+  handleDeleteAngkaKredit: (id: string) => Promise<void>
+  isLoadingDeleteAngkaKredit: boolean
+  jenisJabatanId: string
 }) {
   const navigate = useNavigate()
   const { thirdPathname } = usePathname()
-  const [riwayatJabatan, setRiwayatJabatan] = useState<RiwayatJabatanType>()
+  const [riwayatAngkaKredit, setRiwayatAngkaKredit] =
+    useState<RiwayatAngkaKreditType>()
+  const [isShowValidasiTambah, setIsShowValidasiTambah] =
+    useState<boolean>(false)
   const [isShowDelete, setIsShowDelete] = useState<boolean>(false)
   const [id, setId] = useState<string>('')
   const [selectedYear, setSelectedYear] = useState<string | null>(null)
 
   const {
-    data: riwayatJabatanData,
-    isLoading: riwayatJabatanIsLoading,
-    isFetching: riwayatJabatanIsFetching,
+    data: riwayatAngkaKreditData,
+    isLoading: riwayatAngkaKreditIsLoading,
+    isFetching: riwayatAngkaKreditIsFetching,
     error,
-  } = useGetPNSRiwayatJabatanQuery(
+  } = useGetPNSRiwayatAngkaKreditQuery(
     {
       id_pegawai: idPegawai,
     },
     { skip: !idPegawai },
   )
 
-  const isLoadingRiwayatJabatan =
-    riwayatJabatanIsLoading || riwayatJabatanIsFetching
+  const isLoadingRiwayatAngkaKredit =
+    riwayatAngkaKreditIsLoading || riwayatAngkaKreditIsFetching
 
   useEffect(() => {
-    if (riwayatJabatanData) {
-      setRiwayatJabatan(riwayatJabatanData?.data)
+    if (riwayatAngkaKreditData) {
+      setRiwayatAngkaKredit(riwayatAngkaKreditData?.data)
     }
     const errorMsg = error as {
       data?: {
@@ -86,15 +93,15 @@ export function TableDataJabatan({
         transition: Bounce,
       })
     }
-  }, [riwayatJabatanData, idPegawai, error])
+  }, [riwayatAngkaKreditData, idPegawai, error])
 
   const years = [
     { value: 'all', label: 'Tampilkan Semua Tahun' },
     ...Array.from(
       new Set(
-        riwayatJabatan?.siasn
+        riwayatAngkaKredit?.siasn
           ?.map((item) => {
-            const dateStr = item?.tmtJabatan ?? item?.tanggalSk
+            const dateStr = item?.tanggalSk
             const year = dateStr?.slice(-4) // Mengambil 4 karakter terakhir
             console.log(`Date string: ${dateStr}, Year: ${year}`)
             return year
@@ -110,33 +117,33 @@ export function TableDataJabatan({
     setSelectedYear(selectedOption?.value ?? null)
   }
 
-  const filteredRiwayatJabatan =
-    selectedYear && selectedYear !== 'all' && riwayatJabatan
+  const filteredRiwayatAngkaKredit =
+    selectedYear && selectedYear !== 'all' && riwayatAngkaKredit
       ? {
-          ...riwayatJabatan,
-          siasn: riwayatJabatan.siasn.filter((item) => {
-            const dateStr = item?.tmtJabatan ?? item?.tanggalSk
+          ...riwayatAngkaKredit,
+          siasn: riwayatAngkaKredit.siasn.filter((item) => {
+            const dateStr = item?.tanggalSk
             const year = dateStr?.slice(-4) // Mengambil 4 karakter terakhir
             return year === selectedYear
           }),
         }
-      : riwayatJabatan
+      : riwayatAngkaKredit
 
   return (
     <div
-      className={`scrollbar flex h-[80vh] flex-col gap-32 overflow-auto`}
+      className={`scrollbar flex flex-col gap-32 overflow-auto`}
       style={{ scrollbarGutter: 'stable' }}
     >
-      <div className="flex flex-1 flex-col gap-12 rounded-3x">
-        {isLoadingRiwayatJabatan || isSinkronriwayatJabatan ? (
+      <div className="flex flex-col gap-12 rounded-3x">
+        {isLoadingRiwayatAngkaKredit || isSinkronriwayatAngkaKredit ? (
           <Loading width={'6rem'} height={'6rem'} />
         ) : (
           <>
             <div className="flex items-center justify-between">
               <p className="text-sim-grey">
                 Sinkronisasi Terakhir:{' '}
-                {riwayatJabatan?.last_update
-                  ? dayjs(riwayatJabatan?.last_update)
+                {riwayatAngkaKredit?.last_update
+                  ? dayjs(riwayatAngkaKredit?.last_update)
                       .locale('id')
                       .format('DD/MM/YYYY | HH:mm')
                   : 'Belum Sinkronisasi'}
@@ -149,15 +156,18 @@ export function TableDataJabatan({
                 className="z-50 w-1/4"
               />
             </div>
+
             <table className="flex-1 border-collapse rounded-3x bg-[#fcfcfc] text-24">
               <thead className="relative z-10 align-top leading-medium">
                 <tr>
                   <th
-                    className={`sticky top-0 w-[20%] border bg-white px-24 py-16 text-left align-middle text-sim-dark`}
+                    className={`sticky top-0 w-[20%] border px-24 py-16 text-left align-middle text-sim-dark`}
                   >
                     <Form {...form}>
                       <form
-                        onSubmit={form.handleSubmit(handleSubmitriwayatJabatan)}
+                        onSubmit={form.handleSubmit(
+                          handleSubmitriwayatAngkaKredit,
+                        )}
                       >
                         <button
                           type="submit"
@@ -181,17 +191,17 @@ export function TableDataJabatan({
                 </tr>
               </thead>
               <tbody>
-                {filteredRiwayatJabatan &&
-                filteredRiwayatJabatan?.siasn?.length > 0 ? (
-                  filteredRiwayatJabatan?.siasn?.map((item, idx) => (
+                {filteredRiwayatAngkaKredit &&
+                filteredRiwayatAngkaKredit?.siasn?.length > 0 ? (
+                  filteredRiwayatAngkaKredit?.siasn?.map((item, idx) => (
                     <React.Fragment key={idx}>
                       <tr className="transition-all ease-in hover:cursor-pointer">
                         <th className="border bg-sim-pale-primary px-24 py-12 text-left align-middle leading-medium text-sim-dark">
-                          Jenis Jabatan
+                          Nomor SK
                         </th>
                         <td className="border px-24 py-12 align-middle leading-medium">
                           <div className="flex flex-wrap items-center gap-16">
-                            <p>{item?.jenisJabatan ?? '-'}</p>
+                            <p> {item?.nomorSk ?? '-'}</p>
                             <button
                               type="submit"
                               onClick={() => {
@@ -203,7 +213,7 @@ export function TableDataJabatan({
                               Hapus Data
                             </button>
                             <Link
-                              to={`/kepegawaian/pns/${thirdPathname}/jabatan/detail`}
+                              to={`/kepegawaian/pns/${thirdPathname}/angka-kredit/detail`}
                               onClick={() => {
                                 localStorage.setItem('jabatanID', item?.id)
                               }}
@@ -214,72 +224,7 @@ export function TableDataJabatan({
                           </div>
                         </td>
                         <td className="border px-24 py-12 align-middle leading-medium">
-                          {filteredRiwayatJabatan?.lokal?.find(
-                            (list) => list?.id === item?.id,
-                          )?.jenisJabatan ?? '-'}
-                        </td>
-                      </tr>
-                      <tr className="transition-all ease-in hover:cursor-pointer">
-                        <th className="border bg-sim-pale-primary px-24 py-12 text-left align-middle leading-medium text-sim-dark">
-                          Satuan Kerja
-                        </th>
-                        <td className="border px-24 py-12 align-middle leading-medium">
-                          {item?.namaUnor ?? '-'}
-                        </td>
-                        <td className="border px-24 py-12 align-middle leading-medium">
-                          {filteredRiwayatJabatan?.lokal?.find(
-                            (list) => list?.id === item?.id,
-                          )?.namaUnor ?? '-'}
-                        </td>
-                      </tr>
-                      <tr className="transition-all ease-in hover:cursor-pointer">
-                        <th className="border bg-sim-pale-primary px-24 py-12 text-left align-middle leading-medium text-sim-dark">
-                          Nama Jabatan
-                        </th>
-                        <td className="border px-24 py-12 align-middle leading-medium">
-                          {item?.namaJabatan ?? '-'}
-                        </td>
-                        <td className="border px-24 py-12 align-middle leading-medium">
-                          {filteredRiwayatJabatan?.lokal?.find(
-                            (list) => list?.id === item?.id,
-                          )?.namaJabatan ?? '-'}
-                        </td>
-                      </tr>
-                      <tr className="transition-all ease-in hover:cursor-pointer">
-                        <th className="border bg-sim-pale-primary px-24 py-12 text-left align-middle leading-medium text-sim-dark">
-                          TMT Jabatan
-                        </th>
-                        <td className="border px-24 py-12 align-middle leading-medium">
-                          {item?.tmtJabatan ?? '-'}
-                        </td>
-                        <td className="border px-24 py-12 align-middle leading-medium">
-                          {filteredRiwayatJabatan?.lokal?.find(
-                            (list) => list?.id === item?.id,
-                          )?.tmtJabatan ?? '-'}
-                        </td>
-                      </tr>
-                      <tr className="transition-all ease-in hover:cursor-pointer">
-                        <th className="border bg-sim-pale-primary px-24 py-12 text-left align-middle leading-medium text-sim-dark">
-                          TMT Pelantikan
-                        </th>
-                        <td className="border px-24 py-12 align-middle leading-medium">
-                          {item?.tmtPelantikan ?? '-'}
-                        </td>
-                        <td className="border px-24 py-12 align-middle leading-medium">
-                          {filteredRiwayatJabatan?.lokal?.find(
-                            (list) => list?.id === item?.id,
-                          )?.tmtPelantikan ?? '-'}
-                        </td>
-                      </tr>
-                      <tr className="transition-all ease-in hover:cursor-pointer">
-                        <th className="border bg-sim-pale-primary px-24 py-12 text-left align-middle leading-medium text-sim-dark">
-                          Nomor SK
-                        </th>
-                        <td className="border px-24 py-12 align-middle leading-medium">
-                          {item?.nomorSk ?? '-'}
-                        </td>
-                        <td className="border px-24 py-12 align-middle leading-medium">
-                          {filteredRiwayatJabatan?.lokal?.find(
+                          {filteredRiwayatAngkaKredit?.lokal?.find(
                             (list) => list?.id === item?.id,
                           )?.nomorSk ?? '-'}
                         </td>
@@ -292,9 +237,101 @@ export function TableDataJabatan({
                           {item?.tanggalSk ?? '-'}
                         </td>
                         <td className="border px-24 py-12 align-middle leading-medium">
-                          {filteredRiwayatJabatan?.lokal?.find(
+                          {filteredRiwayatAngkaKredit?.lokal?.find(
                             (list) => list?.id === item?.id,
                           )?.tanggalSk ?? '-'}
+                        </td>
+                      </tr>
+                      <tr className="transition-all ease-in hover:cursor-pointer">
+                        <th className="border bg-sim-pale-primary px-24 py-12 text-left align-middle leading-medium text-sim-dark">
+                          Waktu Penilaian
+                        </th>
+                        <td className="border px-24 py-12 align-middle leading-medium">
+                          {item?.bulanMulaiPenilaian ?? '-'}/
+                          {item?.tahunMulaiPenilaian} -{' '}
+                          {item?.bulanSelesaiPenilaian}/
+                          {item?.tahunSelesaiPenilaian}
+                        </td>
+                        <td className="border px-24 py-12 align-middle leading-medium">
+                          {filteredRiwayatAngkaKredit?.lokal?.length > 0 ? (
+                            <p>
+                              {filteredRiwayatAngkaKredit?.lokal?.find(
+                                (list) => list?.id === item?.id,
+                              )?.bulanMulaiPenilaian ?? '-'}
+                              /
+                              {
+                                filteredRiwayatAngkaKredit?.lokal?.find(
+                                  (list) => list?.id === item?.id,
+                                )?.tahunMulaiPenilaian
+                              }{' '}
+                              -{' '}
+                              {
+                                filteredRiwayatAngkaKredit?.lokal?.find(
+                                  (list) => list?.id === item?.id,
+                                )?.bulanSelesaiPenilaian
+                              }
+                              /
+                              {
+                                filteredRiwayatAngkaKredit?.lokal?.find(
+                                  (list) => list?.id === item?.id,
+                                )?.tahunSelesaiPenilaian
+                              }
+                            </p>
+                          ) : (
+                            <p>-</p>
+                          )}
+                        </td>
+                      </tr>
+                      <tr className="transition-all ease-in hover:cursor-pointer">
+                        <th className="border bg-sim-pale-primary px-24 py-12 text-left align-middle leading-medium text-sim-dark">
+                          Kredit Utama
+                        </th>
+                        <td className="border px-24 py-12 align-middle leading-medium">
+                          {item?.kreditUtamaBaru ?? '-'}
+                        </td>
+                        <td className="border px-24 py-12 align-middle leading-medium">
+                          {filteredRiwayatAngkaKredit?.lokal?.find(
+                            (list) => list?.id === item?.id,
+                          )?.kreditUtamaBaru ?? '-'}
+                        </td>
+                      </tr>
+                      <tr className="transition-all ease-in hover:cursor-pointer">
+                        <th className="border bg-sim-pale-primary px-24 py-12 text-left align-middle leading-medium text-sim-dark">
+                          Kredit Penunjang
+                        </th>
+                        <td className="border px-24 py-12 align-middle leading-medium">
+                          {item?.kreditPenunjangBaru ?? '-'}
+                        </td>
+                        <td className="border px-24 py-12 align-middle leading-medium">
+                          {filteredRiwayatAngkaKredit?.lokal?.find(
+                            (list) => list?.id === item?.id,
+                          )?.kreditPenunjangBaru ?? '-'}
+                        </td>
+                      </tr>
+                      <tr className="transition-all ease-in hover:cursor-pointer">
+                        <th className="border bg-sim-pale-primary px-24 py-12 text-left align-middle leading-medium text-sim-dark">
+                          Nama Jabatan
+                        </th>
+                        <td className="border px-24 py-12 align-middle leading-medium">
+                          {item?.namaJabatan ?? '-'}
+                        </td>
+                        <td className="border px-24 py-12 align-middle leading-medium">
+                          {filteredRiwayatAngkaKredit?.lokal?.find(
+                            (list) => list?.id === item?.id,
+                          )?.namaJabatan ?? '-'}
+                        </td>
+                      </tr>
+                      <tr className="transition-all ease-in hover:cursor-pointer">
+                        <th className="border bg-sim-pale-primary px-24 py-12 text-left align-middle leading-medium text-sim-dark">
+                          Sumber
+                        </th>
+                        <td className="border px-24 py-12 align-middle leading-medium">
+                          {item?.Sumber ?? '-'}
+                        </td>
+                        <td className="border px-24 py-12 align-middle leading-medium">
+                          {filteredRiwayatAngkaKredit?.lokal?.find(
+                            (list) => list?.id === item?.id,
+                          )?.Sumber ?? '-'}
                         </td>
                       </tr>
                       <tr className="transition-all ease-in hover:cursor-pointer">
@@ -305,17 +342,17 @@ export function TableDataJabatan({
                           colSpan={2}
                           className="border px-24 py-12 align-middle leading-medium"
                         >
-                          {filteredRiwayatJabatan?.lokal?.find(
+                          {filteredRiwayatAngkaKredit?.lokal?.find(
                             (list) => list?.id === item?.id,
                           )?.path ? (
                             <div className="flex items-center gap-16">
                               {JSON.parse(
-                                riwayatJabatan?.lokal?.find(
+                                riwayatAngkaKredit?.lokal?.find(
                                   (list) => list?.id === item?.id,
                                 )?.path,
                               )?.map((pathItem: PathFileType, idx) => (
                                 // <Link
-                                //   to={`${downloadURL}jabatan/${item?.id}/${pathItem?.dok_id}`}
+                                //   to={`${downloadURL}AngkaKredit/${item?.id}/${pathItem?.dok_id}`}
                                 //   key={idx}
                                 //   target="_blank"
                                 //   className="rounded-2xl bg-sim-dark px-16 py-8 text-white hover:bg-opacity-80"
@@ -327,7 +364,7 @@ export function TableDataJabatan({
                                     dok_id={pathItem?.dok_id}
                                     dok_nama={pathItem?.dok_nama}
                                     id={item?.id}
-                                    riwayat="jabatan"
+                                    riwayat="angkakredit"
                                   />
                                 </div>
                               ))}
@@ -337,7 +374,8 @@ export function TableDataJabatan({
                           )}
                         </td>
                       </tr>
-                      {idx < filteredRiwayatJabatan.siasn.length - 1 && (
+
+                      {idx < filteredRiwayatAngkaKredit.siasn.length - 1 && (
                         <tr className="border transition-all ease-in hover:cursor-pointer">
                           <td
                             className="border px-24 py-12 align-middle leading-medium text-white"
@@ -364,11 +402,22 @@ export function TableDataJabatan({
           </>
         )}
       </div>
-      {!(isLoadingRiwayatJabatan || isSinkronriwayatJabatan) && (
+      {!(isLoadingRiwayatAngkaKredit || isSinkronriwayatAngkaKredit) && (
         <div className="fixed bottom-80 right-64 z-50 flex justify-end">
           <Link
-            to={`/kepegawaian/pns/${thirdPathname}/jabatan/tambah`}
-            className="flex items-center gap-12 rounded-2xl bg-sim-primary px-24 py-16 text-white hover:bg-opacity-80"
+            to={
+              jenisJabatanId === '1'
+                ? ''
+                : `/kepegawaian/pns/${thirdPathname}/angka-kredit/tambah`
+            }
+            onClick={() => {
+              if (jenisJabatanId === '1') {
+                setIsShowValidasiTambah(true)
+              }
+            }}
+            className={clsx(
+              'flex items-center gap-12 rounded-2xl bg-sim-primary px-24 py-16 text-white hover:bg-opacity-80',
+            )}
           >
             Tambah <Plus size={16} />
           </Link>
@@ -376,12 +425,16 @@ export function TableDataJabatan({
       )}
 
       <ModalShowKonfirmasiDelete
-        isLoading={isLoadingDeleteJabatan}
+        isLoading={isLoadingDeleteAngkaKredit}
         setIsOpen={setIsShowDelete}
         isOpen={isShowDelete}
-        handleDeleteJabatan={handleDeleteJabatan}
+        handleDeleteJabatan={handleDeleteAngkaKredit}
         form={formDelete}
         id={id}
+      />
+      <ModalValidasiTambah
+        isOpen={isShowValidasiTambah}
+        setIsOpen={setIsShowValidasiTambah}
       />
     </div>
   )

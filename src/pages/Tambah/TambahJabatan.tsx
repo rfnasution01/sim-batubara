@@ -39,6 +39,7 @@ export default function TambahPage() {
   const [file, setFile] = useState<File>()
   const [fileSK, setFileSK] = useState<File>()
   const [isShow, setIsShow] = useState<boolean>(false)
+  const [isSubmit, setIsSubmit] = useState<boolean>(false)
 
   const form = useForm<zod.infer<typeof TambahSchema>>({
     resolver: zodResolver(TambahSchema),
@@ -114,16 +115,20 @@ export default function TambahPage() {
       formData.append('dokumensk', fileSK)
     }
 
-    console.log(...formData.entries())
+    if (isSubmit) {
+      try {
+        console.log(...formData.entries())
 
-    try {
-      const res = await createSaveJabatan({
-        data: formData,
-      })
+        const res = await createSaveJabatan({
+          data: formData,
+        })
 
-      localStorage.setItem('jabatanID', res?.data?.data)
-    } catch (error) {
-      console.error(error)
+        localStorage.setItem('jabatanID', res?.data?.data)
+      } catch (error) {
+        console.error(error)
+      } finally {
+        setIsSubmit(false)
+      }
     }
   }
 
@@ -382,9 +387,12 @@ export default function TambahPage() {
 
           <div className="flex justify-end">
             <button
-              type="button"
-              onClick={() => {
-                setIsShow(true)
+              type="submit"
+              onClick={async () => {
+                const isValid = await form.trigger()
+                if (isValid) {
+                  setIsShow(true)
+                }
               }}
               className="flex items-center gap-12 rounded-2xl bg-sim-primary px-24 py-12 text-white hover:bg-opacity-80 disabled:cursor-not-allowed"
             >
@@ -398,7 +406,10 @@ export default function TambahPage() {
             children={
               <button
                 type="submit"
-                onClick={handleSubmitJabatan}
+                onClick={() => {
+                  setIsSubmit(true)
+                  handleSubmitJabatan()
+                }}
                 disabled={isLoadingSaveJabatan}
                 className="flex items-center gap-12 rounded-2xl bg-sim-primary px-24 py-12 text-white hover:bg-opacity-80 disabled:cursor-not-allowed"
               >

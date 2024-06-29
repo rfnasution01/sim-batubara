@@ -16,6 +16,7 @@ export function FormLabelInput({
   className,
   isDisabled,
   isNumber,
+  isFloat,
 }: {
   form: UseFormReturn | undefined | any
   label?: string | ReactNode
@@ -28,6 +29,7 @@ export function FormLabelInput({
   className?: string
   isDisabled?: boolean
   isNumber?: boolean
+  isFloat?: boolean
 }) {
   return (
     <FormField
@@ -56,6 +58,15 @@ export function FormLabelInput({
                   '',
                 )
                 field.onChange((e.target as HTMLInputElement).value)
+              }
+              if (isFloat && type === 'text') {
+                const inputValue = (e.target as HTMLInputElement).value
+                const formattedValue = inputValue
+                  .replace(/[^\d.]/g, '') // Remove non-digit and non-period characters
+                  .replace(/(\..*?)\..*/g, '$1') // Allow only one period
+
+                ;(e.target as HTMLInputElement).value = formattedValue
+                field.onChange(formattedValue)
               }
             }}
           />

@@ -2,7 +2,6 @@
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as zod from 'zod'
-import { TambahKursusSchema } from '@/libs/schema'
 import {
   Form,
   FormControl,
@@ -10,19 +9,26 @@ import {
   FormItem,
   FormMessage,
 } from '@/components/Form'
-import { FormLabelInput, Input } from '@/components/InputComponent'
+import {
+  FormLabelInput,
+  FormLabelRadio,
+  Input,
+} from '@/components/InputComponent'
 import { Check, Loader2, Save, Upload } from 'lucide-react'
-import { useCreateSavaKursusMutation } from '@/store/slices/kepegawaianAPI'
+import { useCreateSavaAngkaKreditMutation } from '@/store/slices/kepegawaianAPI'
 import { Bounce, ToastContainer, toast } from 'react-toastify'
 import { useNavigate } from 'react-router-dom'
 import 'react-toastify/dist/ReactToastify.css'
 import clsx from 'clsx'
 import { useEffect, useState } from 'react'
-import { SelectListJenisKursus } from '@/components/SelectComponent'
-import { ModalShowKonfirmasiKursus } from '@/components/ModalComponent'
+import { TambahAngkaKreditSchema } from '@/libs/schema'
 import { usePathname } from '@/libs/hooks/usePathname'
+import { ModalShowKonfirmasiAngkaKredit } from '@/components/ModalComponent'
+import { SelectListNamaJabatan } from '@/components/SelectComponent'
+import { SelectListTime } from '@/components/SelectComponent/SelectListTime'
+import { ListBulan } from '@/libs/dummy/ListBulan'
 
-export default function TambahKursusPage() {
+export default function TambahAngkaKreditPage() {
   const navigate = useNavigate()
   const idParams = localStorage.getItem('pegawaiID')
   const { thirdPathname } = usePathname()
@@ -31,58 +37,67 @@ export default function TambahKursusPage() {
   const [file, setFile] = useState<File>()
   const [isShow, setIsShow] = useState<boolean>(false)
 
-  const form = useForm<zod.infer<typeof TambahKursusSchema>>({
-    resolver: zodResolver(TambahKursusSchema),
+  const form = useForm<zod.infer<typeof TambahAngkaKreditSchema>>({
+    resolver: zodResolver(TambahAngkaKreditSchema),
     defaultValues: {},
   })
 
   const [
-    createSaveKursus,
+    createSaveAngkaKredit,
     {
-      isError: isErrorSaveKursus,
-      error: errorSaveKursus,
-      isLoading: isLoadingSaveKursus,
-      isSuccess: isSuccessSaveKursus,
+      isError: isErrorSaveAngkaKredit,
+      error: errorSaveAngkaKredit,
+      isLoading: isLoadingSaveAngkaKredit,
+      isSuccess: isSuccessSaveAngkaKredit,
     },
-  ] = useCreateSavaKursusMutation()
+  ] = useCreateSavaAngkaKreditMutation()
 
-  const handleSubmitKursus = async () => {
+  const handleSubmitAngkaKredit = async () => {
     const values = form.getValues()
 
     const formData = new FormData()
 
     formData.append('id_pegawai', idParams)
-    formData.append('jenisKursus', values?.jenisKursus ?? '')
+    formData.append('id_riwayat_jabatan', values?.id_riwayat_jabatan ?? '')
+    formData.append('bulanMulaiPenilaian', values?.bulanMulaiPenilaian ?? '')
+    formData.append('tahunMulaiPenilaian', values?.tahunMulaiPenilaian ?? '')
     formData.append(
-      'institusiPenyelenggara',
-      values?.institusiPenyelenggara ?? '',
+      'bulanSelesaiPenilaian',
+      values?.bulanSelesaiPenilaian ?? '',
     )
-    formData.append('noSertipikat', values?.noSertipikat ?? '')
-    formData.append('namaKursus', values?.namaKursus ?? '')
-    formData.append('jam', values?.jam ?? '')
-    formData.append('tanggalKursus', values?.tanggalKursus ?? '')
-    formData.append('tanggalSelesaiKursus', values?.tanggalSelesaiKursus ?? '')
+    formData.append(
+      'tahunSelesaiPenilaian',
+      values?.tahunSelesaiPenilaian ?? '',
+    )
+    formData.append('isAngkaKreditPertama', values?.isAngkaKreditPertama ?? '')
+    formData.append('kreditUtamaBaru', values?.kreditUtamaBaru ?? '')
+    formData.append('kreditPenunjangBaru', values?.kreditPenunjangBaru ?? '')
+    formData.append('kreditBaruTotal', values?.kreditPenunjangBaru ?? '')
+    formData.append('nomorSk', values?.nomorSK ?? '')
+    formData.append('tanggalSk', values?.tanggalSK ?? '')
 
     if (file) {
       formData.append('dokumen', file)
     }
 
+    console.log(...formData.entries())
+
     if (isSubmit) {
       try {
-        const res = await createSaveKursus({
+        const res = await createSaveAngkaKredit({
           data: formData,
         })
         localStorage.setItem('jabatanID', res?.data?.data)
       } catch (error) {
         console.error(error)
       } finally {
-        setIsSubmit(false)
+        setIsShow(false)
       }
     }
   }
 
   useEffect(() => {
-    if (isSuccessSaveKursus) {
+    if (isSuccessSaveAngkaKredit) {
       toast.success('Data berhasil di simpan', {
         position: 'bottom-right',
         autoClose: 3000,
@@ -95,14 +110,14 @@ export default function TambahKursusPage() {
         transition: Bounce,
       })
       setTimeout(() => {
-        navigate(`/kepegawaian/pns/${thirdPathname}/kursus/detail`)
+        navigate(`/kepegawaian/pns/${thirdPathname}/AngkaKredit/detail`)
       }, 3000)
     }
-  }, [isSuccessSaveKursus])
+  }, [isSuccessSaveAngkaKredit])
 
   useEffect(() => {
-    if (isErrorSaveKursus) {
-      const errorMsg = errorSaveKursus as { data?: { message?: string } }
+    if (isErrorSaveAngkaKredit) {
+      const errorMsg = errorSaveAngkaKredit as { data?: { message?: string } }
 
       toast.error(`${errorMsg?.data?.message ?? 'Terjadi Kesalahan'}`, {
         position: 'bottom-right',
@@ -116,95 +131,143 @@ export default function TambahKursusPage() {
         transition: Bounce,
       })
     }
-  }, [isErrorSaveKursus, errorSaveKursus])
+  }, [isErrorSaveAngkaKredit, errorSaveAngkaKredit])
+
+  const ListTahun = []
+  const tahunSekarang = new Date().getFullYear()
+
+  for (let i = tahunSekarang; i >= tahunSekarang - 60; i--) {
+    ListTahun.push({ value: i.toString(), label: String(i) })
+  }
 
   return (
     <>
       <Form {...form}>
         <form
-          onSubmit={form.handleSubmit(handleSubmitKursus)}
+          onSubmit={form.handleSubmit(handleSubmitAngkaKredit)}
           className="flex flex-col gap-32 rounded-3x bg-white p-32"
         >
           <p className="text-[2.8rem] font-bold">
-            Form Tambah Riwayat Diklat Lainnya
+            Form Tambah Riwayat Angka Kredit
           </p>
           <div className="flex flex-col gap-32">
             <div className="flex items-center gap-32">
-              <SelectListJenisKursus
+              <SelectListNamaJabatan
                 useFormReturn={form}
-                name="jenisKursus"
-                headerLabel="Jenis Diklat"
-                placeholder="Pilih Jenis Diklat"
+                name="id_riwayat_jabatan"
+                headerLabel="Nama Jabatanss"
+                placeholder="Pilih Nama Jabatan"
                 className="w-1/2 phones:w-full"
-                isDisabled={isLoadingSaveKursus}
-              />
-              <FormLabelInput
-                name="namaKursus"
-                form={form}
-                label="Nama Diklat"
-                placeholder="Masukkan Nama Diklat"
-                className="w-1/2 text-sim-dark phones:w-full"
-                type="text"
-                isDisabled={isLoadingSaveKursus}
+                isDisabled={isLoadingSaveAngkaKredit}
               />
             </div>
             <hr className="w-full border" />
 
             <div className="flex items-center gap-32">
-              <FormLabelInput
-                name="tanggalKursus"
+              <SelectListTime
+                name="bulanMulaiPenilaian"
+                placeholder="Pilih Bulan Mulai"
                 form={form}
-                label="Tanggal Mulai"
-                placeholder="Masukkan Tanggal Mulai"
-                className="w-1/2 text-sim-dark phones:w-full"
-                type="date"
-                isDisabled={isLoadingSaveKursus}
+                data={ListBulan}
+                headerLabel="Bulan Mulai"
+                className="w-1/4"
               />
 
-              <FormLabelInput
-                name="tanggalSelesaiKursus"
+              <SelectListTime
+                name="tahunMulaiPenilaian"
+                placeholder="Pilih Tahun Mulai"
                 form={form}
-                label="Tanggal Selesai"
-                placeholder="Masukkan Tanggal Selesai"
-                className="w-1/2 text-sim-dark phones:w-full"
-                type="date"
-                isDisabled={isLoadingSaveKursus}
+                data={ListTahun}
+                headerLabel="Tahun Mulai"
+                className="w-1/4"
+              />
+              <SelectListTime
+                name="bulanSelesaiPenilaian"
+                placeholder="Pilih Bulan Selesai"
+                form={form}
+                data={ListBulan}
+                headerLabel="Bulan Selesai"
+                className="w-1/4"
+              />
+
+              <SelectListTime
+                name="tahunSelesaiPenilaian"
+                placeholder="Pilih Tahun Selesai"
+                form={form}
+                data={ListTahun}
+                headerLabel="Tahun Selesai"
+                className="w-1/4"
               />
             </div>
-
-            <FormLabelInput
-              name="jam"
-              form={form}
-              label="Jumlah Jam"
-              placeholder="Masukkan Jumlah Jam"
-              className="w-1/2 text-sim-dark phones:w-full"
-              type="text"
-              isNumber
-              isDisabled={isLoadingSaveKursus}
-            />
 
             <hr className="w-full border" />
 
             <div className="flex items-center gap-32">
               <FormLabelInput
-                name="noSertipikat"
+                name="kreditUtamaBaru"
                 form={form}
-                label="Nomor Sertifikat"
-                placeholder="Masukkan Nomor Sertifikat"
-                className="w-1/2 text-sim-dark phones:w-full"
+                label="Kredit Utama"
+                placeholder="Masukkan Kredit Utama"
+                className="text-sim-dark"
                 type="text"
-                isDisabled={isLoadingSaveKursus}
+                isFloat
+                isDisabled={isLoadingSaveAngkaKredit}
               />
               <FormLabelInput
-                name="institusiPenyelenggara"
+                name="kreditPenunjangBaru"
                 form={form}
-                label="Institusi Penyelenggara"
-                placeholder="Masukkan Institusi Penyelenggara"
-                className="w-1/2 text-sim-dark phones:w-full"
+                label="Kredit Penunjang"
+                placeholder="Masukkan Kredit Penunjang"
+                className="text-sim-dark"
                 type="text"
-                isDisabled={isLoadingSaveKursus}
+                isFloat
+                isDisabled={isLoadingSaveAngkaKredit}
+              />
+              <FormLabelInput
+                name="kreditBaruTotal"
+                form={form}
+                label="Kredit Total"
+                placeholder="Masukkan Kredit Total"
+                className="text-sim-dark"
+                type="text"
+                isFloat
+                isDisabled={isLoadingSaveAngkaKredit}
               />
             </div>
+
+            <hr className="w-full border" />
+
+            <div className="flex items-center gap-32">
+              <FormLabelInput
+                name="nomorSK"
+                form={form}
+                label="Nomor SK"
+                placeholder="Masukkan Nomor SK"
+                className="text-sim-dark"
+                type="text"
+                isDisabled={isLoadingSaveAngkaKredit}
+              />
+              <FormLabelInput
+                name="tanggalSK"
+                form={form}
+                label="Tanggal SK"
+                placeholder="Masukkan Tanggal SK"
+                className="text-sim-dark"
+                type="date"
+                isDisabled={isLoadingSaveAngkaKredit}
+              />
+              <FormLabelRadio
+                name="isAngkaKreditPertama"
+                form={form}
+                label="Apakah angka kredit pertama?"
+                className="text-sim-dark phones:w-full"
+                isDisabled={isLoadingSaveAngkaKredit}
+              />
+            </div>
+
+            <div className="flex items-center gap-32"></div>
+
+            <hr className="w-full border" />
 
             <FormField
               name="dokumen"
@@ -224,7 +287,7 @@ export default function TambahKursusPage() {
                         type="file"
                         value={''}
                         accept=".pdf"
-                        disabled={isLoadingSaveKursus}
+                        disabled={isLoadingSaveAngkaKredit}
                         placeholder="Lampiran"
                         onChange={(e) => {
                           if (e.target.files[0] != null) {
@@ -275,7 +338,7 @@ export default function TambahKursusPage() {
               Simpan
             </button>
           </div>
-          <ModalShowKonfirmasiKursus
+          <ModalShowKonfirmasiAngkaKredit
             isOpen={isShow}
             setIsOpen={setIsShow}
             children={
@@ -283,12 +346,12 @@ export default function TambahKursusPage() {
                 type="submit"
                 onClick={() => {
                   setIsSubmit(true)
-                  handleSubmitKursus()
+                  handleSubmitAngkaKredit()
                 }}
-                disabled={isLoadingSaveKursus}
+                disabled={isLoadingSaveAngkaKredit}
                 className="flex items-center gap-12 rounded-2xl bg-sim-primary px-24 py-12 text-white hover:bg-opacity-80 disabled:cursor-not-allowed"
               >
-                {isLoadingSaveKursus ? (
+                {isLoadingSaveAngkaKredit ? (
                   <div className="animate-spin duration-300">
                     <Loader2 size={16} />
                   </div>

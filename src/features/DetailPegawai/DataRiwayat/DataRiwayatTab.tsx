@@ -19,6 +19,7 @@ export function DataRiwayatTab({
     'Pindah Instansi',
     'Penghargaan',
     'PMK',
+    'Angka Kredit',
   ]
 
   const dispatch = useDispatch()
