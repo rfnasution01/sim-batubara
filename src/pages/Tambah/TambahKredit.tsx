@@ -221,13 +221,14 @@ export default function TambahAngkaKreditPage() {
   useEffect(() => {
     if (id && isEdit && kepegawaianAngkaKreditDetail) {
       const data = kepegawaianAngkaKreditDetail?.siasn
+
       form.setValue(
         'bulanMulaiPenilaian',
-        data?.bulanMulaiPenilaian?.toString(),
+        data?.bulanMulaiPenilaian?.toString()?.padStart(2, '0'),
       )
       form.setValue(
         'bulanSelesaiPenilaian',
-        data?.bulanSelesaiPenilaian?.toString(),
+        data?.bulanSelesaiPenilaian?.toString()?.padStart(2, '0'),
       )
       form.setValue(
         'tahunMulaiPenilaian',
@@ -254,6 +255,8 @@ export default function TambahAngkaKreditPage() {
       )
     }
   }, [id, isEdit, kepegawaianAngkaKreditDetail])
+
+  console.log(form.watch())
 
   return (
     <div className="flex flex-col gap-32">
