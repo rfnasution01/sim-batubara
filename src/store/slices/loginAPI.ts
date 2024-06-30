@@ -32,6 +32,7 @@ export const LoginEndpoints = api.injectEndpoints({
         'detail-angka-kredit',
         'riwayat-dp3',
         'riwayat-keluarga',
+        'riwayat-anak',
       ],
     }),
   }),

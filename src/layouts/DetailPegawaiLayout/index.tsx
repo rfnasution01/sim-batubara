@@ -7,6 +7,7 @@ import {
 import {
   useCreateSinkronAngkaKreditMutation,
   useCreateSinkronPNSUtamaMutation,
+  useCreateSinkronRiwayatAnakMutation,
   useCreateSinkronRiwayatDP3Mutation,
   useCreateSinkronRiwayatDiklatLainnyaMutation,
   useCreateSinkronRiwayatDiklatMutation,
@@ -1123,6 +1124,65 @@ export default function DetailPegawaiLayoutMain() {
     }
   }, [isErrorSinkronKeluarga, errorSinkronKeluarga])
 
+  // --- Sinkron Anak ---
+  const [
+    createSinkronAnak,
+    {
+      isError: isErrorSinkronAnak,
+      error: errorSinkronAnak,
+      isLoading: isLoadingSinkronAnak,
+      isSuccess: isSuccessSinkronAnak,
+    },
+  ] = useCreateSinkronRiwayatAnakMutation()
+
+  const handleSubmitAnak = async () => {
+    try {
+      await createSinkronAnak({
+        data: {
+          id_pegawai: idParams,
+        },
+      })
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
+  useEffect(() => {
+    if (isSuccessSinkronAnak) {
+      toast.success('Data anak berhasil disinkronkan', {
+        position: 'bottom-right',
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'light',
+        transition: Bounce,
+      })
+    }
+  }, [isSuccessSinkronAnak])
+
+  useEffect(() => {
+    if (isErrorSinkronAnak) {
+      const errorMsg = errorSinkronAnak as {
+        data?: { message?: string }
+      }
+
+      toast.error(`${errorMsg?.data?.message ?? 'Terjadi Kesalahan'}`, {
+        position: 'bottom-right',
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'light',
+        transition: Bounce,
+      })
+    }
+  }, [isErrorSinkronAnak, errorSinkronAnak])
+
   return (
     <div className="flex flex-col gap-32">
       {isLoadingKepegawaianUtama ? (
@@ -1175,6 +1235,8 @@ export default function DetailPegawaiLayoutMain() {
             isSinkronRiwayatDP3={isLoadingSinkronDP3}
             handleSubmitRiwayatKeluarga={handleSubmitKeluarga}
             isSinkronRiwayatKeluarga={isLoadingSinkronKeluarga}
+            handleSubmitRiwayatAnak={handleSubmitAnak}
+            isSinkronRiwayatAnak={isLoadingSinkronAnak}
           />
         </>
       )}

@@ -392,3 +392,18 @@ export type KeluargaType = {
   statusNikah: string
   tgglMenikah: string
 }
+
+export type RiwayatAnak = {
+  lokal: AnakType[]
+  siasn: AnakType[]
+  last_update: string
+}
+
+export type AnakType = {
+  id: string
+  nama: string
+  tempatLahir: string
+  tglLahir: string
+  jenisKelamin: string
+  jenisAnak: string
+}

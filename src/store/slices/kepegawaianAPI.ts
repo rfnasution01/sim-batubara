@@ -9,6 +9,7 @@ import {
   JabatanDetailType,
   KursusDetailType,
   PenghargaanDetailType,
+  RiwayatAnak,
   RiwayatAngkaKreditType,
   RiwayatDetailAngkaKreditType,
   RiwayatDiklatLainnyaType,
@@ -525,6 +526,31 @@ export const KepegawaianEndpoints = api.injectEndpoints({
       }),
       invalidatesTags: ['riwayat-keluarga'],
     }),
+    getRiwayatAnak: builder.query<Res<RiwayatAnak>, DataKepegawaianUtamaParams>(
+      {
+        query: ({ id_pegawai }) => ({
+          url: `kepegawaian/pns_detail/riwayat/anak`,
+          method: 'GET',
+          params: {
+            id_pegawai: id_pegawai,
+          },
+        }),
+        providesTags: (_res, _err, { id_pegawai }) => [
+          { type: 'riwayat-anak', id: id_pegawai },
+        ],
+      },
+    ),
+    createSinkronRiwayatAnak: builder.mutation<
+      void,
+      { data: DataKepegawaianUtamaParams }
+    >({
+      query: ({ data }) => ({
+        url: `kepegawaian/sinkron/riwayat/anak`,
+        method: 'POST',
+        body: data,
+      }),
+      invalidatesTags: ['riwayat-anak'],
+    }),
   }),
 })
 
@@ -568,5 +594,7 @@ export const {
   useGetRiwayatDP3Query,
   useCreateSinkronRiwayatDP3Mutation,
   useGetKeluargaQuery,
+  useGetRiwayatAnakQuery,
+  useCreateSinkronRiwayatAnakMutation,
   useCreateSinkronRiwayatKeluargaMutation,
 } = KepegawaianEndpoints

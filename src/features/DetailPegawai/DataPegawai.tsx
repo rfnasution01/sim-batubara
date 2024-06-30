@@ -46,6 +46,8 @@ export function DataDetailPegawai({
   handleSubmitRiwayatKeluarga,
   isSinkronRiwayatDP3,
   isSinkronRiwayatKeluarga,
+  isSinkronRiwayatAnak,
+  handleSubmitRiwayatAnak,
 }: {
   data: DataKepegawaianUtamaType
   idPegawai: string
@@ -85,6 +87,8 @@ export function DataDetailPegawai({
   isSinkronRiwayatDP3: boolean
   handleSubmitRiwayatKeluarga: () => Promise<void>
   isSinkronRiwayatKeluarga: boolean
+  handleSubmitRiwayatAnak: () => Promise<void>
+  isSinkronRiwayatAnak: boolean
 }) {
   const stateTab = useSelector(getDetailPegawaiSlice)?.tab
 
@@ -161,6 +165,8 @@ export function DataDetailPegawai({
           handleSubmitRiwayatKeluarga={handleSubmitRiwayatKeluarga}
           isSinkronRiwayatDP3={isSinkronRiwayatDP3}
           isSinkronRiwayatKeluarga={isSinkronRiwayatKeluarga}
+          handleSubmitRiwayatAnak={handleSubmitRiwayatAnak}
+          isSinkronRiwayatAnak={isSinkronRiwayatAnak}
         />
       )}
     </div>

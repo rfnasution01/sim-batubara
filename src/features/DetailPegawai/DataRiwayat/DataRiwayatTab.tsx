@@ -22,6 +22,7 @@ export function DataRiwayatTab({
     'Angka Kredit',
     // 'DP3',
     'Keluarga',
+    'Anak',
   ]
 
   const dispatch = useDispatch()

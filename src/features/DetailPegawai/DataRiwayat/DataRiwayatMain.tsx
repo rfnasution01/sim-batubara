@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import { DataRiwayatTab } from './DataRiwayatTab'
 import { ComingSoonPage } from '@/routes/loadables'
 import {
+  TableDataAnak,
   TableDataAngkaKredit,
   TableDataDP3,
   TableDataDiklat,
@@ -57,6 +58,8 @@ export function DataRiwayatMain({
   handleSubmitRiwayatKeluarga,
   isSinkronRiwayatDP3,
   isSinkronRiwayatKeluarga,
+  handleSubmitRiwayatAnak,
+  isSinkronRiwayatAnak,
 }: {
   idPegawai: string
   form: UseFormReturn
@@ -94,6 +97,8 @@ export function DataRiwayatMain({
   isSinkronRiwayatDP3: boolean
   handleSubmitRiwayatKeluarga: () => Promise<void>
   isSinkronRiwayatKeluarga: boolean
+  handleSubmitRiwayatAnak: () => Promise<void>
+  isSinkronRiwayatAnak: boolean
 }) {
   const [isShow, setIsShow] = useState<boolean>(true)
 
@@ -225,6 +230,13 @@ export function DataRiwayatMain({
             form={form}
             handleSubmitriwayatKeluarga={handleSubmitRiwayatKeluarga}
             isSinkronriwayatKeluarga={isSinkronRiwayatKeluarga}
+          />
+        ) : tab === 'Anak' ? (
+          <TableDataAnak
+            idPegawai={idPegawai}
+            form={form}
+            handleSubmitriwayatAnak={handleSubmitRiwayatAnak}
+            isSinkronriwayatAnak={isSinkronRiwayatAnak}
           />
         ) : (
           <ComingSoonPage />
