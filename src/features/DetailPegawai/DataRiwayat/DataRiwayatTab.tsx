@@ -20,6 +20,8 @@ export function DataRiwayatTab({
     'Penghargaan',
     'PMK',
     'Angka Kredit',
+    // 'DP3',
+    'Keluarga',
   ]
 
   const dispatch = useDispatch()

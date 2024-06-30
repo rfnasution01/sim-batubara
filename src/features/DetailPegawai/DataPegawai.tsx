@@ -42,6 +42,10 @@ export function DataDetailPegawai({
   handleSubmitRiwayatAngkaKredit,
   isLoadingDeleteAngkaKredit,
   isSinkronRiwayatAngkaKredit,
+  handleSubmitRiwayatDP3,
+  handleSubmitRiwayatKeluarga,
+  isSinkronRiwayatDP3,
+  isSinkronRiwayatKeluarga,
 }: {
   data: DataKepegawaianUtamaType
   idPegawai: string
@@ -77,6 +81,10 @@ export function DataDetailPegawai({
   isSinkronRiwayatAngkaKredit: boolean
   handleDeleteAngkaKredit: (id: string) => Promise<void>
   isLoadingDeleteAngkaKredit: boolean
+  handleSubmitRiwayatDP3: () => Promise<void>
+  isSinkronRiwayatDP3: boolean
+  handleSubmitRiwayatKeluarga: () => Promise<void>
+  isSinkronRiwayatKeluarga: boolean
 }) {
   const stateTab = useSelector(getDetailPegawaiSlice)?.tab
 
@@ -149,6 +157,10 @@ export function DataDetailPegawai({
           handleSubmitRiwayatAngkaKredit={handleSubmitRiwayatAngkaKredit}
           isLoadingDeleteAngkaKredit={isLoadingDeleteAngkaKredit}
           isSinkronRiwayatAngkaKredit={isSinkronRiwayatAngkaKredit}
+          handleSubmitRiwayatDP3={handleSubmitRiwayatDP3}
+          handleSubmitRiwayatKeluarga={handleSubmitRiwayatKeluarga}
+          isSinkronRiwayatDP3={isSinkronRiwayatDP3}
+          isSinkronRiwayatKeluarga={isSinkronRiwayatKeluarga}
         />
       )}
     </div>

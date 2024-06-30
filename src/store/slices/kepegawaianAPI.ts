@@ -15,6 +15,7 @@ import {
   RiwayatDiklatType,
   RiwayatGolonganType,
   RiwayatJabatanType,
+  RiwayatKeluargaType,
   RiwayatPMKType,
   RiwayatPendidikanType,
   RiwayatPenghargaanType,
@@ -472,6 +473,58 @@ export const KepegawaianEndpoints = api.injectEndpoints({
       }),
       invalidatesTags: ['angka-kredit', 'pegawai-pns-utama'],
     }),
+    getRiwayatDP3: builder.query<
+      Res<RiwayatAngkaKreditType>,
+      DataKepegawaianUtamaParams
+    >({
+      query: ({ id_pegawai }) => ({
+        url: `kepegawaian/pns_detail/riwayat/dp3`,
+        method: 'GET',
+        params: {
+          id_pegawai: id_pegawai,
+        },
+      }),
+      providesTags: (_res, _err, { id_pegawai }) => [
+        { type: 'riwayat-dp3', id: id_pegawai },
+      ],
+    }),
+    createSinkronRiwayatDP3: builder.mutation<
+      void,
+      { data: DataKepegawaianUtamaParams }
+    >({
+      query: ({ data }) => ({
+        url: `kepegawaian/sinkron/riwayat/dp3`,
+        method: 'POST',
+        body: data,
+      }),
+      invalidatesTags: ['riwayat-dp3'],
+    }),
+    getKeluarga: builder.query<
+      Res<RiwayatKeluargaType>,
+      DataKepegawaianUtamaParams
+    >({
+      query: ({ id_pegawai }) => ({
+        url: `kepegawaian/pns_detail/riwayat/pasangan`,
+        method: 'GET',
+        params: {
+          id_pegawai: id_pegawai,
+        },
+      }),
+      providesTags: (_res, _err, { id_pegawai }) => [
+        { type: 'riwayat-keluarga', id: id_pegawai },
+      ],
+    }),
+    createSinkronRiwayatKeluarga: builder.mutation<
+      void,
+      { data: DataKepegawaianUtamaParams }
+    >({
+      query: ({ data }) => ({
+        url: `kepegawaian/sinkron/riwayat/pasangan`,
+        method: 'POST',
+        body: data,
+      }),
+      invalidatesTags: ['riwayat-keluarga'],
+    }),
   }),
 })
 
@@ -512,4 +565,8 @@ export const {
   useCreateSavaAngkaKreditMutation,
   useCreateSinkronAngkaKreditMutation,
   useDeleteAngkaKreditMutation,
+  useGetRiwayatDP3Query,
+  useCreateSinkronRiwayatDP3Mutation,
+  useGetKeluargaQuery,
+  useCreateSinkronRiwayatKeluargaMutation,
 } = KepegawaianEndpoints

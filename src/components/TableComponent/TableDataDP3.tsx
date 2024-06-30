@@ -1,62 +1,46 @@
-import { PathFileType, RiwayatDiklatLainnyaType } from '@/libs/type'
-import { useGetPNSRiwayatDiklatLainnyaQuery } from '@/store/slices/kepegawaianAPI'
-import { Plus, RefreshCcw } from 'lucide-react'
-import React, { useEffect, useState } from 'react'
+import { RiwayatAngkaKreditType } from '@/libs/type'
+import { useGetRiwayatDP3Query } from '@/store/slices/kepegawaianAPI'
+import { RefreshCcw } from 'lucide-react'
+import { useEffect, useState } from 'react'
 import { UseFormReturn } from 'react-hook-form'
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import Cookies from 'js-cookie'
 import { Loading } from '../Loading'
 import { Form } from '../Form'
 import dayjs from 'dayjs'
-import { ModalShowKonfirmasiDelete } from '../ModalComponent/ModalKonfirmasiDelete'
-import { usePathname } from '@/libs/hooks/usePathname'
-import Select from 'react-select'
-import PDFViewer from '../PDFShow'
 import { Bounce, toast } from 'react-toastify'
 
-export function TableDataDiklatLainnya({
+export function TableDataDP3({
   idPegawai,
   form,
-  handleSubmitriwayatDiklatLainnya,
-  isSinkronriwayatDiklatLainnya,
-  formDelete,
-  handleDeleteKursus,
-  isLoadingDeleteKursus,
+  handleSubmitriwayatDP3,
+  isSinkronriwayatDP3,
 }: {
   idPegawai: string
   form: UseFormReturn
-  handleSubmitriwayatDiklatLainnya: () => Promise<void>
-  isSinkronriwayatDiklatLainnya: boolean
-  handleDeleteKursus: (id: string) => Promise<void>
-  isLoadingDeleteKursus: boolean
-  formDelete: UseFormReturn
+  handleSubmitriwayatDP3: () => Promise<void>
+  isSinkronriwayatDP3: boolean
 }) {
   const navigate = useNavigate()
-  const { thirdPathname } = usePathname()
-  const [riwayatDiklatLainnya, setRiwayatDiklatLainnya] =
-    useState<RiwayatDiklatLainnyaType>()
-  const [isShowDelete, setIsShowDelete] = useState<boolean>(false)
-  const [id, setId] = useState<string>('')
-  const [selectedYear, setSelectedYear] = useState<string | null>(null)
+  const [riwayatDP3, setRiwayatDP3] = useState<RiwayatAngkaKreditType>()
 
   const {
-    data: riwayatDiklatLainnyaData,
-    isLoading: riwayatDiklatLainnyaIsLoading,
-    isFetching: riwayatDiklatLainnyaIsFetching,
+    data: riwayatDP3Data,
+    isLoading: riwayatDP3IsLoading,
+    isFetching: riwayatDP3IsFetching,
     error,
-  } = useGetPNSRiwayatDiklatLainnyaQuery(
+  } = useGetRiwayatDP3Query(
     {
       id_pegawai: idPegawai,
     },
     { skip: !idPegawai },
   )
 
-  const isLoadingRiwayatDiklatLainnya =
-    riwayatDiklatLainnyaIsLoading || riwayatDiklatLainnyaIsFetching
+  const isLoadingRiwayatDP3 = riwayatDP3IsLoading || riwayatDP3IsFetching
 
   useEffect(() => {
-    if (riwayatDiklatLainnyaData) {
-      setRiwayatDiklatLainnya(riwayatDiklatLainnyaData?.data)
+    if (riwayatDP3Data) {
+      setRiwayatDP3(riwayatDP3Data?.data)
     }
     const errorMsg = error as {
       data?: {
@@ -87,41 +71,7 @@ export function TableDataDiklatLainnya({
         transition: Bounce,
       })
     }
-  }, [riwayatDiklatLainnyaData, idPegawai, error])
-
-  const years = [
-    { value: 'all', label: 'Tampilkan Semua Tahun' },
-    ...Array.from(
-      new Set(
-        riwayatDiklatLainnya?.siasn
-          ?.map((item) => {
-            const dateStr = item?.tanggalKursus
-            const year = dateStr?.slice(-4) // Mengambil 4 karakter terakhir
-            console.log(`Date string: ${dateStr}, Year: ${year}`)
-            return year
-          })
-          .filter((year) => year !== null),
-      ),
-    ).map((year) => ({ value: year, label: year })),
-  ]
-
-  // console.log(years)
-
-  const handleYearChange = (selectedOption: { value: string } | null) => {
-    setSelectedYear(selectedOption?.value ?? null)
-  }
-
-  const filteredRiwayatDiklatLainnya =
-    selectedYear && selectedYear !== 'all' && riwayatDiklatLainnya
-      ? {
-          ...riwayatDiklatLainnya,
-          siasn: riwayatDiklatLainnya.siasn.filter((item) => {
-            const dateStr = item?.tanggalKursus
-            const year = dateStr?.slice(-4) // Mengambil 4 karakter terakhir
-            return year === selectedYear
-          }),
-        }
-      : riwayatDiklatLainnya
+  }, [riwayatDP3Data, idPegawai, error])
 
   return (
     <div
@@ -129,27 +79,18 @@ export function TableDataDiklatLainnya({
       style={{ scrollbarGutter: 'stable' }}
     >
       <div className="flex flex-col gap-12 rounded-3x">
-        {isLoadingRiwayatDiklatLainnya || isSinkronriwayatDiklatLainnya ? (
+        {isLoadingRiwayatDP3 || isSinkronriwayatDP3 ? (
           <Loading width={'6rem'} height={'6rem'} />
         ) : (
           <>
-            <div className="flex items-center justify-between">
-              <p className="text-sim-grey">
-                Sinkronisasi Terakhir:{' '}
-                {riwayatDiklatLainnya?.last_update
-                  ? dayjs(riwayatDiklatLainnya?.last_update)
-                      .locale('id')
-                      .format('DD/MM/YYYY | HH:mm')
-                  : 'Belum Sinkronisasi'}
-              </p>
-              <Select
-                options={years}
-                onChange={handleYearChange}
-                isClearable
-                placeholder="Filter berdasarkan tahun"
-                className="z-50 w-1/4"
-              />
-            </div>
+            <p className="text-sim-grey">
+              Sinkronisasi Terakhir:{' '}
+              {riwayatDP3?.last_update
+                ? dayjs(riwayatDP3?.last_update)
+                    .locale('id')
+                    .format('DD/MM/YYYY | HH:mm')
+                : 'Belum Sinkronisasi'}
+            </p>
             <table className="flex-1 border-collapse rounded-3x bg-[#fcfcfc] text-24">
               <thead className="relative z-10 align-top leading-medium">
                 <tr>
@@ -158,9 +99,7 @@ export function TableDataDiklatLainnya({
                   >
                     <Form {...form}>
                       <form
-                        onSubmit={form.handleSubmit(
-                          handleSubmitriwayatDiklatLainnya,
-                        )}
+                        onSubmit={form.handleSubmit(handleSubmitriwayatDP3)}
                       >
                         <button
                           type="submit"
@@ -183,104 +122,86 @@ export function TableDataDiklatLainnya({
                   </th>
                 </tr>
               </thead>
-              <tbody>
-                {filteredRiwayatDiklatLainnya &&
-                filteredRiwayatDiklatLainnya?.siasn?.length > 0 ? (
-                  filteredRiwayatDiklatLainnya?.siasn?.map((item, idx) => (
+              {/* <tbody>
+                {riwayatDP3 && riwayatDP3?.siasn?.length > 0 ? (
+                  riwayatDP3?.siasn?.map((item, idx) => (
                     <React.Fragment key={idx}>
                       <tr className="transition-all ease-in hover:cursor-pointer">
                         <th className="border bg-sim-pale-primary px-24 py-12 text-left align-middle leading-medium text-sim-dark">
-                          Jenis Diklat
+                          Jenjang DP3
                         </th>
                         <td className="border px-24 py-12 align-middle leading-medium">
-                          <div className="flex flex-wrap items-center gap-16">
-                            <p>{item?.jenisKursusSertifikat ?? '-'}</p>
-                            <button
-                              type="submit"
-                              onClick={() => {
-                                setId(item?.id)
-                                setIsShowDelete(true)
-                              }}
-                              className="text-nowrap rounded-2xl border bg-danger px-16 py-8 text-[2rem] text-white hover:bg-opacity-80"
-                            >
-                              Hapus Data
-                            </button>
-                            <Link
-                              to={`/kepegawaian/pns/${thirdPathname}/kursus/detail`}
-                              onClick={() => {
-                                localStorage.setItem('jabatanID', item?.id)
-                              }}
-                              className="rounded-2xl border bg-sim-primary px-16 py-8 text-[2rem] text-white hover:bg-opacity-80"
-                            >
-                              Detail
-                            </Link>
-                            <Link
-                              to={`/kepegawaian/pns/${thirdPathname}/kursus/edit`}
-                              onClick={() => {
-                                localStorage.setItem('editID', item?.id)
-                              }}
-                              className="rounded-2xl border bg-success-800 px-16 py-8 text-[2rem] text-white hover:bg-opacity-80"
-                            >
-                              Edit
-                            </Link>
-                          </div>
+                          {item?.DP3Nama ?? '-'}
                         </td>
                         <td className="border px-24 py-12 align-middle leading-medium">
-                          {filteredRiwayatDiklatLainnya?.lokal?.find(
+                          {riwayatDP3?.lokal?.find(
                             (list) => list?.id === item?.id,
-                          )?.jenisKursusSertifikat ?? '-'}
+                          )?.DP3Nama ?? '-'}
                         </td>
                       </tr>
                       <tr className="transition-all ease-in hover:cursor-pointer">
                         <th className="border bg-sim-pale-primary px-24 py-12 text-left align-middle leading-medium text-sim-dark">
-                          Nama Diklat
+                          Tanggal Ijazah
                         </th>
                         <td className="border px-24 py-12 align-middle leading-medium">
-                          {item?.namaKursus ?? '-'}
+                          {item?.tglLulus ?? '-'}
                         </td>
                         <td className="border px-24 py-12 align-middle leading-medium">
-                          {filteredRiwayatDiklatLainnya?.lokal?.find(
+                          {riwayatDP3?.lokal?.find(
                             (list) => list?.id === item?.id,
-                          )?.namaKursus ?? '-'}
+                          )?.tglLulus ?? '-'}
                         </td>
                       </tr>
                       <tr className="transition-all ease-in hover:cursor-pointer">
                         <th className="border bg-sim-pale-primary px-24 py-12 text-left align-middle leading-medium text-sim-dark">
-                          Tanggal Mulai
+                          Nomor Ijazah
                         </th>
                         <td className="border px-24 py-12 align-middle leading-medium">
-                          {item?.tanggalKursus ?? '-'}
+                          {item?.nomorIjasah ?? '-'}
                         </td>
                         <td className="border px-24 py-12 align-middle leading-medium">
-                          {filteredRiwayatDiklatLainnya?.lokal?.find(
+                          {riwayatDP3?.lokal?.find(
                             (list) => list?.id === item?.id,
-                          )?.tanggalKursus ?? '-'}
+                          )?.nomorIjasah ?? '-'}
                         </td>
                       </tr>
                       <tr className="transition-all ease-in hover:cursor-pointer">
                         <th className="border bg-sim-pale-primary px-24 py-12 text-left align-middle leading-medium text-sim-dark">
-                          Tanggal Selesai
+                          Nama Instansi
                         </th>
                         <td className="border px-24 py-12 align-middle leading-medium">
-                          {item?.tanggalSelesaiKursus ?? '-'}
+                          {item?.namaSekolah ?? '-'}
                         </td>
                         <td className="border px-24 py-12 align-middle leading-medium">
-                          {filteredRiwayatDiklatLainnya?.lokal?.find(
+                          {riwayatDP3?.lokal?.find(
                             (list) => list?.id === item?.id,
-                          )?.tanggalSelesaiKursus ?? '-'}
+                          )?.namaSekolah ?? '-'}
                         </td>
                       </tr>
                       <tr className="transition-all ease-in hover:cursor-pointer">
                         <th className="border bg-sim-pale-primary px-24 py-12 text-left align-middle leading-medium text-sim-dark">
-                          Penyelenggara
+                          Gelar Depan
                         </th>
                         <td className="border px-24 py-12 align-middle leading-medium">
-                          {item?.institusiPenyelenggara ?? '-'}
+                          {item?.gelarDepan ?? '-'}
                         </td>
                         <td className="border px-24 py-12 align-middle leading-medium">
-                          {filteredRiwayatDiklatLainnya?.lokal?.find(
+                          {riwayatDP3?.lokal?.find(
                             (list) => list?.id === item?.id,
-                          )?.institusiPenyelenggara ?? '-'}
+                          )?.gelarDepan ?? '-'}
+                        </td>
+                      </tr>
+                      <tr className="transition-all ease-in hover:cursor-pointer">
+                        <th className="border bg-sim-pale-primary px-24 py-12 text-left align-middle leading-medium text-sim-dark">
+                          Gelar Belakang
+                        </th>
+                        <td className="border px-24 py-12 align-middle leading-medium">
+                          {item?.gelarBelakang ?? '-'}
+                        </td>
+                        <td className="border px-24 py-12 align-middle leading-medium">
+                          {riwayatDP3?.lokal?.find(
+                            (list) => list?.id === item?.id,
+                          )?.gelarBelakang ?? '-'}
                         </td>
                       </tr>
                       <tr className="transition-all ease-in hover:cursor-pointer">
@@ -291,29 +212,29 @@ export function TableDataDiklatLainnya({
                           colSpan={2}
                           className="border px-24 py-12 align-middle leading-medium"
                         >
-                          {filteredRiwayatDiklatLainnya?.lokal?.find(
+                          {riwayatDP3?.lokal?.find(
                             (list) => list?.id === item?.id,
                           )?.path ? (
                             <div className="flex items-center gap-16">
                               {JSON.parse(
-                                riwayatDiklatLainnya?.lokal?.find(
+                                riwayatDP3?.lokal?.find(
                                   (list) => list?.id === item?.id,
                                 )?.path,
                               )?.map((pathItem: PathFileType, idx) => (
                                 // <Link
-                                //   to={`https://devapimobile.simbatubarakab.id/apisiasn/download/dokumen/kursus/${item?.id}/${pathItem?.dok_id}`}
+                                //   to={`${downloadURL}jabatan/${riwayatJabatan?.siasn?.id}/${pathriwayatJabatan?.siasn?.dok_id}`}
                                 //   key={idx}
                                 //   target="_blank"
                                 //   className="rounded-2xl bg-sim-dark px-16 py-8 text-white hover:bg-opacity-80"
                                 // >
-                                //   {pathItem?.dok_nama}
+                                //   {pathriwayatJabatan?.siasn?.dok_nama}
                                 // </Link>
                                 <div key={idx}>
                                   <PDFViewer
                                     dok_id={pathItem?.dok_id}
                                     dok_nama={pathItem?.dok_nama}
                                     id={item?.id}
-                                    riwayat="kursus"
+                                    riwayat="DP3"
                                   />
                                 </div>
                               ))}
@@ -323,7 +244,7 @@ export function TableDataDiklatLainnya({
                           )}
                         </td>
                       </tr>
-                      {idx < filteredRiwayatDiklatLainnya.siasn.length - 1 && (
+                      {idx < riwayatDP3.siasn.length - 1 && (
                         <tr className="border transition-all ease-in hover:cursor-pointer">
                           <td
                             className="border px-24 py-12 align-middle leading-medium text-white"
@@ -345,30 +266,11 @@ export function TableDataDiklatLainnya({
                     </td>
                   </tr>
                 )}
-              </tbody>
+              </tbody> */}
             </table>
           </>
         )}
       </div>
-      {!(isLoadingRiwayatDiklatLainnya || isSinkronriwayatDiklatLainnya) && (
-        <div className="fixed bottom-80 right-64 z-50 flex justify-end">
-          <Link
-            to={`/kepegawaian/pns/${thirdPathname}/kursus/tambah`}
-            className="flex items-center gap-12 rounded-2xl bg-sim-primary px-24 py-16 text-white hover:bg-opacity-80"
-          >
-            Tambah <Plus size={16} />
-          </Link>
-        </div>
-      )}
-
-      <ModalShowKonfirmasiDelete
-        isLoading={isLoadingDeleteKursus}
-        setIsOpen={setIsShowDelete}
-        isOpen={isShowDelete}
-        handleDeleteJabatan={handleDeleteKursus}
-        form={formDelete}
-        id={id}
-      />
     </div>
   )
 }

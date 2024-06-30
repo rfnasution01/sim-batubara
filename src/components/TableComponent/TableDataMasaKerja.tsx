@@ -8,8 +8,8 @@ import { Loading } from '../Loading'
 import { Form } from '../Form'
 import dayjs from 'dayjs'
 import { useGetPNSRiwayatMasaKerjaQuery } from '@/store/slices/kepegawaianAPI'
-import FileDownload from '../FileDownload'
 import { Bounce, toast } from 'react-toastify'
+import PDFViewer from '../PDFShow'
 
 export function TableDataMasaKerja({
   idPegawai,
@@ -217,19 +217,13 @@ export function TableDataMasaKerja({
                                 riwayatMasaKerja?.lokal?.find(
                                   (list) => list?.id === item?.id,
                                 )?.path,
-                              )?.map((item: PathFileType, idx) => (
-                                <div
-                                  key={idx}
-                                  // onClick={() => {
-                                  //   setIsShow(true)
-                                  //   setUri(item?.dok_uri)
-                                  //   setNama(item?.dok_nama)
-                                  // }}
-                                  className="rounded-2xl bg-sim-dark px-16 py-8 text-white hover:bg-opacity-80"
-                                >
-                                  <FileDownload
-                                    uri={item?.dok_uri}
-                                    namaFile={item?.dok_nama}
+                              )?.map((pathItem: PathFileType, idx) => (
+                                <div key={idx}>
+                                  <PDFViewer
+                                    dok_id={pathItem?.dok_id}
+                                    dok_nama={pathItem?.dok_nama}
+                                    id={item?.id}
+                                    riwayat="masakerja"
                                   />
                                 </div>
                               ))}

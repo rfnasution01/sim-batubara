@@ -221,6 +221,15 @@ export function TableDataAngkaKredit({
                             >
                               Detail
                             </Link>
+                            <Link
+                              to={`/kepegawaian/pns/${thirdPathname}/angka-kredit/edit`}
+                              onClick={() => {
+                                localStorage.setItem('editID', item?.id)
+                              }}
+                              className="rounded-2xl border bg-success-800 px-16 py-8 text-[2rem] text-white hover:bg-opacity-80"
+                            >
+                              Edit
+                            </Link>
                           </div>
                         </td>
                         <td className="border px-24 py-12 align-middle leading-medium">

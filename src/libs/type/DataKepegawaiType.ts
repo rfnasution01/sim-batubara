@@ -377,3 +377,18 @@ export type AngkaKreditType = {
   Sumber: string
   path: string
 }
+
+export type RiwayatKeluargaType = {
+  lokal: KeluargaType[]
+  siasn: KeluargaType[]
+  last_update: string
+}
+
+export type KeluargaType = {
+  id: string
+  nama: string
+  tempatLahir: string
+  tglLahir: string
+  statusNikah: string
+  tgglMenikah: string
+}

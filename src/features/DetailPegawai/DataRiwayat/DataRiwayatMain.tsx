@@ -5,10 +5,12 @@ import { DataRiwayatTab } from './DataRiwayatTab'
 import { ComingSoonPage } from '@/routes/loadables'
 import {
   TableDataAngkaKredit,
+  TableDataDP3,
   TableDataDiklat,
   TableDataDiklatLainnya,
   TableDataGolongan,
   TableDataJabatan,
+  TableDataKeluarga,
   TableDataMasaKerja,
   TableDataPendidikan,
   TableDataPenghargaan,
@@ -51,6 +53,10 @@ export function DataRiwayatMain({
   isLoadingDeleteAngkaKredit,
   isSinkronRiwayatAngkaKredit,
   jenisJabatanId,
+  handleSubmitRiwayatDP3,
+  handleSubmitRiwayatKeluarga,
+  isSinkronRiwayatDP3,
+  isSinkronRiwayatKeluarga,
 }: {
   idPegawai: string
   form: UseFormReturn
@@ -84,6 +90,10 @@ export function DataRiwayatMain({
   handleDeleteAngkaKredit: (id: string) => Promise<void>
   isLoadingDeleteAngkaKredit: boolean
   jenisJabatanId?: string
+  handleSubmitRiwayatDP3: () => Promise<void>
+  isSinkronRiwayatDP3: boolean
+  handleSubmitRiwayatKeluarga: () => Promise<void>
+  isSinkronRiwayatKeluarga: boolean
 }) {
   const [isShow, setIsShow] = useState<boolean>(true)
 
@@ -201,6 +211,20 @@ export function DataRiwayatMain({
             handleSubmitriwayatAngkaKredit={handleSubmitRiwayatAngkaKredit}
             isLoadingDeleteAngkaKredit={isLoadingDeleteAngkaKredit}
             jenisJabatanId={jenisJabatanId}
+          />
+        ) : tab === 'DP3' ? (
+          <TableDataDP3
+            idPegawai={idPegawai}
+            form={form}
+            handleSubmitriwayatDP3={handleSubmitRiwayatDP3}
+            isSinkronriwayatDP3={isSinkronRiwayatDP3}
+          />
+        ) : tab === 'Keluarga' ? (
+          <TableDataKeluarga
+            idPegawai={idPegawai}
+            form={form}
+            handleSubmitriwayatKeluarga={handleSubmitRiwayatKeluarga}
+            isSinkronriwayatKeluarga={isSinkronRiwayatKeluarga}
           />
         ) : (
           <ComingSoonPage />

@@ -73,23 +73,23 @@ export const router = createBrowserRouter([
                 element: <DetailPegawaiLayoutMain />,
               },
               {
-                path: ':nama/jabatan/tambah',
+                path: ':nama/jabatan/:aksi',
                 element: <TambahJabatanPage />,
               },
               {
-                path: ':nama/diklat/tambah',
+                path: ':nama/diklat/:aksi',
                 element: <TambahDiklatPage />,
               },
               {
-                path: ':nama/kursus/tambah',
+                path: ':nama/kursus/:aksi',
                 element: <TambahKursusPage />,
               },
               {
-                path: ':nama/penghargaan/tambah',
+                path: ':nama/penghargaan/:aksi',
                 element: <TambahPenghargaanPage />,
               },
               {
-                path: ':nama/angka-kredit/tambah',
+                path: ':nama/angka-kredit/:aksi',
                 element: <TambahAngkaKreditPathPage />,
               },
               {
@@ -127,23 +127,23 @@ export const router = createBrowserRouter([
                 element: <DetailPegawaiLayoutMain />,
               },
               {
-                path: ':nama/jabatan/tambah',
+                path: ':nama/jabatan/:aksi',
                 element: <TambahJabatanPage />,
               },
               {
-                path: ':nama/diklat/tambah',
+                path: ':nama/diklat/:aksi',
                 element: <TambahDiklatPage />,
               },
               {
-                path: ':nama/kursus/tambah',
+                path: ':nama/kursus/:aksi',
                 element: <TambahKursusPage />,
               },
               {
-                path: ':nama/penghargaan/tambah',
+                path: ':nama/penghargaan/:aksi',
                 element: <TambahPenghargaanPage />,
               },
               {
-                path: ':nama/angka-kredit/tambah',
+                path: ':nama/angka-kredit/:aksi',
                 element: <TambahAngkaKreditPathPage />,
               },
               {

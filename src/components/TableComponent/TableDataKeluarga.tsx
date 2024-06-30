@@ -1,53 +1,47 @@
-import { PathFileType, RiwayatPindahInstansiType } from '@/libs/type'
-import { Plus, RefreshCcw } from 'lucide-react'
+import { RiwayatKeluargaType } from '@/libs/type'
+import { RefreshCcw } from 'lucide-react'
 import React, { useEffect, useState } from 'react'
 import { UseFormReturn } from 'react-hook-form'
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import Cookies from 'js-cookie'
 import { Loading } from '../Loading'
 import { Form } from '../Form'
 import dayjs from 'dayjs'
-import { useGetPNSRiwayatPindahInstansiQuery } from '@/store/slices/kepegawaianAPI'
 import { Bounce, toast } from 'react-toastify'
-import PDFViewer from '../PDFShow'
+import { useGetKeluargaQuery } from '@/store/slices/kepegawaianAPI'
 
-export function TableDataPindahInstansi({
+export function TableDataKeluarga({
   idPegawai,
   form,
-  handleSubmitriwayatPindahInstansi,
-  isSinkronriwayatPindahInstansi,
+  handleSubmitriwayatKeluarga,
+  isSinkronriwayatKeluarga,
 }: {
   idPegawai: string
   form: UseFormReturn
-  handleSubmitriwayatPindahInstansi: () => Promise<void>
-  isSinkronriwayatPindahInstansi: boolean
+  handleSubmitriwayatKeluarga: () => Promise<void>
+  isSinkronriwayatKeluarga: boolean
 }) {
   const navigate = useNavigate()
-  const [riwayatPindahInstansi, setRiwayatPindahInstansi] =
-    useState<RiwayatPindahInstansiType>()
-  //   const [isShow, setIsShow] = useState<boolean>(false)
-  //   const [isShowDelete, setIsShowDelete] = useState<boolean>(false)
-  //   const [isUri, setUri] = useState<string>('')
-  //   const [isNama, setNama] = useState<string>('')
+  const [riwayatKeluarga, setRiwayatKeluarga] = useState<RiwayatKeluargaType>()
 
   const {
-    data: riwayatPindahInstansiData,
-    isLoading: riwayatPindahInstansiIsLoading,
-    isFetching: riwayatPindahInstansiIsFetching,
+    data: riwayatKeluargaData,
+    isLoading: riwayatKeluargaIsLoading,
+    isFetching: riwayatKeluargaIsFetching,
     error,
-  } = useGetPNSRiwayatPindahInstansiQuery(
+  } = useGetKeluargaQuery(
     {
       id_pegawai: idPegawai,
     },
     { skip: !idPegawai },
   )
 
-  const isLoadingRiwayatPindahInstansi =
-    riwayatPindahInstansiIsLoading || riwayatPindahInstansiIsFetching
+  const isLoadingRiwayatKeluarga =
+    riwayatKeluargaIsLoading || riwayatKeluargaIsFetching
 
   useEffect(() => {
-    if (riwayatPindahInstansiData) {
-      setRiwayatPindahInstansi(riwayatPindahInstansiData?.data)
+    if (riwayatKeluargaData) {
+      setRiwayatKeluarga(riwayatKeluargaData?.data)
     }
     const errorMsg = error as {
       data?: {
@@ -78,22 +72,22 @@ export function TableDataPindahInstansi({
         transition: Bounce,
       })
     }
-  }, [riwayatPindahInstansiData, idPegawai, error])
+  }, [riwayatKeluargaData, idPegawai, error])
 
   return (
     <div
-      className={`scrollbar flex flex-col gap-32 overflow-auto`}
+      className={`scrollbar flex flex-col overflow-auto`}
       style={{ scrollbarGutter: 'stable' }}
     >
       <div className="flex flex-col gap-12 rounded-3x">
-        {isLoadingRiwayatPindahInstansi || isSinkronriwayatPindahInstansi ? (
+        {isLoadingRiwayatKeluarga || isSinkronriwayatKeluarga ? (
           <Loading width={'6rem'} height={'6rem'} />
         ) : (
           <>
             <p className="text-sim-grey">
               Sinkronisasi Terakhir:{' '}
-              {riwayatPindahInstansi?.last_update
-                ? dayjs(riwayatPindahInstansi?.last_update)
+              {riwayatKeluarga?.last_update
+                ? dayjs(riwayatKeluarga?.last_update)
                     .locale('id')
                     .format('DD/MM/YYYY | HH:mm')
                 : 'Belum Sinkronisasi'}
@@ -107,7 +101,7 @@ export function TableDataPindahInstansi({
                     <Form {...form}>
                       <form
                         onSubmit={form.handleSubmit(
-                          handleSubmitriwayatPindahInstansi,
+                          handleSubmitriwayatKeluarga,
                         )}
                       >
                         <button
@@ -132,135 +126,76 @@ export function TableDataPindahInstansi({
                 </tr>
               </thead>
               <tbody>
-                {riwayatPindahInstansi &&
-                riwayatPindahInstansi?.siasn?.length > 0 ? (
-                  riwayatPindahInstansi?.siasn?.map((item, idx) => (
+                {riwayatKeluarga && riwayatKeluarga?.siasn?.length > 0 ? (
+                  riwayatKeluarga?.siasn?.map((item, idx) => (
                     <React.Fragment key={idx}>
                       <tr className="transition-all ease-in hover:cursor-pointer">
                         <th className="border bg-sim-pale-primary px-24 py-12 text-left align-middle leading-medium text-sim-dark">
-                          Instansi Kerja Lama
+                          Nama
                         </th>
                         <td className="border px-24 py-12 align-middle leading-medium">
-                          <p>{item?.instansiIndukLama ?? '-'}</p>
+                          {item?.nama ?? '-'}
                         </td>
                         <td className="border px-24 py-12 align-middle leading-medium">
-                          {riwayatPindahInstansi?.lokal?.find(
+                          {riwayatKeluarga?.lokal?.find(
                             (list) => list?.id === item?.id,
-                          )?.instansiIndukLama ?? '-'}
+                          )?.nama ?? '-'}
                         </td>
                       </tr>
                       <tr className="transition-all ease-in hover:cursor-pointer">
                         <th className="border bg-sim-pale-primary px-24 py-12 text-left align-middle leading-medium text-sim-dark">
-                          Instansi Kerja Baru
+                          Tempat Lahir
                         </th>
                         <td className="border px-24 py-12 align-middle leading-medium">
-                          {item?.instansiIndukBaru ?? '-'}
+                          {item?.tempatLahir ?? '-'}
                         </td>
                         <td className="border px-24 py-12 align-middle leading-medium">
-                          {riwayatPindahInstansi?.lokal?.find(
+                          {riwayatKeluarga?.lokal?.find(
                             (list) => list?.id === item?.id,
-                          )?.instansiIndukBaru ?? '-'}
+                          )?.tempatLahir ?? '-'}
                         </td>
                       </tr>
                       <tr className="transition-all ease-in hover:cursor-pointer">
                         <th className="border bg-sim-pale-primary px-24 py-12 text-left align-middle leading-medium text-sim-dark">
-                          Satuan Kerja Lama
+                          Tanggal Lahir
                         </th>
                         <td className="border px-24 py-12 align-middle leading-medium">
-                          {item?.satuanKerjaLama ?? '-'}
+                          {item?.tglLahir ?? '-'}
                         </td>
                         <td className="border px-24 py-12 align-middle leading-medium">
-                          {riwayatPindahInstansi?.lokal?.find(
+                          {riwayatKeluarga?.lokal?.find(
                             (list) => list?.id === item?.id,
-                          )?.satuanKerjaLama ?? '-'}
+                          )?.tglLahir ?? '-'}
                         </td>
                       </tr>
                       <tr className="transition-all ease-in hover:cursor-pointer">
                         <th className="border bg-sim-pale-primary px-24 py-12 text-left align-middle leading-medium text-sim-dark">
-                          Instansi Kerja Baru
+                          Status Pernikahan
                         </th>
                         <td className="border px-24 py-12 align-middle leading-medium">
-                          {item?.satuanKerjaBaru ?? '-'}
+                          {item?.statusNikah ?? '-'}
                         </td>
                         <td className="border px-24 py-12 align-middle leading-medium">
-                          {riwayatPindahInstansi?.lokal?.find(
+                          {riwayatKeluarga?.lokal?.find(
                             (list) => list?.id === item?.id,
-                          )?.satuanKerjaBaru ?? '-'}{' '}
+                          )?.statusNikah ?? '-'}
                         </td>
                       </tr>
                       <tr className="transition-all ease-in hover:cursor-pointer">
                         <th className="border bg-sim-pale-primary px-24 py-12 text-left align-middle leading-medium text-sim-dark">
-                          KPKN Baru
+                          Tanggal Menikah
                         </th>
                         <td className="border px-24 py-12 align-middle leading-medium">
-                          {item?.kpknBaru ?? '-'}
+                          {item?.tgglMenikah ?? '-'}
                         </td>
                         <td className="border px-24 py-12 align-middle leading-medium">
-                          {riwayatPindahInstansi?.lokal?.find(
+                          {riwayatKeluarga?.lokal?.find(
                             (list) => list?.id === item?.id,
-                          )?.kpknBaru ?? '-'}{' '}
-                        </td>
-                      </tr>
-                      <tr className="transition-all ease-in hover:cursor-pointer">
-                        <th className="border bg-sim-pale-primary px-24 py-12 text-left align-middle leading-medium text-sim-dark">
-                          Nomor SK BKN
-                        </th>
-                        <td className="border px-24 py-12 align-middle leading-medium">
-                          {item?.skBknNomor ?? '-'}
-                        </td>
-                        <td className="border px-24 py-12 align-middle leading-medium">
-                          {riwayatPindahInstansi?.lokal?.find(
-                            (list) => list?.id === item?.id,
-                          )?.skBknNomor ?? '-'}{' '}
-                        </td>
-                      </tr>
-                      <tr className="transition-all ease-in hover:cursor-pointer">
-                        <th className="border bg-sim-pale-primary px-24 py-12 text-left align-middle leading-medium text-sim-dark">
-                          Tanggal SK BKN
-                        </th>
-                        <td className="border px-24 py-12 align-middle leading-medium">
-                          {item?.skBknTanggal ?? '-'}
-                        </td>
-                        <td className="border px-24 py-12 align-middle leading-medium">
-                          {riwayatPindahInstansi?.lokal?.find(
-                            (list) => list?.id === item?.id,
-                          )?.skBknTanggal ?? '-'}{' '}
-                        </td>
-                      </tr>
-                      <tr className="transition-all ease-in hover:cursor-pointer">
-                        <th className="border bg-sim-pale-primary px-24 py-12 text-left align-middle leading-medium text-sim-dark">
-                          File
-                        </th>
-                        <td
-                          colSpan={2}
-                          className="border px-24 py-12 align-middle leading-medium"
-                        >
-                          {riwayatPindahInstansi?.lokal?.find(
-                            (list) => list?.id === item?.id,
-                          )?.path ? (
-                            <div className="flex items-center gap-16">
-                              {JSON.parse(
-                                riwayatPindahInstansi?.lokal?.find(
-                                  (list) => list?.id === item?.id,
-                                )?.path,
-                              )?.map((pathItem: PathFileType, idx) => (
-                                <div key={idx}>
-                                  <PDFViewer
-                                    dok_id={pathItem?.dok_id}
-                                    dok_nama={pathItem?.dok_nama}
-                                    id={item?.id}
-                                    riwayat="pindahinstansi"
-                                  />
-                                </div>
-                              ))}
-                            </div>
-                          ) : (
-                            '-'
-                          )}
+                          )?.tgglMenikah ?? '-'}
                         </td>
                       </tr>
 
-                      {idx < riwayatPindahInstansi.siasn.length - 1 && (
+                      {idx < riwayatKeluarga?.siasn?.length - 1 && (
                         <tr className="border transition-all ease-in hover:cursor-pointer">
                           <td
                             className="border px-24 py-12 align-middle leading-medium text-white"
@@ -287,22 +222,6 @@ export function TableDataPindahInstansi({
           </>
         )}
       </div>
-      {!(isLoadingRiwayatPindahInstansi || isSinkronriwayatPindahInstansi) && (
-        <div className="fixed bottom-80 right-64 z-50 flex justify-end">
-          <Link
-            to={`/kepegawaian/pns/${idPegawai}/PindahInstansi/tambah`}
-            className="flex items-center gap-12 rounded-2xl bg-sim-primary px-24 py-16 text-white hover:bg-opacity-80"
-          >
-            Tambah <Plus size={16} />
-          </Link>
-        </div>
-      )}
-      {/* <ModalShowFile
-        isOpen={isShow}
-        setIsOpen={setIsShow}
-        uri={isUri}
-        nama={isNama}
-      /> */}
     </div>
   )
 }
