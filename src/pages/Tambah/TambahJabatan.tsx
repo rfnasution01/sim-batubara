@@ -204,17 +204,26 @@ export default function TambahPage() {
       const data = kepegawaianJabatanDetail?.siasn
 
       form.setValue('nomorSk', data?.nomorSk)
-      form.setValue(
-        'tanggalSk',
-        dayjs(data?.tanggalSk).locale('id').format('YYYY-MM-DD'),
-      )
+      const dateSK = data?.tanggalSk
+      const newDateSK = dateSK.split('-')
+
+      const tglSK = `${newDateSK[2]}-${newDateSK[1]}-${newDateSK[0]}`
+      form.setValue('tanggalSk', dayjs(tglSK).locale('id').format('YYYY-MM-DD'))
+      const dateJabatan = data?.tmtJabatan
+      const newDateJabatan = dateJabatan.split('-')
+
+      const tglJabatan = `${newDateJabatan[2]}-${newDateJabatan[1]}-${newDateJabatan[0]}`
       form.setValue(
         'tmtJabatan',
-        dayjs(data?.tmtJabatan).locale('id').format('YYYY-MM-DD'),
+        dayjs(tglJabatan).locale('id').format('YYYY-MM-DD'),
       )
+      const datePelantikan = data?.tmtPelantikan
+      const newDatePelantikan = datePelantikan.split('-')
+
+      const tglPelantikan = `${newDatePelantikan[2]}-${newDatePelantikan[1]}-${newDatePelantikan[0]}`
       form.setValue(
         'tmtPelantikan',
-        dayjs(data?.tmtPelantikan).locale('id').format('YYYY-MM-DD'),
+        dayjs(tglPelantikan).locale('id').format('YYYY-MM-DD'),
       )
     }
   }, [isEdit, kepegawaianJabatanDetail, id])

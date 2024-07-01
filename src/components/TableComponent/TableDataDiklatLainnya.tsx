@@ -164,6 +164,7 @@ export function TableDataDiklatLainnya({
                       >
                         <button
                           type="submit"
+                          disabled={riwayatDiklatLainnya?.siasn?.length === 0}
                           className="text-dark flex items-center gap-12 rounded-2xl border border-sim-dark px-24 py-12 text-[1.8rem] hover:cursor-pointer hover:border-transparent hover:bg-sim-dark hover:text-white"
                         >
                           Sinkron Data <RefreshCcw size={16} />

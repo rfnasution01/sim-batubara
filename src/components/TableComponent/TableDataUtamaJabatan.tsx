@@ -120,7 +120,8 @@ export function TableDataUtamaJabatan({
                         >
                           <button
                             type="submit"
-                            className="text-dark flex items-center gap-12 rounded-2xl border border-sim-dark px-24 py-12 text-[1.8rem] hover:cursor-pointer hover:border-transparent hover:bg-sim-dark hover:text-white"
+                            disabled={riwayatJabatan?.siasn?.length === 0}
+                            className="text-dark flex items-center gap-12 rounded-2xl border border-sim-dark px-24 py-12 text-[1.8rem] hover:cursor-pointer hover:border-transparent hover:bg-sim-dark hover:text-white disabled:cursor-not-allowed"
                           >
                             Sinkron Data <RefreshCcw size={16} />
                           </button>

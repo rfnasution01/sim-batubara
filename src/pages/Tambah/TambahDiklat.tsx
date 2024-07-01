@@ -194,13 +194,22 @@ export default function TambahDiklatPage() {
   useEffect(() => {
     if (id && isEdit && kepegawaianDiklatDetail) {
       const data = kepegawaianDiklatDetail?.siasn
+      const dateMulai = data?.tanggal
+      const newDateMulai = dateMulai.split('-')
+
+      const tglMulai = `${newDateMulai[2]}-${newDateMulai[1]}-${newDateMulai[0]}`
+      const dateSelesai = data?.tanggalSelesai
+      const newDateSelesai = dateSelesai.split('-')
+
+      const tanggalSelesai = `${newDateSelesai[2]}-${newDateSelesai[1]}-${newDateSelesai[0]}`
+
       form.setValue(
         'tanggal',
-        dayjs(data?.tanggal).locale('id').format('YYYY-MM-DD'),
+        dayjs(tglMulai).locale('id').format('YYYY-MM-DD'),
       )
       form.setValue(
         'tanggalSelesai',
-        dayjs(data?.tanggalSelesai).locale('id').format('YYYY-MM-DD'),
+        dayjs(tanggalSelesai).locale('id').format('YYYY-MM-DD'),
       )
       form.setValue('jam', data?.jumlahJam?.toString())
       form.setValue('nomor', data?.nomor)

@@ -245,10 +245,12 @@ export default function TambahAngkaKreditPage() {
       )
       form.setValue('kreditBaruTotal', data?.kreditBaruTotal?.toString())
       form.setValue('nomorSK', data?.nomorSk?.toString())
-      form.setValue(
-        'tanggalSK',
-        dayjs(data?.tanggalSk).locale('id').format('YYYY-MM-DD'),
-      )
+      const date = data?.tanggalSk
+      const newDate = date.split('-')
+
+      const tgl = `${newDate[2]}-${newDate[1]}-${newDate[0]}`
+
+      form.setValue('tanggalSK', dayjs(tgl).locale('id').format('YYYY-MM-DD'))
       form.setValue(
         'isAngkaKreditPertama',
         data?.isAngkaKreditPertama?.toString(),

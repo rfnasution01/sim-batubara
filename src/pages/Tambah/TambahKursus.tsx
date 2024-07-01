@@ -196,13 +196,21 @@ export default function TambahKursusPage() {
     if (id && isEdit && kepegawaianKursusDetail) {
       const data = kepegawaianKursusDetail?.siasn
       form.setValue('namaKursus', data?.namaKursus)
+      const dateKursus = data?.tanggal
+      const newDateKursus = dateKursus.split('-')
+
+      const tglKursus = `${newDateKursus[2]}-${newDateKursus[1]}-${newDateKursus[0]}`
       form.setValue(
         'tanggalKursus',
-        dayjs(data?.tanggal).locale('id').format('YYYY-MM-DD'),
+        dayjs(tglKursus).locale('id').format('YYYY-MM-DD'),
       )
+      const dateSelesai = data?.tanggalSelesai
+      const newDateSelesai = dateSelesai.split('-')
+
+      const tanggalSelesai = `${newDateSelesai[2]}-${newDateSelesai[1]}-${newDateSelesai[0]}`
       form.setValue(
         'tanggalSelesaiKursus',
-        dayjs(data?.tanggalSelesai).locale('id').format('YYYY-MM-DD'),
+        dayjs(tanggalSelesai).locale('id').format('YYYY-MM-DD'),
       )
       form.setValue('jam', data?.jumlahJam?.toString())
       form.setValue('noSertipikat', data?.nomor)

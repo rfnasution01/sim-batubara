@@ -200,12 +200,11 @@ export default function TambahPenghargaanPage() {
         kepegawaianPenghargaanDetail?.siasn?.tahun?.toString(),
       )
       form.setValue('skNomor', kepegawaianPenghargaanDetail?.siasn?.nomor)
-      form.setValue(
-        'skDate',
-        dayjs(kepegawaianPenghargaanDetail?.siasn?.tanggal)
-          .locale('id')
-          .format('YYYY-MM-DD'),
-      )
+      const date = kepegawaianPenghargaanDetail?.siasn?.tanggal
+      const newDate = date.split('-')
+
+      const tgl = `${newDate[2]}-${newDate[1]}-${newDate[0]}`
+      form.setValue('skDate', dayjs(tgl).locale('id').format('YYYY-MM-DD'))
     }
   }, [isEdit, id, kepegawaianPenghargaanDetail])
 
