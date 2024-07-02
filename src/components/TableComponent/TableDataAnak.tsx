@@ -27,6 +27,7 @@ export function TableDataAnak({
   const {
     data: riwayatAnakData,
     isLoading: riwayatAnakIsLoading,
+    isError,
     isFetching: riwayatAnakIsFetching,
     error,
   } = useGetRiwayatAnakQuery(
@@ -55,23 +56,44 @@ export function TableDataAnak({
       Cookies.remove('token')
       navigate('/login')
     }
+
+    if (errorMsg?.data?.message?.includes('Data Tidak Ditemukan')) {
+      toast.error(
+        `${errorMsg?.data?.message ?? 'Terjadi Kesalahan di server BKN'}`,
+        {
+          position: 'bottom-right',
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: 'light',
+          transition: Bounce,
+        },
+      )
+    }
+
     if (
       errorMsg?.data?.message?.includes('Client error') ||
       errorMsg?.data?.message?.includes('Server error')
     ) {
-      toast.error(`Terjadi Kesalahan di server BKN`, {
-        position: 'bottom-right',
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: 'light',
-        transition: Bounce,
-      })
+      toast.error(
+        `${errorMsg?.data?.message ?? 'Terjadi Kesalahan di server BKN'}`,
+        {
+          position: 'bottom-right',
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: 'light',
+          transition: Bounce,
+        },
+      )
     }
-  }, [riwayatAnakData, idPegawai, error])
+  }, [riwayatAnakData, idPegawai, error, isError])
 
   return (
     <div

@@ -77,21 +77,42 @@ export function TableDataAngkaKredit({
       Cookies.remove('token')
       navigate('/login')
     }
+
+    if (errorMsg?.data?.message?.includes('Data Tidak Ditemukan')) {
+      toast.error(
+        `${errorMsg?.data?.message ?? 'Terjadi Kesalahan di server BKN'}`,
+        {
+          position: 'bottom-right',
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: 'light',
+          transition: Bounce,
+        },
+      )
+    }
+
     if (
       errorMsg?.data?.message?.includes('Client error') ||
       errorMsg?.data?.message?.includes('Server error')
     ) {
-      toast.error(`Terjadi Kesalahan di server BKN`, {
-        position: 'bottom-right',
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: 'light',
-        transition: Bounce,
-      })
+      toast.error(
+        `${errorMsg?.data?.message ?? 'Terjadi Kesalahan di server BKN'}`,
+        {
+          position: 'bottom-right',
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: 'light',
+          transition: Bounce,
+        },
+      )
     }
   }, [riwayatAngkaKreditData, idPegawai, error])
 
