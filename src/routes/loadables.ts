@@ -61,3 +61,6 @@ export const TambahAngkaKreditPathPage = loadable(
 )
 
 export const PPKPage = loadable(() => import('@/pages/PPPK'))
+export const UpdateDataUtamaPage = loadable(
+  () => import('@/pages/Tambah/UpdateDataUtama'),
+)

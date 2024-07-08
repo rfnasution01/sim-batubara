@@ -212,3 +212,21 @@ export const TambahAngkaKreditSchema = zod
       path: ['kreditBaruTotal'],
     },
   )
+
+export const EditDataUtamaSchema = zod.object({
+  id: zod.string().optional().nullable().nullish(),
+  agama_id: zod.string().optional().nullable().nullish(),
+  agama: zod.string().optional().nullable().nullish(),
+  alamat: zod.string().optional().nullable().nullish(),
+  email: zod.string().email().optional().nullable().nullish(),
+  emailGov: zod.string().email().optional().nullable().nullish(),
+  karis_karsu: zod.string().optional().nullable().nullish(),
+  kelas_jabatan: zod.string().optional().nullable().nullish(),
+  bpjs: zod.string().optional().nullable().nullish(),
+  noHp: zod.string().optional().nullable().nullish(),
+  noTelp: zod.string().optional().nullable().nullish(),
+  noNpwp: zod.string().optional().nullable().nullish(),
+  tglNpwp: zod.string().optional().nullable().nullish(), // You may want to add more validation if it's a specific date format
+  tanggal_taspen: zod.string().optional().nullable().nullish(), // You may want to add more validation if it's a specific date format
+  noTaspen: zod.string().optional().nullable().nullish(),
+})

@@ -22,6 +22,7 @@ export function DataUtamaMain({
   isSinkronRiwayatGolongan,
   isSinkronRiwayatJabatan,
   isSinkronRiwayatPendidikan,
+  idParams,
 }: {
   idPegawai: string
   data: DataKepegawaianUtamaType
@@ -34,6 +35,7 @@ export function DataUtamaMain({
   isSinkronRiwayatPendidikan: boolean
   handleSubmitRiwayatJabatan: () => Promise<void>
   isSinkronRiwayatJabatan: boolean
+  idParams: string
 }) {
   const [tab, setTab] = useState<string>('Data Pribadi')
 
@@ -47,6 +49,7 @@ export function DataUtamaMain({
           handleSubmitDataUtama={handleSubmitDataUtama}
           form={form}
           isSinkronDataUtama={isSinkronDataUtama}
+          idParams={idParams}
         />
       ) : tab === 'Jabatan & Posisi' ? (
         <TableDataUtamaJabatan

@@ -4,18 +4,24 @@ import { Loading } from '../Loading'
 import { UseFormReturn } from 'react-hook-form'
 import { Form } from '../Form'
 import dayjs from 'dayjs'
+import { Link } from 'react-router-dom'
+import { usePathname } from '@/libs/hooks/usePathname'
 
 export function TableDataPribadi({
   data,
   handleSubmitDataUtama,
   form,
   isSinkronDataUtama,
+  idParams,
 }: {
   data: DataKepegawaianUtamaType
   handleSubmitDataUtama: () => Promise<void>
   form: UseFormReturn
   isSinkronDataUtama: boolean
+  idParams: string
 }) {
+  const { thirdPathname } = usePathname()
+
   return (
     <div className="flex flex-col gap-32">
       <p className="text-[3rem] font-bold">Data Pribadi</p>
@@ -73,7 +79,18 @@ export function TableDataPribadi({
                       ID
                     </th>
                     <td className="border px-24 py-12 align-middle leading-medium">
-                      {data?.siasn?.ID ?? '-'}
+                      <div className="flex flex-wrap items-center gap-16">
+                        <p>{data?.siasn?.ID ?? '-'}</p>
+                        <Link
+                          to={`/kepegawaian/pns/${thirdPathname}/data-utama/edit`}
+                          onClick={() => {
+                            localStorage.setItem('editID', idParams)
+                          }}
+                          className="rounded-2xl border bg-success-800 px-16 py-8 text-[2rem] text-white hover:bg-opacity-80"
+                        >
+                          Edit
+                        </Link>
+                      </div>
                     </td>
                     <td className="border px-24 py-12 align-middle leading-medium">
                       {data?.lokal?.ID ?? '-'}

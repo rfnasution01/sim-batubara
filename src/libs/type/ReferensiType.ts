@@ -16,6 +16,7 @@ export type GolonganType = {
 export type JenisJabatanType = {
   id: string
   nama: string
+  urutan?: string
 }
 
 export type SatuanKerjaJabatanType = {

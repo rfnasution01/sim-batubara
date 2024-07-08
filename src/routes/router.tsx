@@ -21,6 +21,7 @@ import {
   TambahJabatanPage,
   TambahKursusPage,
   TambahPenghargaanPage,
+  UpdateDataUtamaPage,
 } from './loadables'
 import Cookies from 'js-cookie'
 
@@ -71,6 +72,10 @@ export const router = createBrowserRouter([
               {
                 path: ':nama',
                 element: <DetailPegawaiLayoutMain />,
+              },
+              {
+                path: ':nama/data-utama/:aksi',
+                element: <UpdateDataUtamaPage />,
               },
               {
                 path: ':nama/jabatan/:aksi',

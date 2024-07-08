@@ -1,4 +1,8 @@
-import { DataKepegawaianUtamaHeaderType, PageInfoType } from '@/libs/type'
+import {
+  DataKepegawaianUtamaHeaderType,
+  DataKepegawaianUtamaSIASNType,
+  PageInfoType,
+} from '@/libs/type'
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import Cookies from 'js-cookie'
 
@@ -19,6 +23,7 @@ export type Res<T, M = undefined> = {
   mapped?: M
   page_info?: PageInfoType
   header?: DataKepegawaianUtamaHeaderType
+  siasn?: DataKepegawaianUtamaSIASNType
 }
 
 const baseURL = import.meta.env.VITE_BASE_URL

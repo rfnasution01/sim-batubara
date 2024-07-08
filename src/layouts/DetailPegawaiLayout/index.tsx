@@ -1194,6 +1194,7 @@ export default function DetailPegawaiLayoutMain() {
           {/* --- Data --- */}
           <DataDetailPegawai
             data={kepegawaianUtama}
+            idParams={idParams}
             idPegawai={idParams}
             handleSubmitDataUtama={handleSubmitDataUtama}
             isSinkronDataUtama={isLoadingSinkron}

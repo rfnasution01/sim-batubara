@@ -64,6 +64,134 @@ export type DataKepegawaianUtamaType = {
   last_update: string
 }
 
+export type DataKepegawaianUtamaSIASNType = {
+  id: string
+  nipBaru: string
+  nipLama: string
+  nama: string
+  gelarDepan: string
+  gelarBelakang: string
+  tempatLahir: string
+  tempatLahirId: string
+  tglLahir: string
+  agama: string
+  agamaId: string
+  email: string
+  emailGov: string
+  nik: string
+  alamat: string
+  noHp: string
+  noTelp: string
+  jenisPegawaiId: string
+  mkTahun: number
+  mkBulan: number
+  jenisPegawaiNama: string
+  kedudukanPnsId: string
+  kedudukanPnsNama: string
+  statusPegawai: string
+  jenisKelamin: string
+  jenisIdDokumenId: string
+  jenisIdDokumenNama: string
+  nomorIdDocument: string
+  noSeriKarpeg: string
+  tkPendidikanTerakhirId: string
+  tkPendidikanTerakhir: string
+  pendidikanTerakhirId: string
+  pendidikanTerakhirNama: string
+  tahunLulus: string
+  tmtPns: string
+  tmtPensiun: string | null
+  bupPensiun: number
+  tglSkPns: string
+  tmtCpns: string
+  tglSkCpns: string
+  instansiIndukId: string
+  instansiIndukNama: string
+  satuanKerjaIndukId: string
+  satuanKerjaIndukNama: string
+  kanregId: string
+  kanregNama: string
+  instansiKerjaId: string
+  instansiKerjaNama: string
+  instansiKerjaKodeCepat: string
+  satuanKerjaKerjaId: string
+  satuanKerjaKerjaNama: string
+  unorId: string
+  unorNama: string
+  unorIndukId: string
+  unorIndukNama: string
+  jenisJabatanId: string
+  jenisJabatan: string
+  jabatanNama: string
+  jabatanStrukturalId: string
+  jabatanStrukturalNama: string
+  jabatanFungsionalId: string
+  jabatanFungsionalNama: string
+  jabatanFungsionalUmumId: string
+  jabatanFungsionalUmumNama: string
+  tmtJabatan: string
+  lokasiKerjaId: string
+  lokasiKerja: string
+  golRuangAwalId: string
+  golRuangAwal: string
+  golRuangAkhirId: string
+  golRuangAkhir: string
+  tmtGolAkhir: string
+  masaKerja: string
+  eselon: string
+  eselonId: string
+  eselonLevel: string
+  tmtEselon: string
+  gajiPokok: string
+  kpknId: string
+  kpknNama: string
+  ktuaId: string
+  ktuaNama: string
+  taspenId: string
+  taspenNama: string
+  jenisKawinId: string
+  statusPerkawinan: string
+  statusHidup: string
+  tglSuratKeteranganDokter: string
+  noSuratKeteranganDokter: string
+  jumlahIstriSuami: number | null
+  jumlahAnak: number | null
+  noSuratKeteranganBebasNarkoba: string
+  tglSuratKeteranganBebasNarkoba: string | null
+  skck: string
+  tglSkck: string | null
+  akteKelahiran: string
+  akteMeninggal: string
+  tglMeninggal: string | null
+  noNpwp: string
+  tglNpwp: string
+  noAskes: string
+  bpjs: string
+  kodePos: string
+  noSpmt: string
+  noTaspen: string
+  bahasa: string
+  kppnId: string
+  kppnNama: string
+  pangkatAkhir: string
+  tglSttpl: string
+  nomorSttpl: string
+  nomorSkCpns: string
+  nomorSkPns: string
+  jenjang: string
+  jabatanAsn: string
+  kartuAsn: string
+  validNik: boolean
+  pangkatAwal: string
+  asnJenjangJabatan: string
+  kode_jenjang_jabatan: string
+  levelJabatan: string
+  tanggal_taspen: string
+  tabrum2: string
+  kelas_jabatan: string
+  karis_karsu: string
+}
+
 export type DataKepegawaianUtamaHeaderType = {
   nama: string
   nip: string

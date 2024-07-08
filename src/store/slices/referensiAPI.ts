@@ -33,6 +33,12 @@ export const SatuanKerjaEndpoints = api.injectEndpoints({
         method: 'GET',
       }),
     }),
+    getAgama: builder.query<Res<JenisJabatanType[]>, void>({
+      query: () => ({
+        url: `referensi/agama`,
+        method: 'GET',
+      }),
+    }),
     getJenisDiklat: builder.query<Res<JenisJabatanType[]>, void>({
       query: () => ({
         url: `referensi/jenis_diklat`,
@@ -75,4 +81,5 @@ export const {
   useGetJenisKursusQuery,
   useGetJenisPenghargaanQuery,
   useGetJenisPenghargaanFungsionalQuery,
+  useGetAgamaQuery,
 } = SatuanKerjaEndpoints
