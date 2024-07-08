@@ -347,6 +347,8 @@ export default function DetailPegawaiLayoutMain() {
   const isLoadingKepegawaianUtama =
     kepegawaianUtamaIsLoading || kepegawaianUtamaIsFetching
 
+  const [isNIPError, setIsNIPError] = useState<boolean>(false)
+
   useEffect(() => {
     if (kepegawaianUtamaData) {
       setKepegawaianUtama(kepegawaianUtamaData?.data)
@@ -364,6 +366,10 @@ export default function DetailPegawaiLayoutMain() {
     ) {
       Cookies.remove('token')
       navigate('/login')
+    }
+
+    if (errorMsg?.data?.message?.includes('NIP')) {
+      setIsNIPError(true)
     }
 
     if (
@@ -397,6 +403,7 @@ export default function DetailPegawaiLayoutMain() {
         theme: 'light',
         transition: Bounce,
       })
+      setIsNIPError(false)
     }
   }, [isSuccess])
 
@@ -1238,6 +1245,7 @@ export default function DetailPegawaiLayoutMain() {
             isSinkronRiwayatKeluarga={isLoadingSinkronKeluarga}
             handleSubmitRiwayatAnak={handleSubmitAnak}
             isSinkronRiwayatAnak={isLoadingSinkronAnak}
+            isNIPError={isNIPError}
           />
         </>
       )}

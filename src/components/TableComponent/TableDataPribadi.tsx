@@ -13,12 +13,14 @@ export function TableDataPribadi({
   form,
   isSinkronDataUtama,
   idParams,
+  isNIPError,
 }: {
   data: DataKepegawaianUtamaType
   handleSubmitDataUtama: () => Promise<void>
   form: UseFormReturn
   isSinkronDataUtama: boolean
   idParams: string
+  isNIPError: boolean
 }) {
   const { thirdPathname } = usePathname()
 
@@ -101,7 +103,20 @@ export function TableDataPribadi({
                       NIP
                     </th>
                     <td className="border px-24 py-12 align-middle leading-medium">
-                      {data?.siasn?.nip ?? '-'}
+                      <div className="flex flex-wrap items-center gap-16">
+                        <p>{data?.siasn?.nip ?? '-'}</p>
+                        {isNIPError && (
+                          <Link
+                            to={`/kepegawaian/pns/${thirdPathname}/data-utama/nip`}
+                            onClick={() => {
+                              localStorage.setItem('editID', idParams)
+                            }}
+                            className="rounded-2xl border bg-primary-500 px-16 py-8 text-[2rem] text-white hover:bg-opacity-80"
+                          >
+                            Perbarui
+                          </Link>
+                        )}
+                      </div>
                     </td>
                     <td className="border px-24 py-12 align-middle leading-medium">
                       {data?.lokal?.nip ?? '-'}

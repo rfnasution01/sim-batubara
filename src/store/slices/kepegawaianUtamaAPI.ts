@@ -18,6 +18,11 @@ export type UpdateDataUtamaParams = {
   noTaspen: string
 }
 
+export type UpdateNIPParams = {
+  id_pegawai: string
+  nip: string
+}
+
 export const KepegawaianUtamaEndpoints = api.injectEndpoints({
   endpoints: (builder) => ({
     updateDataUtama: builder.mutation<void, { body: UpdateDataUtamaParams }>({
@@ -28,7 +33,16 @@ export const KepegawaianUtamaEndpoints = api.injectEndpoints({
       }),
       invalidatesTags: ['pegawai-pns', 'pegawai-pns-utama'],
     }),
+    updateNIP: builder.mutation<void, { body: UpdateNIPParams }>({
+      query: ({ body }) => ({
+        url: `kepegawaian/edit/nip`,
+        method: 'POST',
+        body: body,
+      }),
+      invalidatesTags: ['pegawai-pns', 'pegawai-pns-utama'],
+    }),
   }),
 })
 
-export const { useUpdateDataUtamaMutation } = KepegawaianUtamaEndpoints
+export const { useUpdateDataUtamaMutation, useUpdateNIPMutation } =
+  KepegawaianUtamaEndpoints

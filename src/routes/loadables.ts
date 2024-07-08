@@ -64,3 +64,5 @@ export const PPKPage = loadable(() => import('@/pages/PPPK'))
 export const UpdateDataUtamaPage = loadable(
   () => import('@/pages/Tambah/UpdateDataUtama'),
 )
+
+export const UpdateNIPPage = loadable(() => import('@/pages/Tambah/UpdateNIP'))

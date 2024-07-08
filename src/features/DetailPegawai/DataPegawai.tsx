@@ -49,6 +49,7 @@ export function DataDetailPegawai({
   isSinkronRiwayatAnak,
   handleSubmitRiwayatAnak,
   idParams,
+  isNIPError,
 }: {
   data: DataKepegawaianUtamaType
   idPegawai: string
@@ -91,6 +92,7 @@ export function DataDetailPegawai({
   handleSubmitRiwayatAnak: () => Promise<void>
   isSinkronRiwayatAnak: boolean
   idParams: string
+  isNIPError: boolean
 }) {
   const stateTab = useSelector(getDetailPegawaiSlice)?.tab
 
@@ -129,6 +131,7 @@ export function DataDetailPegawai({
           isSinkronRiwayatPendidikan={isSinkronRiwayatPendidikan}
           idPegawai={idPegawai}
           idParams={idParams}
+          isNIPError={isNIPError}
         />
       ) : (
         <DataRiwayatMain

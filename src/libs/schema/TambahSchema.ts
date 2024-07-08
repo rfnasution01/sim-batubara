@@ -230,3 +230,12 @@ export const EditDataUtamaSchema = zod.object({
   tanggal_taspen: zod.string().optional().nullable().nullish(), // You may want to add more validation if it's a specific date format
   noTaspen: zod.string().optional().nullable().nullish(),
 })
+
+export const EditDataNIPSchema = zod.object({
+  nip: zod
+    .string({
+      required_error: 'NIP harus di isi',
+      invalid_type_error: 'Format NIP tidak valid',
+    })
+    .length(18, 'NIP harus terdiri dari 18 karakter'),
+})
